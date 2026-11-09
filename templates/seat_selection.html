@@ -1,0 +1,739 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Select Seats | VoyageIQ</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #07172B;
+    --sidebar: rgba(5,22,42,.96);
+    --card: rgba(12,39,65,.94);
+    --card2: rgba(5,25,45,.94);
+    --text: #F1FAFF;
+    --muted: #B8D5E5;
+    --accent: #42D9F5;
+    --border: rgba(105,211,255,.45);
+    --button: linear-gradient(110deg,#168FC4,#685BD8);
+    --shadow: rgba(0,0,0,.22);
+}
+
+body.light {
+    --bg: #EAF5FC;
+    --sidebar: rgba(247,252,255,.97);
+    --card: rgba(255,255,255,.95);
+    --card2: #E7F3FA;
+    --text: #15334A;
+    --muted: #526F83;
+    --accent: #087EAD;
+    --border: rgba(8,126,173,.28);
+    --button: linear-gradient(110deg,#39B8D9,#8175E8);
+    --shadow: rgba(31,86,117,.10);
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 25px 17px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.logo {
+    color: var(--accent);
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.menu-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin: 18px 10px 10px;
+}
+
+.nav-link {
+    display: block;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 12px 14px;
+    margin: 4px 0;
+    border-radius: 9px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent);
+    background: rgba(30,145,190,.20);
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 240px;
+    min-height: 100vh;
+    padding: 85px 30px 35px;
+}
+
+.topbar {
+    position: fixed;
+    top: 15px;
+    right: 22px;
+    z-index: 5;
+}
+
+.theme-btn {
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* CARD */
+
+.card {
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 30px;
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 12px 38px var(--shadow);
+}
+
+h1 {
+    color: var(--accent);
+    font-size: 27px;
+    margin-bottom: 15px;
+}
+
+.muted {
+    color: var(--muted);
+    line-height: 1.9;
+    font-size: 14px;
+}
+
+/* JOURNEY DETAILS */
+
+.journey {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 13px;
+    margin-top: 22px;
+}
+
+.journey-box {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.journey-box small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.journey-box strong {
+    color: var(--text);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* LEGEND */
+
+.legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 25px 0;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.key {
+    width: 17px;
+    height: 17px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.key.available {
+    background: #DCEAF5;
+}
+
+.key.selected {
+    background: #42D9F5;
+}
+
+.key.unavailable {
+    background: #687C91;
+}
+
+/* SEAT LAYOUT */
+
+.layout {
+    max-width: 470px;
+    margin: 25px auto;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--card2);
+}
+
+.front {
+    text-align: center;
+    color: var(--accent);
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.seats {
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 12px;
+}
+
+.seat {
+    height: 45px;
+    border: 1px solid #B9D8E8;
+    border-radius: 9px;
+    background: #DCEAF5;
+    cursor: pointer;
+    font-weight: bold;
+    color: #17334D;
+    transition: .2s;
+}
+
+.seat:hover:not(.unavailable) {
+    background: #A8EEFF;
+    transform: translateY(-2px);
+}
+
+.seat.chosen {
+    background: #42D9F5;
+    color: #05243A;
+    border-color: #42D9F5;
+    box-shadow: 0 0 12px rgba(66,217,245,.4);
+}
+
+.seat.unavailable {
+    background: #687C91;
+    color: #FFFFFF;
+    border-color: #687C91;
+    cursor: not-allowed;
+}
+
+.seat:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* SELECTION DETAILS */
+
+.selection-info {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 18px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 14px;
+}
+
+#selectedSeats,
+#count {
+    color: var(--accent);
+    font-weight: bold;
+}
+
+#message {
+    color: #E58B8B;
+    font-size: 14px;
+    margin-top: 12px;
+    min-height: 18px;
+}
+
+/* BUTTONS */
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.back,
+.continue {
+    display: inline-block;
+    border-radius: 9px;
+    padding: 14px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+}
+
+.back {
+    background: var(--card2);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.continue {
+    background: var(--button);
+    color: white;
+    border: none;
+}
+
+.continue:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.continue:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+    .sidebar {
+        width: 75px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 13px;
+    }
+
+    .menu-title {
+        display: none;
+    }
+
+    .nav-link {
+        text-align: center;
+        font-size: 11px;
+        padding: 12px 3px;
+    }
+
+    .main {
+        margin-left: 75px;
+    }
+}
+
+@media(max-width:600px) {
+    .main {
+        padding: 75px 12px 20px;
+    }
+
+    .card {
+        padding: 19px;
+    }
+
+    .journey {
+        grid-template-columns: 1fr;
+    }
+
+    .layout {
+        padding: 12px;
+    }
+
+    .seats {
+        gap: 8px;
+    }
+
+    .seat {
+        height: 40px;
+        font-size: 12px;
+    }
+
+    .bottom {
+        align-items: stretch;
+    }
+
+    .actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .back,
+    .continue {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">✈ VoyageIQ</div>
+
+    <p class="menu-title">MAIN MENU</p>
+
+    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
+    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
+    <a href="{{ url_for('hotels') }}" class="nav-link">⌂ Hotels</a>
+    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
+    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
+
+    <div class="sidebar-bottom">
+        <p class="menu-title">ACCOUNT</p>
+        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
+        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
+    </div>
+
+</aside>
+
+<!-- THEME BUTTON -->
+
+<div class="topbar">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeButton">
+        ☀ Light Mode
+    </button>
+</div>
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+<section class="card">
+
+    <h1>Select Your Seats</h1>
+
+    <p class="muted">
+        Choose seats for your journey. Select the required number
+        of seats to continue to passenger details.
+    </p>
+
+    <div class="journey">
+
+        <div class="journey-box">
+            <small>Journey</small>
+            <strong>
+                {{ booking.origin }} → {{ booking.destination }}
+            </strong>
+        </div>
+
+        <div class="journey-box">
+            <small>Transport & Class</small>
+            <strong>
+                {{ booking.transport_type }} · {{ booking.seat_class }}
+            </strong>
+        </div>
+
+        <div class="journey-box">
+            <small>Travel Date</small>
+            <strong>{{ booking.travel_date }}</strong>
+        </div>
+
+    </div>
+
+    <p class="muted" style="margin-top:18px;">
+        Select exactly {{ passengers }} seat(s).
+    </p>
+
+    <div class="legend">
+        <span><i class="key available"></i>Available</span>
+        <span><i class="key selected"></i>Selected</span>
+        <span><i class="key unavailable"></i>Unavailable</span>
+    </div>
+
+    <form method="POST"
+          action="{{ url_for('seat_selection') }}"
+          id="seatForm">
+
+        <div class="layout">
+
+            <div class="front">FRONT OF VEHICLE</div>
+
+            <div class="seats" id="seatGrid"></div>
+
+        </div>
+
+        <input type="hidden"
+               name="seat_numbers"
+               id="seatNumbers">
+
+        <div class="selection-info">
+
+            <p>
+                Selected seats:
+                <strong id="selectedSeats">None</strong>
+            </p>
+
+            <p>
+                Seats selected:
+                <strong id="count">0</strong> /
+                {{ passengers }}
+            </p>
+
+        </div>
+
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <div class="bottom">
+
+            <a href="{{ url_for('transport') }}" class="back">
+                ← Back
+            </a>
+
+            <button class="continue"
+                    type="submit"
+                    id="continueBtn"
+                    disabled>
+                Continue to Passenger Details →
+            </button>
+
+        </div>
+
+    </form>
+
+</section>
+
+</main>
+
+<script>
+
+/* THEME MANAGEMENT */
+
+function applyTheme() {
+
+    const savedTheme =
+        localStorage.getItem("voyageiq-theme") || "dark";
+
+    document.body.classList.toggle(
+        "light",
+        savedTheme === "light"
+    );
+
+    document.getElementById("themeButton").textContent =
+        savedTheme === "light" ? "🌙 Dark Mode" : "☀ Light Mode";
+}
+
+function toggleTheme() {
+
+    const isLight =
+        document.body.classList.contains("light");
+
+    const newTheme = isLight ? "dark" : "light";
+
+    localStorage.setItem("voyageiq-theme", newTheme);
+
+    applyTheme();
+}
+
+applyTheme();
+
+
+/* SEAT SELECTION */
+
+const requiredSeats = Number({{ passengers|tojson }});
+const vehicleType = {{ transport_type|tojson }};
+
+const grid = document.getElementById("seatGrid");
+const selected = new Set();
+
+const unavailable = new Set([
+    "A2", "B3", "C1", "D4", "E2", "F3"
+]);
+
+const rows = ["A", "B", "C", "D", "E", "F"];
+
+const columns = vehicleType === "Flight" ? 6 : 4;
+
+grid.style.gridTemplateColumns =
+    `repeat(${columns}, minmax(0, 1fr))`;
+
+rows.forEach(row => {
+
+    for (let col = 1; col <= columns; col++) {
+
+        const id = row + col;
+
+        const seat = document.createElement("button");
+
+        seat.type = "button";
+        seat.textContent = id;
+        seat.className = "seat";
+
+        seat.setAttribute(
+            "aria-label",
+            "Seat " + id
+        );
+
+        if (unavailable.has(id)) {
+
+            seat.classList.add("unavailable");
+            seat.disabled = true;
+            seat.title = "Unavailable";
+
+        } else {
+
+            seat.addEventListener("click", () => {
+
+                if (selected.has(id)) {
+
+                    selected.delete(id);
+                    seat.classList.remove("chosen");
+
+                } else {
+
+                    if (selected.size >= requiredSeats) {
+
+                        document.getElementById("message").textContent =
+                            "You can select only " +
+                            requiredSeats + " seat(s).";
+
+                        return;
+                    }
+
+                    selected.add(id);
+                    seat.classList.add("chosen");
+                }
+
+                document.getElementById("message").textContent = "";
+
+                updateSelection();
+            });
+        }
+
+        grid.appendChild(seat);
+    }
+});
+
+
+/* UPDATE SELECTED SEATS */
+
+function updateSelection() {
+
+    const seats = [...selected].sort();
+
+    document.getElementById("selectedSeats").textContent =
+        seats.join(", ") || "None";
+
+    document.getElementById("count").textContent =
+        seats.length;
+
+    document.getElementById("seatNumbers").value =
+        seats.join(",");
+
+    document.getElementById("continueBtn").disabled =
+        seats.length !== requiredSeats;
+}
+
+
+/* FORM VALIDATION */
+
+document.getElementById("seatForm").addEventListener(
+    "submit",
+    event => {
+
+        if (selected.size !== requiredSeats) {
+
+            event.preventDefault();
+
+            document.getElementById("message").textContent =
+                "Please select exactly " +
+                requiredSeats + " seat(s).";
+        }
+    }
+);
+
+updateSelection();
+
+</script>
+
+</body>
+</html>

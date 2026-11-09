@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Confirmed | VoyageIQ</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #07172B;
+    --sidebar: rgba(5,22,42,.96);
+    --card: rgba(12,39,65,.94);
+    --card2: rgba(5,25,45,.94);
+    --text: #F1FAFF;
+    --muted: #B8D5E5;
+    --accent: #42D9F5;
+    --border: rgba(105,211,255,.45);
+    --button: linear-gradient(110deg,#168FC4,#685BD8);
+    --shadow: rgba(0,0,0,.22);
+}
+
+body.light {
+    --bg: #EAF5FC;
+    --sidebar: rgba(247,252,255,.97);
+    --card: rgba(255,255,255,.96);
+    --card2: #E7F3FA;
+    --text: #15334A;
+    --muted: #526F83;
+    --accent: #087EAD;
+    --border: rgba(8,126,173,.28);
+    --button: linear-gradient(110deg,#39B8D9,#8175E8);
+    --shadow: rgba(31,86,117,.10);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    color: var(--text);
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 25px 17px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.menu-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin: 18px 10px 10px;
+}
+
+.nav-link {
+    display: block;
+    text-decoration: none;
+    color: var(--muted);
+    padding: 12px 14px;
+    margin: 4px 0;
+    border-radius: 9px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent);
+    background: rgba(30,145,190,.20);
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+/* MAIN CONTENT */
+
+.main {
+    margin-left: 240px;
+    min-height: 100vh;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topbar {
+    position: fixed;
+    top: 15px;
+    right: 22px;
+    z-index: 5;
+}
+
+.theme-btn {
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* CONFIRMATION CARD */
+
+.confirmation-card {
+    width: 100%;
+    max-width: 680px;
+    padding: 38px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: 0 15px 45px var(--shadow);
+    backdrop-filter: blur(14px);
+}
+
+.success-icon {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 42px;
+    font-weight: bold;
+}
+
+h1 {
+    text-align: center;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-size: 28px;
+}
+
+.subtitle {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.booking-code {
+    background: var(--card2);
+    border: 1px dashed var(--accent);
+    padding: 18px;
+    text-align: center;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.booking-code p {
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.booking-code h2 {
+    color: var(--accent);
+    letter-spacing: 2px;
+    overflow-wrap: anywhere;
+}
+
+.details {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 17px 0;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 11px 0;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.detail-row strong {
+    color: var(--text);
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.total {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 12px;
+    background: var(--card2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.total span {
+    color: var(--muted);
+}
+
+.total strong {
+    color: var(--accent);
+    font-size: 24px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.btn {
+    flex: 1;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+    border: 0;
+    border-radius: 9px;
+    color: white;
+    background: var(--button);
+    font-weight: bold;
+    transition: .2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.note {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 22px;
+}
+
+@media(max-width: 900px) {
+    .sidebar {
+        width: 75px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 13px;
+    }
+
+    .menu-title {
+        display: none;
+    }
+
+    .nav-link {
+        text-align: center;
+        font-size: 11px;
+        padding: 12px 3px;
+    }
+
+    .main {
+        margin-left: 75px;
+    }
+}
+
+@media(max-width: 550px) {
+    .main {
+        padding: 75px 12px 20px;
+    }
+
+    .confirmation-card {
+        padding: 23px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .detail-row {
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .total strong {
+        font-size: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">✈ VoyageIQ</div>
+
+    <p class="menu-title">MAIN MENU</p>
+
+    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
+    <a href="{{ url_for('transport') }}" class="nav-link">✈ Flights & Transport</a>
+    <a href="{{ url_for('hotels') }}" class="nav-link active">⌂ Hotels</a>
+    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
+    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
+
+    <div class="sidebar-bottom">
+        <p class="menu-title">ACCOUNT</p>
+        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
+        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
+    </div>
+
+</aside>
+
+<!-- THEME BUTTON -->
+
+<div class="topbar">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeButton">
+        ☀ Light Mode
+    </button>
+</div>
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+    <div class="confirmation-card">
+
+        <div class="success-icon">✓</div>
+
+        <h1>Booking Confirmed!</h1>
+
+        <p class="subtitle">
+            Your hotel booking details are ready.
+            Thank you for choosing VoyageIQ!
+        </p>
+
+        <div class="booking-code">
+            <p>Your Booking Reference</p>
+            <h2>{{ booking.booking_code }}</h2>
+        </div>
+
+        <div class="details">
+
+            <div class="detail-row">
+                <span>Hotel Name</span>
+                <strong>{{ booking.hotel_name }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Destination</span>
+                <strong>{{ booking.destination }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Check-in</span>
+                <strong>{{ booking.checkin }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Check-out</span>
+                <strong>{{ booking.checkout }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Number of Nights</span>
+                <strong>{{ booking.nights }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Guests</span>
+                <strong>{{ booking.guests }}</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Room Type</span>
+                <strong>{{ booking.room_type }}</strong>
+            </div>
+
+        </div>
+
+        <div class="total">
+            <span>Total Amount</span>
+            <strong>₹{{ "{:,}".format(booking.total_price) }}</strong>
+        </div>
+
+        <div class="actions">
+
+            <a href="{{ url_for('hotels', destination=booking.destination) }}"
+               class="btn">
+                Explore More Hotels
+            </a>
+
+            <a href="{{ url_for('home') }}" class="btn">
+                Go to Home
+            </a>
+
+        </div>
+
+        <p class="note">
+            Your booking reference can be used to identify this booking
+            in your VoyageIQ account.
+        </p>
+
+    </div>
+
+</main>
+
+<script>
+/* THEME MANAGEMENT */
+
+function applyTheme() {
+    const savedTheme = localStorage.getItem("voyageiq-theme") || "dark";
+
+    document.body.classList.toggle("light", savedTheme === "light");
+
+    document.getElementById("themeButton").textContent =
+        savedTheme === "light" ? "🌙 Dark Mode" : "☀ Light Mode";
+}
+
+function toggleTheme() {
+    const isLight = document.body.classList.contains("light");
+
+    const newTheme = isLight ? "dark" : "light";
+
+    localStorage.setItem("voyageiq-theme", newTheme);
+
+    applyTheme();
+}
+
+applyTheme();
+</script>
+
+</body>
+</html>

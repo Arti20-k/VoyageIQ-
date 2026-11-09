@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoyageIQ | Smart Trip Planner</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #07172B;
+    --sidebar: rgba(5,22,42,.96);
+    --card: rgba(12,39,65,.88);
+    --card2: rgba(5,25,45,.94);
+    --text: #F1FAFF;
+    --muted: #B8D5E5;
+    --accent: #42D9F5;
+    --border: rgba(105,211,255,.45);
+    --button: linear-gradient(110deg,#168FC4,#685BD8);
+    --shadow: rgba(0,0,0,.22);
+}
+
+body.light {
+    --bg: #EAF5FC;
+    --sidebar: rgba(247,252,255,.97);
+    --card: rgba(255,255,255,.94);
+    --card2: #E7F3FA;
+    --text: #15334A;
+    --muted: #526F83;
+    --accent: #087EAD;
+    --border: rgba(8,126,173,.28);
+    --button: linear-gradient(110deg,#39B8D9,#8175E8);
+    --shadow: rgba(31,86,117,.10);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90")
+        center/cover fixed;
+    color: var(--text);
+    min-height: 100vh;
+    transition: background .3s, color .3s;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90")
+        center/cover fixed;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    padding: 25px 16px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    backdrop-filter: blur(18px);
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--accent);
+    margin: 8px 5px;
+}
+
+.logo-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin: 5px 5px 35px;
+}
+
+.menu-title {
+    color: var(--muted);
+    font-size: 11px;
+    margin: 22px 10px 12px;
+    letter-spacing: 2px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 13px;
+    margin: 5px 0;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 14px;
+    transition: .25s;
+    border: 1px solid transparent;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background: rgba(30,145,190,.20);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.sidebar .bottom-menu {
+    margin-top: 45px;
+}
+
+.side-icon {
+    width: 22px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+    padding: 26px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 26px;
+    flex-wrap: wrap;
+}
+
+.search {
+    width: min(450px,100%);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 13px 18px;
+    color: var(--text);
+    outline: none;
+}
+
+.search::placeholder {
+    color: var(--muted);
+}
+
+.search:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(66,217,245,.2);
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--muted);
+    flex-wrap: wrap;
+}
+
+.theme-btn {
+    background: var(--card);
+    border: 1px solid var(--accent);
+    color: var(--text);
+    border-radius: 22px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* BUTTONS */
+
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border: 1px solid var(--accent);
+    border-radius: 9px;
+    background: var(--button);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(66,217,245,.25);
+    filter: brightness(1.08);
+}
+
+/* HERO */
+
+.hero {
+    min-height: 320px;
+    padding: 45px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(4,22,42,.94) 0%,
+            rgba(4,22,42,.78) 48%,
+            rgba(4,22,42,.18) 100%
+        ),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1500&q=85")
+        center/cover;
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.hero-content {
+    max-width: 490px;
+}
+
+.hero h1 {
+    color: #F1FAFF;
+    font-size: clamp(30px,4vw,45px);
+    margin-bottom: 16px;
+    line-height: 1.15;
+}
+
+.hero p {
+    color: #D1EAF7;
+    line-height: 1.7;
+    margin-bottom: 23px;
+    font-size: 15px;
+}
+
+.hero .btn {
+    margin: 5px 5px 5px 0;
+}
+
+/* DASHBOARD */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+}
+
+.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 21px;
+    box-shadow: 0 8px 25px var(--shadow);
+    backdrop-filter: blur(14px);
+}
+
+.panel h3 {
+    margin-bottom: 15px;
+    color: var(--accent);
+}
+
+.trip-image {
+    width: 100%;
+    height: 155px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 14px;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* SECTIONS */
+
+.section {
+    margin: 35px 0;
+    scroll-margin-top: 25px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 19px;
+    gap: 10px;
+}
+
+.section-heading h2 {
+    font-size: 23px;
+    color: var(--accent);
+}
+
+/* DESTINATIONS */
+
+.destinations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(175px,1fr));
+    gap: 18px;
+}
+
+.destination {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+    transition: .3s;
+    backdrop-filter: blur(10px);
+}
+
+.destination:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 25px rgba(66,217,245,.16);
+}
+
+.destination img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.destination-info {
+    padding: 15px;
+}
+
+.destination-info h3 {
+    margin-bottom: 8px;
+    color: var(--accent);
+}
+
+.destination-info p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    min-height: 38px;
+    margin-bottom: 13px;
+}
+
+/* PLANNER */
+
+.planner {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 25px;
+    max-width: 650px;
+    box-shadow: 0 8px 25px var(--shadow);
+    backdrop-filter: blur(12px);
+}
+
+.planner label {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.planner input,
+.planner select {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    background: var(--card2);
+    color: var(--text);
+    border-radius: 8px;
+    outline: none;
+}
+
+.planner input:focus,
+.planner select:focus {
+    border-color: var(--accent);
+}
+
+.planner select option {
+    background: #102D48;
+    color: white;
+}
+
+#result {
+    margin-top: 18px;
+    line-height: 1.7;
+    color: var(--accent);
+}
+
+/* QUICK LINKS */
+
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+    gap: 16px;
+}
+
+.quick-card {
+    padding: 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    box-shadow: 0 8px 25px var(--shadow);
+    backdrop-filter: blur(12px);
+    scroll-margin-top: 25px;
+}
+
+.quick-card h3 {
+    margin-bottom: 11px;
+    color: var(--accent);
+}
+
+.quick-card p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+    .sidebar {
+        width: 75px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .logo-sub,
+    .menu-title,
+    .sidebar .link-text {
+        display: none;
+    }
+
+    .sidebar a {
+        justify-content: center;
+        font-size: 19px;
+    }
+
+    .side-icon {
+        width: auto;
+    }
+
+    .main {
+        margin-left: 75px;
+        width: calc(100% - 75px);
+        padding: 17px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:520px) {
+    .hero {
+        padding: 25px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    .topbar {
+        align-items: stretch;
+    }
+
+    .top-actions {
+        justify-content: space-between;
+    }
+
+    .main {
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar">
+
+    <div class="logo">✈ VoyageIQ</div>
+    <div class="logo-sub">SMART TRIP PLANNER</div>
+
+    <div class="menu-title">MAIN MENU</div>
+
+    <a href="/" class="active">
+        <span class="side-icon">⌂</span>
+        <span class="link-text">Dashboard</span>
+    </a>
+
+    <a href="/transport">
+        <span class="side-icon">✈</span>
+        <span class="link-text">Flights & Transport</span>
+    </a>
+
+    <a href="/hotels">
+        <span class="side-icon">⌂</span>
+        <span class="link-text">Hotels</span>
+    </a>
+
+    <a href="#packages">
+        <span class="side-icon">▣</span>
+        <span class="link-text">Packages</span>
+    </a>
+
+    <a href="/my-bookings">
+        <span class="side-icon">▤</span>
+        <span class="link-text">My Bookings</span>
+    </a>
+
+    <a href="#wishlist">
+        <span class="side-icon">♡</span>
+        <span class="link-text">Wishlist</span>
+    </a>
+
+    <a href="#offers">
+        <span class="side-icon">◇</span>
+        <span class="link-text">Offers</span>
+    </a>
+
+    <div class="menu-title">ACCOUNT</div>
+
+    <a href="/login">
+        <span class="side-icon">♙</span>
+        <span class="link-text">Login</span>
+    </a>
+
+    <a href="/signup">
+        <span class="side-icon">✚</span>
+        <span class="link-text">Sign Up</span>
+    </a>
+
+    <a href="/logout">
+        <span class="side-icon">⇥</span>
+        <span class="link-text">Logout</span>
+    </a>
+
+    <div class="bottom-menu">
+        <a href="#settings">
+            <span class="side-icon">⚙</span>
+            <span class="link-text">Settings</span>
+        </a>
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <div class="topbar">
+
+        <input
+            class="search"
+            type="search"
+            id="searchBox"
+            placeholder="⌕ Search destinations, hotels, flights..."
+        >
+
+        <div class="top-actions">
+            <span>🔔</span>
+            <span>Welcome to VoyageIQ</span>
+
+            <button
+                class="theme-btn"
+                id="themeButton"
+                type="button"
+                onclick="toggleTheme()"
+            >
+                ☀ / ☾ Theme
+            </button>
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+            <h1>Explore The World With VoyageIQ</h1>
+
+            <p>
+                Discover amazing destinations, plan unforgettable trips
+                and explore exciting travel experiences.
+            </p>
+
+            <a href="#destinations" class="btn">
+                Explore Destinations →
+            </a>
+
+            <a href="/planner" class="btn">
+                Plan My Trip
+            </a>
+
+        </div>
+
+    </header>
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard-grid">
+
+        <section class="panel">
+
+            <h3>🌍 Your Travel Journey</h3>
+
+            <img
+                class="trip-image"
+                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=85"
+                alt="Dubai skyline"
+            >
+
+            <h3>Discover Your Next Adventure</h3>
+
+            <p class="muted">
+                Discover new places, explore destinations and create
+                your perfect travel experience with VoyageIQ.
+            </p>
+
+            <br>
+
+            <a href="/planner" class="btn">Start Planning →</a>
+
+        </section>
+
+        <section class="panel">
+
+            <h3>✦ Quick Travel Options</h3>
+
+            <p class="muted">
+                Find everything you need for your next journey.
+            </p>
+
+            <br>
+
+            <p>✈ Flights, Trains and Buses</p>
+            <br>
+
+            <a href="/transport" class="btn">Explore Transport</a>
+
+            <br><br>
+
+            <p>🏨 Hotels and Stays</p>
+            <br>
+
+            <a href="/hotels" class="btn">Explore Hotels</a>
+
+            <br><br>
+
+            <p>🧭 Personal Trip Planner</p>
+            <br>
+
+            <a href="/planner" class="btn">Plan Your Trip</a>
+
+        </section>
+
+    </div>
+
+    <!-- DESTINATIONS -->
+
+    <section class="section" id="destinations">
+
+        <div class="section-heading">
+            <h2>Popular Destinations</h2>
+            <span class="muted">Explore beautiful places</span>
+        </div>
+
+        <div class="destinations">
+
+            <article class="destination">
+                <img
+                    src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80"
+                    alt="Goa"
+                >
+                <div class="destination-info">
+                    <h3>Goa</h3>
+                    <p>Beautiful beaches and coastal adventures.</p>
+                    <a href="/hotels" class="btn">Explore</a>
+                </div>
+            </article>
+
+            <article class="destination">
+                <img
+                    src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80"
+                    alt="Kerala"
+                >
+                <div class="destination-info">
+                    <h3>Kerala</h3>
+                    <p>Green landscapes and peaceful backwaters.</p>
+                    <a href="/hotels" class="btn">Explore</a>
+                </div>
+            </article>
+
+            <article class="destination">
+                <img
+                    src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80"
+                    alt="Manali"
+                >
+                <div class="destination-info">
+                    <h3>Manali</h3>
+                    <p>Mountains, nature and cool escapes.</p>
+                    <a href="/hotels" class="btn">Explore</a>
+                </div>
+            </article>
+
+            <article class="destination">
+                <img
+                    src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=800&q=80"
+                    alt="Jaipur"
+                >
+                <div class="destination-info">
+                    <h3>Jaipur</h3>
+                    <p>Historic forts and colourful streets.</p>
+                    <a href="/hotels" class="btn">Explore</a>
+                </div>
+            </article>
+
+            <article class="destination">
+                <img
+                    src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80"
+                    alt="Mysuru"
+                >
+                <div class="destination-info">
+                    <h3>Mysuru</h3>
+                    <p>Palaces, culture and heritage.</p>
+                    <a href="/hotels" class="btn">Explore</a>
+                </div>
+            </article>
+
+        </div>
+
+    </section>
+
+    <!-- TRIP PLANNER -->
+
+    <section class="section" id="planner">
+
+        <div class="section-heading">
+            <h2>🧭 Smart Trip Planner</h2>
+        </div>
+
+        <div class="planner">
+
+            <p class="muted">
+                Enter your travel preferences to get a demo recommendation.
+            </p>
+
+            <label for="budget">Your Budget (₹)</label>
+
+            <input
+                type="number"
+                id="budget"
+                min="1"
+                placeholder="Example: 10000"
+            >
+
+            <label for="days">Trip Duration</label>
+
+            <select id="days">
+                <option value="2">2–3 Days</option>
+                <option value="5">4–6 Days</option>
+                <option value="7">7+ Days</option>
+            </select>
+
+            <label for="interest">Your Interest</label>
+
+            <select id="interest">
+                <option value="beach">Beaches</option>
+                <option value="nature">Nature and Mountains</option>
+                <option value="culture">Culture and History</option>
+                <option value="temples">Temples</option>
+            </select>
+
+            <br><br>
+
+            <button class="btn" type="button" onclick="recommend()">
+                Find My Destination →
+            </button>
+
+            <p id="result" aria-live="polite"></p>
+
+        </div>
+
+    </section>
+
+    <!-- MORE OPTIONS -->
+
+    <section class="section" id="packages">
+
+        <div class="section-heading">
+            <h2>Explore More</h2>
+        </div>
+
+        <div class="quick-links">
+
+            <div class="quick-card">
+                <h3>✈ Transport</h3>
+                <p>Explore flights, trains and buses.</p>
+                <a href="/transport" class="btn">View Transport</a>
+            </div>
+
+            <div class="quick-card">
+                <h3>🏨 Hotels</h3>
+                <p>Find a comfortable place to stay.</p>
+                <a href="/hotels" class="btn">View Hotels</a>
+            </div>
+
+            <div class="quick-card" id="bookings">
+                <h3>🎒 My Bookings</h3>
+                <p>View your hotel reservations and transport tickets.</p>
+                <a href="/my-bookings" class="btn">View My Bookings</a>
+            </div>
+
+            <div class="quick-card" id="offers">
+                <h3>🎁 Travel Offers</h3>
+                <p>Explore exciting travel opportunities.</p>
+                <a href="#destinations" class="btn">Explore Offers</a>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- WISHLIST PLACEHOLDER -->
+
+    <section class="section" id="wishlist">
+        <div class="panel">
+            <h3>♡ My Wishlist</h3>
+            <p class="muted">
+                Your favourite destinations will appear here when the
+                Wishlist feature is connected to your account.
+            </p>
+        </div>
+    </section>
+
+    <!-- SETTINGS -->
+
+    <section class="section" id="settings">
+        <div class="panel">
+            <h3>⚙ Settings</h3>
+            <p class="muted">
+                Change the appearance of VoyageIQ using the theme button
+                at the top of this page.
+            </p>
+            <br>
+            <button class="btn" type="button" onclick="toggleTheme()">
+                Change Theme
+            </button>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 VoyageIQ | Discover More. Travel Smarter.
+    </footer>
+
+</main>
+</div>
+
+<script>
+
+/* THEME SWITCH */
+
+function applyTheme(theme) {
+    document.body.classList.toggle("light", theme === "light");
+
+    const button = document.getElementById("themeButton");
+
+    if (button) {
+        button.textContent =
+            theme === "light" ? "☾ Dark Theme" : "☀ Light Theme";
+    }
+}
+
+function toggleTheme() {
+    const isLight = document.body.classList.contains("light");
+    const newTheme = isLight ? "dark" : "light";
+
+    applyTheme(newTheme);
+
+    try {
+        localStorage.setItem("voyageiq-theme", newTheme);
+    } catch (error) {
+        console.log("Theme preference could not be saved.");
+    }
+}
+
+try {
+    const savedTheme = localStorage.getItem("voyageiq-theme");
+    applyTheme(savedTheme === "light" ? "light" : "dark");
+} catch (error) {
+    applyTheme("dark");
+}
+
+/* TRIP RECOMMENDATION - DEMO RULES */
+
+function recommend() {
+
+    const budget = Number(document.getElementById("budget").value);
+    const days = Number(document.getElementById("days").value);
+    const interest = document.getElementById("interest").value;
+    const result = document.getElementById("result");
+
+    if (!budget || budget <= 0) {
+        result.textContent = "Please enter a valid budget.";
+        return;
+    }
+
+    let place = "";
+
+    if (interest === "beach") {
+        place = budget >= 10000 ? "Goa" : "Gokarna";
+    }
+    else if (interest === "nature") {
+        place = budget >= 15000 ? "Manali" : "Coorg";
+    }
+    else if (interest === "culture") {
+        place = budget >= 10000 ? "Jaipur" : "Mysuru";
+    }
+    else if (interest === "temples") {
+        place = budget >= 10000 ? "Tirupati" : "Madurai";
+    }
+
+    result.textContent =
+        "✨ Your recommended destination is " + place +
+        ". Budget: ₹" + budget +
+        ". Trip duration: " + days +
+        " days. Explore hotels and transport to plan your journey.";
+}
+
+/* DESTINATION SEARCH */
+
+document.getElementById("searchBox").addEventListener("input", function() {
+
+    const search = this.value.toLowerCase();
+
+    document.querySelectorAll(".destination").forEach(function(card) {
+
+        const name = card.querySelector("h3").textContent.toLowerCase();
+
+        card.style.display = name.includes(search) ? "block" : "none";
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
+i want all in this handwriting only just make changes same like this to other pages ill poy paste u

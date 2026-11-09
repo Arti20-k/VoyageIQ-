@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booking Confirmed | VoyageIQ</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --sidebar: rgba(5,22,42,.96);
+    --card: rgba(12,39,65,.94);
+    --card2: rgba(5,25,45,.94);
+    --text: #F1FAFF;
+    --muted: #B8D5E5;
+    --accent: #42D9F5;
+    --border: rgba(105,211,255,.45);
+    --button: linear-gradient(110deg,#168FC4,#685BD8);
+    --shadow: rgba(0,0,0,.22);
+}
+
+body.light {
+    --sidebar: rgba(247,252,255,.97);
+    --card: rgba(255,255,255,.96);
+    --card2: #E7F3FA;
+    --text: #15334A;
+    --muted: #526F83;
+    --accent: #087EAD;
+    --border: rgba(8,126,173,.28);
+    --button: linear-gradient(110deg,#39B8D9,#8175E8);
+    --shadow: rgba(31,86,117,.10);
+}
+
+body {
+    min-height: 100vh;
+    color: var(--text);
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 25px 17px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.menu-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin: 18px 10px 10px;
+}
+
+.nav-link {
+    display: block;
+    text-decoration: none;
+    color: var(--muted);
+    padding: 12px 14px;
+    margin: 4px 0;
+    border-radius: 9px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent);
+    background: rgba(30,145,190,.20);
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 240px;
+    min-height: 100vh;
+    padding: 85px 30px 35px;
+}
+
+.topbar {
+    position: fixed;
+    top: 15px;
+    right: 22px;
+    z-index: 5;
+}
+
+.theme-btn {
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* CONFIRMATION CARD */
+
+.wrap {
+    max-width: 850px;
+    width: 100%;
+    margin: auto;
+}
+
+.card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 12px 38px var(--shadow);
+}
+
+.success-icon {
+    width: 68px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(66,217,245,.13);
+    border: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: var(--accent);
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+/* BOOKING CODE */
+
+.code-box {
+    margin: 25px 0;
+    padding: 20px;
+    background: var(--card2);
+    border: 1px dashed var(--accent);
+    border-radius: 12px;
+}
+
+.code-label {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+    margin-bottom: 9px;
+}
+
+.code {
+    color: var(--accent);
+    font-size: 23px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    overflow-wrap: anywhere;
+}
+
+/* DETAILS */
+
+.section-heading {
+    color: var(--accent);
+    font-size: 19px;
+    margin: 25px 0 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.detail {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 11px;
+    min-width: 0;
+}
+
+.label {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.value {
+    color: var(--text);
+    font-weight: bold;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* TOTAL */
+
+.total-box {
+    margin: 25px 0;
+    padding: 20px;
+    background: var(--card2);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+}
+
+.total-label {
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.total {
+    color: var(--accent);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* NOTICE */
+
+.note {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    background: var(--card2);
+    border-left: 4px solid var(--accent);
+    border-radius: 9px;
+    padding: 16px;
+    margin-top: 20px;
+}
+
+/* ACTIONS */
+
+.actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.actions a {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 9px;
+    color: white;
+    background: var(--button);
+    font-weight: bold;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.actions a:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+    .sidebar {
+        width: 75px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 13px;
+    }
+
+    .menu-title {
+        display: none;
+    }
+
+    .nav-link {
+        text-align: center;
+        font-size: 11px;
+        padding: 12px 3px;
+    }
+
+    .main {
+        margin-left: 75px;
+    }
+}
+
+@media(max-width:550px) {
+    .main {
+        padding: 75px 12px 20px;
+    }
+
+    .card {
+        padding: 21px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .code {
+        font-size: 19px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">✈ VoyageIQ</div>
+
+    <p class="menu-title">MAIN MENU</p>
+
+    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
+    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
+    <a href="{{ url_for('hotels') }}" class="nav-link">⌂ Hotels</a>
+    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
+    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
+
+    <div class="sidebar-bottom">
+        <p class="menu-title">ACCOUNT</p>
+        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
+        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
+    </div>
+
+</aside>
+
+<!-- THEME BUTTON -->
+
+<div class="topbar">
+    <button type="button"
+            class="theme-btn"
+            onclick="toggleTheme()"
+            id="themeButton">
+        ☀ Light Mode
+    </button>
+</div>
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+<div class="wrap">
+
+<div class="card">
+
+    <div class="success-icon">✓</div>
+
+    <h1>Booking Confirmed!</h1>
+
+    <p class="subtitle">
+        Your VoyageIQ transport booking has been saved successfully.
+        Your booking reference is displayed below.
+    </p>
+
+    <!-- BOOKING REFERENCE -->
+
+    <div class="code-box">
+
+        <p class="code-label">BOOKING REFERENCE</p>
+
+        <div class="code">
+            {{ booking.booking_code }}
+        </div>
+
+    </div>
+
+    <!-- JOURNEY DETAILS -->
+
+    <h2 class="section-heading">✈ Journey Details</h2>
+
+    <div class="grid">
+
+        <div class="detail">
+            <div class="label">Transport</div>
+            <div class="value">
+                {{ booking.transport_type }} · {{ booking.provider_name }}
+            </div>
+        </div>
+
+        <div class="detail">
+            <div class="label">Route</div>
+            <div class="value">
+                {{ booking.origin }} → {{ booking.destination }}
+            </div>
+        </div>
+
+        <div class="detail">
+            <div class="label">Travel Date</div>
+            <div class="value">{{ booking.travel_date }}</div>
+        </div>
+
+        <div class="detail">
+            <div class="label">Departure – Arrival</div>
+            <div class="value">
+                {{ booking.departure }} – {{ booking.arrival }}
+            </div>
+        </div>
+
+        <div class="detail">
+            <div class="label">Passengers</div>
+            <div class="value">{{ booking.passengers }}</div>
+        </div>
+
+        <div class="detail">
+            <div class="label">Class / Seat Type</div>
+            <div class="value">{{ booking.seat_class }}</div>
+        </div>
+
+    </div>
+
+    <!-- TOTAL -->
+
+    <div class="total-box">
+
+        <p class="total-label">Total Booking Amount</p>
+
+        <div class="total">
+            ₹{{ "{:,}".format(booking.total_price) }}
+        </div>
+
+    </div>
+
+    <!-- NOTICE -->
+
+    <div class="note">
+        <strong>Booking information:</strong>
+        This confirmation records your booking in VoyageIQ.
+        The transport details and fare shown are sample booking data.
+        No real transport ticket has been issued and no real payment
+        has been processed.
+    </div>
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <a href="{{ url_for('transport') }}">
+            Book Another Trip
+        </a>
+
+        <a href="{{ url_for('home') }}">
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+</div>
+
+</main>
+
+<script>
+
+/* THEME MANAGEMENT */
+
+function applyTheme() {
+
+    const savedTheme =
+        localStorage.getItem("voyageiq-theme") || "dark";
+
+    document.body.classList.toggle(
+        "light",
+        savedTheme === "light"
+    );
+
+    document.getElementById("themeButton").textContent =
+        savedTheme === "light" ? "🌙 Dark Mode" : "☀ Light Mode";
+}
+
+function toggleTheme() {
+
+    const isLight =
+        document.body.classList.contains("light");
+
+    const newTheme = isLight ? "dark" : "light";
+
+    localStorage.setItem("voyageiq-theme", newTheme);
+
+    applyTheme();
+}
+
+applyTheme();
+
+</script>
+
+</body>
+</html>

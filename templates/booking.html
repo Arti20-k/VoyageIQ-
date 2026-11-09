@@ -1,0 +1,686 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Booking | VoyageIQ</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --bg: #07172B;
+    --sidebar: rgba(5,22,42,.96);
+    --card: rgba(12,39,65,.90);
+    --card2: rgba(5,25,45,.94);
+    --text: #F1FAFF;
+    --muted: #B8D5E5;
+    --accent: #42D9F5;
+    --border: rgba(105,211,255,.45);
+    --button: linear-gradient(110deg,#168FC4,#685BD8);
+    --input: #102E49;
+    --shadow: rgba(0,0,0,.22);
+}
+
+body.light {
+    --bg: #EAF5FC;
+    --sidebar: rgba(247,252,255,.97);
+    --card: rgba(255,255,255,.95);
+    --card2: #E7F3FA;
+    --text: #15334A;
+    --muted: #526F83;
+    --accent: #087EAD;
+    --border: rgba(8,126,173,.28);
+    --button: linear-gradient(110deg,#39B8D9,#8175E8);
+    --input: #F0F7FB;
+    --shadow: rgba(31,86,117,.10);
+}
+
+body {
+    min-height: 100vh;
+    color: var(--text);
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    transition: .3s;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    padding: 25px 16px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.logo {
+    color: var(--accent);
+    font-size: 25px;
+    font-weight: bold;
+    margin: 5px 10px 35px;
+}
+
+.menu-heading {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin: 18px 10px 10px;
+}
+
+.nav-link {
+    display: block;
+    padding: 12px 13px;
+    margin: 3px 0;
+    border-radius: 9px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: rgba(30,145,190,.20);
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.theme-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* MAIN CONTENT */
+
+.main {
+    margin-left: 240px;
+    padding: 35px 5%;
+    min-height: 100vh;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.page-title {
+    color: var(--text);
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: white;
+    background: var(--button);
+    padding: 11px 17px;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+/* BOOKING CARD */
+
+.booking-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px var(--shadow);
+    backdrop-filter: blur(10px);
+}
+
+.hotel-image {
+    width: 100%;
+    height: 100%;
+    min-height: 550px;
+    object-fit: cover;
+    display: block;
+}
+
+.booking-details {
+    padding: 30px;
+    min-width: 0;
+}
+
+.booking-details h2 {
+    color: var(--accent);
+    font-size: 23px;
+    margin-bottom: 15px;
+    overflow-wrap: anywhere;
+}
+
+.hotel-info {
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 23px;
+    font-size: 14px;
+}
+
+/* FORM */
+
+.field {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+input, select {
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--input);
+    color: var(--text);
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(66,217,245,.13);
+}
+
+body:not(.light) input,
+body:not(.light) select {
+    color-scheme: dark;
+}
+
+body.light input,
+body.light select {
+    color-scheme: light;
+}
+
+select option {
+    background: var(--card);
+    color: var(--text);
+}
+
+/* PRICE SUMMARY */
+
+.price-box {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 22px 0;
+}
+
+.price-box p {
+    color: var(--muted);
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.total {
+    color: var(--accent) !important;
+    font-size: 23px !important;
+    font-weight: bold;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+/* BUTTON */
+
+.book-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: var(--button);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.book-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px var(--shadow);
+}
+
+.note {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px) {
+    .booking-card {
+        grid-template-columns: 1fr;
+    }
+
+    .hotel-image {
+        height: 300px;
+        min-height: 300px;
+    }
+}
+
+@media(max-width:900px) {
+    .sidebar {
+        width: 75px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 12px;
+        margin: 8px 0 25px;
+        text-align: center;
+    }
+
+    .menu-heading {
+        display: none;
+    }
+
+    .nav-link {
+        font-size: 0;
+        text-align: center;
+        padding: 14px 5px;
+    }
+
+    .nav-link::first-letter {
+        font-size: 17px;
+    }
+
+    .sidebar-bottom {
+        padding: 10px 0;
+    }
+
+    .theme-btn {
+        font-size: 0;
+        padding: 12px 3px;
+    }
+
+    .theme-btn::first-letter {
+        font-size: 17px;
+    }
+
+    .main {
+        margin-left: 75px;
+        padding: 25px 4%;
+    }
+}
+
+@media(max-width:550px) {
+    .main {
+        padding: 20px 13px;
+    }
+
+    .booking-details {
+        padding: 20px;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">✈ VoyageIQ</div>
+
+    <p class="menu-heading">MAIN MENU</p>
+
+    <a href="/" class="nav-link">🏠 Dashboard</a>
+    <a href="/transport" class="nav-link">✈ Flights & Transport</a>
+    <a href="/hotels" class="nav-link active">🏨 Hotels</a>
+    <a href="/planner" class="nav-link">🗺 Packages</a>
+    <a href="/my-bookings" class="nav-link">🎫 My Bookings</a>
+    <a href="/#wishlist" class="nav-link">♡ Wishlist</a>
+    <a href="/#offers" class="nav-link">🎁 Offers</a>
+
+    <p class="menu-heading">ACCOUNT</p>
+
+    {% if session.get('user_id') %}
+        <a href="/logout" class="nav-link">🚪 Logout</a>
+    {% else %}
+        <a href="/login" class="nav-link">🔑 Login</a>
+        <a href="/signup" class="nav-link">📝 Sign Up</a>
+    {% endif %}
+
+    <div class="sidebar-bottom">
+        <button class="theme-btn" onclick="toggleTheme()">
+            🌙 / ☀️ Change Theme
+        </button>
+    </div>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div>
+            <h1 class="page-title">Complete Your Hotel Booking</h1>
+            <p class="subtitle">
+                Choose your dates, guests and preferred room.
+            </p>
+        </div>
+
+        <a class="back-btn"
+           href="{{ url_for('hotels', destination=hotel.city) }}">
+            ← Back to Hotels
+        </a>
+
+    </div>
+
+
+    <div class="booking-card">
+
+        <img
+            class="hotel-image"
+            src="{{ hotel.image }}"
+            alt="{{ hotel.name }}"
+        >
+
+        <div class="booking-details">
+
+            <h2>{{ hotel.name }}</h2>
+
+            <div class="hotel-info">
+                <p>📍 {{ hotel.city }}</p>
+                <p>⭐ {{ hotel.rating }} Rating</p>
+                <p>🛏️ {{ hotel.type }}</p>
+                <p>₹{{ "{:,}".format(hotel.price) }} per night</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('book_hotel') }}">
+
+                <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+
+                <div class="field">
+                    <label for="checkin">Check-in Date</label>
+                    <input
+                        type="date"
+                        id="checkin"
+                        name="checkin"
+                        value="{{ checkin }}"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="checkout">Check-out Date</label>
+                    <input
+                        type="date"
+                        id="checkout"
+                        name="checkout"
+                        value="{{ checkout }}"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="guests">Number of Guests</label>
+                    <input
+                        type="number"
+                        id="guests"
+                        name="guests"
+                        min="1"
+                        max="4"
+                        value="{{ guests }}"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="room_type">Select Room Type</label>
+
+                    <select id="room_type" name="room_type" required>
+                        <option value="Standard">Standard Room</option>
+                        <option value="Deluxe">Deluxe Room</option>
+                        <option value="Suite">Suite Room</option>
+                    </select>
+                </div>
+
+                <div class="price-box">
+
+                    <p>
+                        Price per night:
+                        ₹<span id="basePrice">{{ hotel.price }}</span>
+                    </p>
+
+                    <p>
+                        Number of nights:
+                        <span id="nights">0</span>
+                    </p>
+
+                    <p>
+                        Room type:
+                        <span id="roomLabel">Standard</span>
+                    </p>
+
+                    <p class="total">
+                        Total: ₹<span id="totalPrice">0</span>
+                    </p>
+
+                </div>
+
+                <button type="submit" class="book-btn">
+                    Confirm Hotel Booking
+                </button>
+
+                <p class="note">
+                    Your booking details and estimated total will be
+                    displayed when you confirm your reservation.
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+// THEME SWITCHER
+
+function applyTheme() {
+
+    const savedTheme = localStorage.getItem("voyageiq-theme");
+
+    document.body.classList.toggle(
+        "light",
+        savedTheme === "light"
+    );
+
+}
+
+function toggleTheme() {
+
+    const isLight = document.body.classList.toggle("light");
+
+    localStorage.setItem(
+        "voyageiq-theme",
+        isLight ? "light" : "dark"
+    );
+
+}
+
+applyTheme();
+
+
+// HOTEL PRICE CALCULATION
+
+const checkin = document.getElementById("checkin");
+const checkout = document.getElementById("checkout");
+const guests = document.getElementById("guests");
+const roomType = document.getElementById("room_type");
+
+const basePrice = Number("{{ hotel.price }}");
+
+const multipliers = {
+    Standard: 1,
+    Deluxe: 1.5,
+    Suite: 2
+};
+
+function updatePrice() {
+
+    let numberOfNights = 0;
+
+    if (checkin.value && checkout.value) {
+
+        const start = new Date(checkin.value + "T00:00:00");
+        const end = new Date(checkout.value + "T00:00:00");
+
+        if (end > start) {
+
+            numberOfNights = Math.round(
+                (end - start) / (1000 * 60 * 60 * 24)
+            );
+
+        }
+
+    }
+
+    const room = roomType.value;
+
+    const total = Math.round(
+        basePrice * multipliers[room] * numberOfNights
+    );
+
+    document.getElementById("nights").textContent =
+        numberOfNights;
+
+    document.getElementById("roomLabel").textContent =
+        room;
+
+    document.getElementById("totalPrice").textContent =
+        total.toLocaleString("en-IN");
+
+}
+
+
+// DATE VALIDATION
+
+const today = new Date();
+
+const localToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+checkin.min = localToday;
+checkout.min = localToday;
+
+checkin.addEventListener("change", function() {
+
+    checkout.min = this.value;
+
+    if (checkout.value && checkout.value <= this.value) {
+        checkout.value = "";
+    }
+
+    updatePrice();
+
+});
+
+checkout.addEventListener("change", updatePrice);
+roomType.addEventListener("change", updatePrice);
+
+
+// FORM VALIDATION
+
+document.querySelector("form").addEventListener("submit", function(event) {
+
+    if (
+        !checkin.value ||
+        !checkout.value ||
+        checkout.value <= checkin.value ||
+        checkin.value < localToday
+    ) {
+
+        event.preventDefault();
+
+        alert("Please select valid check-in and check-out dates.");
+
+        return;
+
+    }
+
+    if (guests.value < 1 || guests.value > 4) {
+
+        event.preventDefault();
+
+        alert("Please select between 1 and 4 guests.");
+
+    }
+
+});
+
+updatePrice();
+
+</script>
+
+</body>
+</html>

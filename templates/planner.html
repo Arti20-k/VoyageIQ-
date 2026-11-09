@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Trip Planner | VoyageIQ</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+ --bg:#07172b;
+ --sidebar:rgba(5,22,42,.97);
+ --card:rgba(12,39,65,.92);
+ --card2:rgba(5,25,45,.96);
+ --text:#f1faff;
+ --muted:#b8d5e5;
+ --accent:#42d9f5;
+ --border:rgba(105,211,255,.4);
+ --button:linear-gradient(110deg,#168fc4,#685bd8);
+ --shadow:rgba(0,0,0,.25)
+}
+
+body.light{
+ --bg:#eaf5fc;
+ --sidebar:rgba(248,252,255,.98);
+ --card:rgba(255,255,255,.96);
+ --card2:#eaf4fa;
+ --text:#15334a;
+ --muted:#526f83;
+ --accent:#087ead;
+ --border:rgba(8,126,173,.25);
+ --button:linear-gradient(110deg,#39b8d9,#8175e8);
+ --shadow:rgba(31,86,117,.1)
+}
+
+body{
+ min-height:100vh;
+ font-family:Arial,sans-serif;
+ color:var(--text);
+ background:
+ linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+ url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90") center/cover fixed;
+ transition:.3s
+}
+
+body.light{
+ background:
+ linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+ url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90") center/cover fixed
+}
+
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+.sidebar{
+ width:240px;
+ position:fixed;
+ inset:0 auto 0 0;
+ z-index:10;
+ padding:25px 16px;
+ display:flex;
+ flex-direction:column;
+ background:var(--sidebar);
+ border-right:1px solid var(--border);
+ box-shadow:5px 0 25px var(--shadow);
+ backdrop-filter:blur(15px)
+}
+
+.brand{padding:5px 10px 28px}
+.brand-name{font-size:27px;font-weight:800;color:var(--accent)}
+.brand-name span{color:var(--text)}
+.brand-subtitle{margin-top:6px;color:var(--muted);font-size:10px;letter-spacing:2px}
+
+.menu-heading{
+ margin:17px 10px 10px;
+ color:var(--muted);
+ font-size:10px;
+ font-weight:bold;
+ letter-spacing:2px
+}
+
+.nav-link{
+ display:flex;
+ align-items:center;
+ gap:13px;
+ padding:13px 14px;
+ margin:3px 0;
+ border-radius:11px;
+ color:var(--muted);
+ font-size:13px;
+ font-weight:600;
+ transition:.2s
+}
+
+.nav-link:hover,.nav-link.active{
+ color:white;
+ background:var(--button)
+}
+
+.nav-icon{width:22px;text-align:center;font-size:17px}
+.sidebar-bottom{margin-top:auto;padding-top:20px}
+
+.theme-side-button{
+ width:100%;
+ padding:13px;
+ border:1px solid var(--border);
+ border-radius:11px;
+ color:var(--text);
+ background:var(--card);
+ text-align:left;
+ font-weight:bold
+}
+
+.main{margin-left:240px;padding:26px;min-height:100vh}
+
+.topbar{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ margin-bottom:23px
+}
+
+.page-heading h1{font-size:25px}
+.page-heading p{margin-top:6px;color:var(--muted);font-size:12px}
+
+.profile-area{display:flex;align-items:center;gap:12px}
+.profile-greeting{text-align:right;font-size:13px}
+.profile-greeting small{display:block;color:var(--muted);margin-top:4px}
+
+.avatar{
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ border-radius:50%;
+ color:white;
+ font-weight:bold;
+ background:var(--button)
+}
+
+.hero{
+ padding:34px;
+ margin-bottom:23px;
+ border:1px solid var(--border);
+ border-radius:20px;
+ background:
+ linear-gradient(100deg,rgba(4,19,42,.94),rgba(4,19,42,.48)),
+ url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=90") center/cover;
+ box-shadow:0 12px 30px var(--shadow)
+}
+
+.hero-tag{
+ display:inline-block;
+ padding:7px 12px;
+ margin-bottom:14px;
+ border-radius:20px;
+ background:rgba(66,217,245,.2);
+ color:#a9e5ff;
+ font-size:10px;
+ font-weight:bold;
+ letter-spacing:1px
+}
+
+.hero h2{color:white;font-size:clamp(28px,4vw,40px);margin-bottom:10px}
+.hero h2 span{color:#57c9ff}
+.hero p{max-width:620px;color:#e0edfa;font-size:13px;line-height:1.8}
+
+.panel{
+ padding:23px;
+ margin-bottom:23px;
+ border:1px solid var(--border);
+ border-radius:17px;
+ background:var(--card);
+ box-shadow:0 10px 28px var(--shadow);
+ backdrop-filter:blur(12px)
+}
+
+.panel-heading{margin-bottom:19px}
+.panel-heading h2{font-size:20px}
+.panel-heading p{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.7}
+
+.form-grid{
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:15px
+}
+
+.field label{
+ display:block;
+ margin-bottom:8px;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:bold
+}
+
+.field input,.field select{
+ width:100%;
+ height:46px;
+ padding:10px 12px;
+ border:1px solid var(--border);
+ border-radius:9px;
+ outline:none;
+ background:var(--card2);
+ color:var(--text);
+ font-size:13px
+}
+
+body:not(.light) input,body:not(.light) select{color-scheme:dark}
+body.light input,body.light select{color-scheme:light}
+
+.field input:focus,.field select:focus{
+ border-color:var(--accent);
+ box-shadow:0 0 0 3px rgba(66,217,245,.13)
+}
+
+.btn{
+ display:inline-flex;
+ justify-content:center;
+ align-items:center;
+ gap:8px;
+ padding:12px 19px;
+ border:0;
+ border-radius:9px;
+ color:white;
+ background:var(--button);
+ font-size:13px;
+ font-weight:bold;
+ transition:.2s
+}
+
+.btn:hover{
+ transform:translateY(-2px);
+ box-shadow:0 8px 20px rgba(57,129,232,.25)
+}
+
+.search-button{margin-top:18px}
+
+.secondary-button{
+ padding:11px 15px;
+ border:1px solid var(--accent);
+ border-radius:9px;
+ color:var(--text);
+ background:transparent;
+ font-size:12px;
+ font-weight:bold
+}
+
+.flash{
+ padding:12px;
+ margin-bottom:12px;
+ border:1px solid var(--border);
+ border-radius:9px;
+ background:var(--card2);
+ font-size:13px
+}
+
+.section-heading{
+ display:flex;
+ justify-content:space-between;
+ align-items:end;
+ gap:12px;
+ margin-bottom:17px
+}
+
+.section-heading h2{font-size:21px}
+.section-heading p{margin-top:5px;color:var(--muted);font-size:12px}
+
+.result-count,.match-badge{
+ padding:7px 11px;
+ border-radius:20px;
+ background:var(--card2);
+ color:var(--accent);
+ font-size:11px;
+ font-weight:bold;
+ white-space:nowrap
+}
+
+.destination-tools{display:flex;gap:12px;margin-bottom:17px}
+
+.destination-tools input,.destination-tools select{
+ min-width:0;
+ padding:11px;
+ border:1px solid var(--border);
+ border-radius:9px;
+ background:var(--card2);
+ color:var(--text)
+}
+
+.destination-tools input{flex:1}
+
+.destination-grid{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:18px;
+ margin-bottom:23px
+}
+
+.destination-card{
+ overflow:hidden;
+ border:1px solid var(--border);
+ border-radius:15px;
+ background:var(--card);
+ box-shadow:0 10px 25px var(--shadow);
+ transition:.25s
+}
+
+.destination-card:hover{
+ transform:translateY(-4px);
+ border-color:var(--accent)
+}
+
+.destination-card img{
+ width:100%;
+ height:175px;
+ display:block;
+ object-fit:cover;
+ background:var(--card2)
+}
+
+.card-content{padding:16px}
+.card-content h3{font-size:18px;margin:10px 0 6px}
+.location{color:var(--accent);font-size:12px;font-weight:bold}
+.description{color:var(--muted);font-size:12px;line-height:1.7;margin:10px 0}
+.price{color:var(--accent);font-size:18px;font-weight:bold;margin:12px 0 4px}
+.price-note{color:var(--muted);font-size:11px}
+.card-content h4{font-size:12px;margin:14px 0 7px}
+
+.attractions{
+ padding-left:18px;
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.8
+}
+
+.ai-score{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:13px 0 7px;
+ font-size:12px;
+ font-weight:bold;
+ color:var(--accent)
+}
+
+.ai-score strong{font-size:14px}
+
+.ai-progress{
+ width:100%;
+ height:9px;
+ overflow:hidden;
+ border-radius:20px;
+ background:var(--card2);
+ border:1px solid var(--border)
+}
+
+.ai-progress-fill{
+ height:100%;
+ border-radius:20px;
+ background:linear-gradient(90deg,#168fc4,#42d9f5);
+ transition:width .5s ease
+}
+
+.ai-note{margin-top:6px;color:var(--muted);font-size:10px}
+
+.recommendation-reason{
+ margin-top:13px;
+ padding:12px;
+ border:1px solid var(--border);
+ border-left:3px solid var(--accent);
+ border-radius:9px;
+ background:var(--card2);
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.7
+}
+
+.recommendation-reason strong{
+ display:block;
+ margin-bottom:5px;
+ color:var(--accent);
+ font-size:12px
+}
+
+.add-button{
+ width:100%;
+ margin-top:15px;
+ padding:11px;
+ border:1px solid var(--accent);
+ border-radius:9px;
+ color:white;
+ background:var(--button);
+ font-size:12px;
+ font-weight:bold
+}
+
+.add-button.added{
+ background:#167c64;
+ border-color:#36c9a2
+}
+
+.selection-layout{
+ display:grid;
+ grid-template-columns:1.2fr .8fr;
+ gap:20px
+}
+
+.selected-item{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+ padding:14px;
+ margin:10px 0;
+ border:1px solid var(--border);
+ border-radius:10px;
+ background:var(--card2)
+}
+
+.selected-details{flex:1;min-width:0}
+.selected-item strong{display:block;font-size:14px}
+.selected-item small{display:block;margin-top:5px;color:var(--muted);font-size:11px}
+
+.selected-ai-score{
+ display:inline-block;
+ margin-top:9px;
+ padding:5px 9px;
+ border-radius:20px;
+ background:rgba(66,217,245,.12);
+ color:var(--accent);
+ font-size:11px;
+ font-weight:bold
+}
+
+.selected-reason{
+ margin-top:8px;
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.6
+}
+
+.remove-button{
+ padding:8px 10px;
+ border:0;
+ border-radius:7px;
+ color:white;
+ background:#a83d55;
+ font-size:11px;
+ font-weight:bold;
+ flex-shrink:0
+}
+
+.empty{
+ padding:22px;
+ border:1px dashed var(--border);
+ border-radius:11px;
+ color:var(--muted);
+ text-align:center;
+ font-size:12px;
+ line-height:1.7
+}
+
+.summary{
+ padding:17px;
+ border:1px solid var(--border);
+ border-radius:12px;
+ background:var(--card2)
+}
+
+.summary-row{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ padding:10px 0;
+ border-bottom:1px solid var(--border);
+ font-size:12px
+}
+
+.summary-row:last-child{border:0}
+.summary-row span{color:var(--muted)}
+.summary-row strong{color:var(--accent);text-align:right}
+
+.action-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+
+.planner-message{
+ min-height:20px;
+ margin-top:11px;
+ color:var(--accent);
+ font-size:12px;
+ line-height:1.6
+}
+
+.day{
+ padding:17px;
+ margin:12px 0;
+ border-left:4px solid var(--accent);
+ border-radius:10px;
+ background:var(--card2)
+}
+
+.day h3{color:var(--accent);font-size:15px;margin-bottom:10px}
+.day p{color:var(--muted);font-size:12px;line-height:1.9}
+
+.itinerary-ai{
+ margin:10px 0;
+ padding:11px;
+ border:1px solid var(--border);
+ border-radius:8px;
+ background:var(--card);
+ color:var(--muted);
+ font-size:11px;
+ line-height:1.7
+}
+
+.itinerary-ai strong{color:var(--accent)}
+
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.weather-box{
+ padding:17px;
+ border:1px solid var(--border);
+ border-radius:12px;
+ background:var(--card2)
+}
+
+.weather-box strong{
+ display:block;
+ font-size:21px;
+ color:var(--accent);
+ margin:8px 0
+}
+
+.weather-box small{color:var(--muted);font-size:11px}
+
+.hidden{display:none!important}
+
+footer{
+ margin-top:30px;
+ padding:20px;
+ border-top:1px solid var(--border);
+ color:var(--muted);
+ text-align:center;
+ font-size:11px
+}
+
+@media(max-width:1150px){
+ .destination-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:900px){
+ .sidebar{width:75px;padding:20px 9px}
+ .brand-name{font-size:18px;text-align:center}
+ .brand-subtitle,.menu-heading,.nav-text{display:none}
+ .nav-link{justify-content:center;padding:14px 5px}
+ .main{margin-left:75px}
+ .theme-side-button{font-size:0;text-align:center}
+ .theme-side-button span{font-size:18px}
+}
+
+@media(max-width:650px){
+ .main{padding:15px}
+ .topbar{align-items:flex-start}
+ .profile-greeting{display:none}
+ .hero{padding:23px 18px}
+ .panel{padding:16px}
+ .form-grid,.destination-grid,.selection-layout,.weather-grid{grid-template-columns:1fr}
+ .section-heading{align-items:flex-start;flex-direction:column}
+ .destination-tools{flex-direction:column}
+ .search-button{width:100%}
+ .action-row>*{width:100%}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+ <div class="brand">
+  <div class="brand-name">✈ <span>VoyageIQ</span></div>
+  <div class="brand-subtitle">SMART TRIP PLANNER</div>
+ </div>
+
+ <div class="menu-heading">MAIN MENU</div>
+
+ <a href="/" class="nav-link">
+  <span class="nav-icon">⌂</span>
+  <span class="nav-text">Dashboard</span>
+ </a>
+
+ <a href="/transport" class="nav-link">
+  <span class="nav-icon">✈</span>
+  <span class="nav-text">Flights & Transport</span>
+ </a>
+
+ <a href="/hotels" class="nav-link">
+  <span class="nav-icon">▣</span>
+  <span class="nav-text">Hotels</span>
+ </a>
+
+ <a href="/planner" class="nav-link active">
+  <span class="nav-icon">🌍</span>
+  <span class="nav-text">Smart Trip Planner</span>
+ </a>
+
+ <a href="/my-bookings" class="nav-link">
+  <span class="nav-icon">▤</span>
+  <span class="nav-text">My Bookings</span>
+ </a>
+
+ <div class="menu-heading">ACCOUNT</div>
+
+ {% if session.get('user_id') %}
+ <a href="/logout" class="nav-link">
+  <span class="nav-icon">⇥</span>
+  <span class="nav-text">Logout</span>
+ </a>
+ {% else %}
+ <a href="/login" class="nav-link">
+  <span class="nav-icon">♙</span>
+  <span class="nav-text">Login</span>
+ </a>
+
+ <a href="/signup" class="nav-link">
+  <span class="nav-icon">＋</span>
+  <span class="nav-text">Sign Up</span>
+ </a>
+ {% endif %}
+
+ <div class="sidebar-bottom">
+  <button class="theme-side-button" onclick="toggleTheme()">
+   <span id="themeIcon">☾</span>
+   <span class="nav-text" id="themeLabel">Switch Theme</span>
+  </button>
+ </div>
+
+</aside>
+
+<main class="main">
+
+ <header class="topbar">
+  <div class="page-heading">
+   <h1>Smart Trip Planner</h1>
+   <p>Personalised travel recommendations powered by your preferences.</p>
+  </div>
+
+  <div class="profile-area">
+   <div class="profile-greeting">
+    <strong>Welcome to VoyageIQ 👋</strong>
+    <small>Discover your next adventure</small>
+   </div>
+   <div class="avatar">V</div>
+  </div>
+ </header>
+
+ <section class="hero">
+  <span class="hero-tag">YOUR PERSONAL TRAVEL ASSISTANT</span>
+  <h2>Explore. Plan. <span>Travel Smarter.</span></h2>
+  <p>
+   Tell us your budget, travel duration and interests.
+   Explore matching destinations, select your favourites
+   and create a personalised trip itinerary.
+  </p>
+ </section>
+
+ <section class="panel">
+
+  <div class="panel-heading">
+   <h2>🔎 Find Your Perfect Trip</h2>
+   <p>Set your travel preferences to discover destinations that suit your plans.</p>
+  </div>
+
+  {% with messages = get_flashed_messages() %}
+   {% for message in messages %}
+    <div class="flash">{{ message }}</div>
+   {% endfor %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('planner') }}">
+
+   <div class="form-grid">
+
+    <div class="field">
+     <label for="origin">📍 Starting Location / State</label>
+     <input id="origin" name="origin"
+      placeholder="e.g. Bengaluru, Karnataka, India"
+      value="{{ origin or '' }}" required>
+    </div>
+
+    <div class="field">
+     <label for="budget">💰 Total Budget (₹)</label>
+     <input id="budget" name="budget" type="number"
+      min="1" placeholder="e.g. 15000"
+      value="{{ budget if budget else '' }}" required>
+    </div>
+
+    <div class="field">
+     <label for="days">📅 Trip Duration</label>
+     <select id="days" name="days">
+      {% for n in range(1,15) %}
+       <option value="{{ n }}" {% if days == n %}selected{% endif %}>
+        {{ n }} day{% if n > 1 %}s{% endif %}
+       </option>
+      {% endfor %}
+     </select>
+    </div>
+
+    <div class="field">
+     <label for="interest">❤️ Travel Interest</label>
+     <select id="interest" name="interest">
+      <option value="all" {% if interest == 'all' %}selected{% endif %}>All Interests</option>
+      <option value="nature" {% if interest == 'nature' %}selected{% endif %}>Nature and Greenery</option>
+      <option value="beach" {% if interest == 'beach' %}selected{% endif %}>Beaches</option>
+      <option value="mountains" {% if interest == 'mountains' %}selected{% endif %}>Mountains</option>
+      <option value="culture" {% if interest == 'culture' %}selected{% endif %}>Culture and History</option>
+      <option value="temples" {% if interest == 'temples' %}selected{% endif %}>Temples and Pilgrimage</option>
+     </select>
+    </div>
+
+   </div>
+
+   <button class="btn search-button" type="submit">
+    Find My Recommendations →
+   </button>
+
+  </form>
+ </section>
+
+ <section class="panel">
+
+  <div class="panel-heading">
+   <h2>📍 Live Location & Weather</h2>
+   <p>Allow location access to see your current coordinates and live weather conditions.</p>
+  </div>
+
+  <button class="btn" type="button" onclick="getMyLocation()">
+   Use My Current Location
+  </button>
+
+  <p id="locationStatus" class="planner-message" aria-live="polite">
+   Location has not been detected yet.
+  </p>
+
+  <div id="weatherPanel" class="hidden">
+   <div class="weather-grid">
+
+    <div class="weather-box">
+     <small>Current temperature</small>
+     <strong id="weatherTemp">--</strong>
+     <small id="weatherCondition">Waiting for weather data</small>
+    </div>
+
+    <div class="weather-box">
+     <small>Wind speed</small>
+     <strong id="weatherWind">--</strong>
+     <small>Current wind conditions</small>
+    </div>
+
+    <div class="weather-box">
+     <small>Rain</small>
+     <strong id="weatherRain">--</strong>
+     <small>Current precipitation</small>
+    </div>
+
+    <div class="weather-box">
+     <small>Weather analysis</small>
+     <strong id="weatherAnalysis">--</strong>
+     <small id="weatherAdvice">Based on current conditions</small>
+    </div>
+
+   </div>
+  </div>
+ </section>
+
+ {% if recommendations %}
+
+ <section>
+
+  <div class="section-heading">
+   <div>
+    <h2>🌍 Your Recommended Destinations</h2>
+    <p>Explore the matches and add your favourites to your trip.</p>
+   </div>
+   <span class="result-count">{{ recommendations|length }} matching places</span>
+  </div>
+
+  <div class="destination-tools">
+   <input id="placeSearch" type="search"
+    placeholder="Search destinations or states..."
+    oninput="filterCards()">
+
+   <select id="sortPlaces" onchange="sortCards()">
+    <option value="match">Sort: Best AI match</option>
+    <option value="cost-low">Cost: Low to high</option>
+    <option value="name">Name: A to Z</option>
+   </select>
+  </div>
+
+  <div class="destination-grid" id="destinationGrid">
+
+   {% for place in recommendations %}
+
+   <article class="destination-card"
+    data-name="{{ place.name|lower }}"
+    data-state="{{ place.state|lower }}"
+    data-cost="{{ place.cost }}"
+    data-score="{{ place.ai_score|default(0) }}">
+
+    <img src="{{ place.image }}"
+     alt="{{ place.name }}"
+     loading="lazy"
+     onerror="this.style.display='none'">
+
+    <div class="card-content">
+
+     <span class="match-badge">🤖 AI Recommendation</span>
+
+     <div class="ai-score">
+      <span>AI Similarity Score</span>
+      <strong>{{ "%.2f"|format(place.ai_score|default(0)|float) }}%</strong>
+     </div>
+
+     <div class="ai-progress">
+      <div class="ai-progress-fill"
+       style="width:{{ [[place.ai_score|default(0)|float, 0]|max, 100]|min }}%">
+      </div>
+     </div>
+
+     <p class="ai-note">
+      Calculated using TF-IDF and cosine similarity.
+     </p>
+
+     <div class="recommendation-reason">
+      <strong>💡 Why this destination?</strong>
+      {{ place.recommendation_reason|default('This destination matches your travel preferences.') }}
+     </div>
+
+     <h3>{{ place.name }}</h3>
+
+     <div class="location">
+      📍 {{ place.district }}, {{ place.state }}
+     </div>
+
+     <p class="description">{{ place.description }}</p>
+
+     <div class="price">
+      Approx. ₹{{ "{:,}".format(place.cost * days) }}
+     </div>
+
+     <p class="price-note">
+      Estimated destination cost for {{ days }} day(s), per person.
+     </p>
+
+     <h4>Popular Places to Visit</h4>
+
+     <ul class="attractions">
+      {% for attraction in place.places %}
+       <li>{{ attraction }}</li>
+      {% endfor %}
+     </ul>
+
+     <button type="button"
+      class="add-button"
+      data-name="{{ place.name }}"
+      data-state="{{ place.state }}"
+      data-district="{{ place.district }}"
+      data-cost="{{ place.cost }}"
+      data-score="{{ place.ai_score|default(0) }}"
+      data-reason="{{ place.recommendation_reason|default('Matches your travel preferences.')|e }}"
+      onclick="addDestination(this)">
+      ＋ Add to My Trip
+     </button>
+
+    </div>
+   </article>
+
+   {% endfor %}
+
+  </div>
+
+  <p id="noCards" class="empty hidden">
+   No destinations match your search.
+  </p>
+
+ </section>
+
+ <section class="panel" id="myTrip">
+
+  <div class="panel-heading">
+   <h2>🧳 My Selected Places</h2>
+   <p>Your selected destinations retain their AI scores and recommendation reasons.</p>
+  </div>
+
+  <div class="selection-layout">
+
+   <div id="selectedPlaces">
+    <div class="empty">
+     You haven't selected any destinations yet.
+     Choose a destination and click Add to My Trip.
+    </div>
+   </div>
+
+   <div>
+
+    <div class="summary">
+
+     <div class="summary-row">
+      <span>Selected destinations</span>
+      <strong id="placeCount">0</strong>
+     </div>
+
+     <div class="summary-row">
+      <span>Trip duration</span>
+      <strong id="tripDays">{{ days }} days</strong>
+     </div>
+
+     <div class="summary-row">
+      <span>Estimated destination cost</span>
+      <strong id="totalCost">₹0</strong>
+     </div>
+
+    </div>
+
+    <div class="action-row">
+     <button class="btn" type="button" onclick="createMyTrip()">
+      Create My Trip →
+     </button>
+
+     <button class="secondary-button" type="button" onclick="saveWishlist()">
+      ♡ Save to Wishlist
+     </button>
+    </div>
+
+    <p id="plannerMessage" class="planner-message" aria-live="polite"></p>
+
+   </div>
+  </div>
+ </section>
+
+ <section class="panel hidden" id="itineraryPanel">
+
+  <div class="panel-heading">
+   <h2>📅 Your Personalised Itinerary</h2>
+   <p>Your selected destinations arranged into a day-wise plan.</p>
+  </div>
+
+  <div id="itineraryOutput"></div>
+
+ </section>
+
+ {% elif searched %}
+
+ <section class="panel">
+  <div class="empty">
+   <h2>No Matching Destinations Found</h2>
+   <p>Try another location, increase your budget or select All Interests.</p>
+  </div>
+ </section>
+
+ {% else %}
+
+ <section class="panel">
+  <div class="empty">
+   <h2>✨ Your Next Adventure Starts Here</h2>
+   <p>Enter your travel preferences above to discover destinations across India.</p>
+  </div>
+ </section>
+
+ {% endif %}
+
+ <footer>
+  © 2026 VoyageIQ · Discover More. Travel Smarter.
+ </footer>
+
+</main>
+
+<script>
+
+/* THEME */
+
+function applyTheme(theme){
+
+ document.body.classList.toggle("light",theme==="light");
+
+ document.getElementById("themeIcon").textContent=
+  theme==="light"?"☀":"☾";
+
+ document.getElementById("themeLabel").textContent=
+  theme==="light"?"Switch to Dark Mode":"Switch to Light Mode";
+
+ try{
+  localStorage.setItem("voyageiq-theme",theme);
+ }catch(e){}
+
+}
+
+function toggleTheme(){
+
+ applyTheme(
+  document.body.classList.contains("light")?"dark":"light"
+ );
+
+}
+
+try{
+
+ applyTheme(
+  localStorage.getItem("voyageiq-theme")==="light"?"light":"dark"
+ );
+
+}catch(e){
+
+ applyTheme("dark");
+
+}
+
+
+/* SELECTED DESTINATIONS */
+
+let selectedPlaces=[];
+
+function addDestination(button){
+
+ const name=button.dataset.name;
+
+ if(selectedPlaces.some(p=>p.name===name)){
+  showMessage("This destination is already in your trip.");
+  return;
+ }
+
+ const card=button.closest(".destination-card");
+
+ const attractions=Array.from(
+  card.querySelectorAll(".attractions li")
+ ).map(x=>x.textContent.trim());
+
+ selectedPlaces.push({
+
+  name:name,
+  state:button.dataset.state,
+  district:button.dataset.district,
+  cost:Number(button.dataset.cost),
+  ai_score:Number(button.dataset.score)||0,
+  recommendation_reason:button.dataset.reason||"Matches your travel preferences.",
+  attractions:attractions
+
+ });
+
+ button.textContent="✓ Added to My Trip";
+ button.classList.add("added");
+
+ renderSelectedPlaces();
+
+ showMessage(name+" added to your trip.");
+
+ document.getElementById("myTrip").scrollIntoView({
+  behavior:"smooth",
+  block:"nearest"
+ });
+
+}
+
+
+function removeDestination(name){
+
+ selectedPlaces=selectedPlaces.filter(p=>p.name!==name);
+
+ document.querySelectorAll(".add-button").forEach(button=>{
+
+  if(button.dataset.name===name){
+   button.textContent="＋ Add to My Trip";
+   button.classList.remove("added");
+  }
+
+ });
+
+ renderSelectedPlaces();
+
+ showMessage(name+" removed from your trip.");
+
+}
+
+
+function showMessage(message){
+
+ const element=document.getElementById("plannerMessage");
+
+ if(element){
+  element.textContent=message;
+ }
+
+}
+
+
+/* DISPLAY SELECTED PLACES */
+
+function renderSelectedPlaces(){
+
+ const container=document.getElementById("selectedPlaces");
+
+ const days=Number(document.getElementById("days").value)||1;
+
+ document.getElementById("placeCount").textContent=
+  selectedPlaces.length;
+
+ document.getElementById("totalCost").textContent=
+  "₹"+selectedPlaces.reduce(
+   (sum,place)=>sum+place.cost*days,0
+  ).toLocaleString("en-IN");
+
+ if(!selectedPlaces.length){
+
+  container.innerHTML=
+   '<div class="empty">No destinations selected yet.</div>';
+
+  return;
+
+ }
+
+ container.innerHTML="";
+
+ selectedPlaces.forEach(place=>{
+
+  const item=document.createElement("div");
+  item.className="selected-item";
+
+  const details=document.createElement("div");
+  details.className="selected-details";
+
+  const name=document.createElement("strong");
+  name.textContent=place.name;
+
+  const location=document.createElement("small");
+  location.textContent=place.district+", "+place.state;
+
+  const score=document.createElement("span");
+  score.className="selected-ai-score";
+  score.textContent="🤖 AI Match: "+place.ai_score.toFixed(2)+"%";
+
+  const reason=document.createElement("p");
+  reason.className="selected-reason";
+  reason.textContent="💡 "+place.recommendation_reason;
+
+  details.append(name,location,score,reason);
+
+  const remove=document.createElement("button");
+  remove.className="remove-button";
+  remove.textContent="Remove";
+  remove.type="button";
+  remove.onclick=()=>removeDestination(place.name);
+
+  item.append(details,remove);
+
+  container.appendChild(item);
+
+ });
+
+}
+
+
+/* CREATE ITINERARY */
+
+function createMyTrip(){
+
+ if(!selectedPlaces.length){
+  showMessage("Please add at least one destination first.");
+  return;
+ }
+
+ const days=Number(document.getElementById("days").value)||1;
+
+ const output=document.getElementById("itineraryOutput");
+
+ output.innerHTML="";
+
+ for(let i=0;i<days;i++){
+
+  const place=selectedPlaces[i%selectedPlaces.length];
+
+  const box=document.createElement("div");
+  box.className="day";
+
+  const heading=document.createElement("h3");
+  heading.textContent="Day "+(i+1)+" — "+place.name;
+
+  const morning=document.createElement("p");
+  morning.textContent=
+   "Morning: Visit "+(place.attractions[0]||place.name);
+
+  const afternoon=document.createElement("p");
+  afternoon.textContent=
+   "Afternoon: Explore "+(place.attractions[1]||"local attractions");
+
+  const evening=document.createElement("p");
+  evening.textContent=
+   "Evening: Explore local food and markets.";
+
+  const aiDetails=document.createElement("div");
+  aiDetails.className="itinerary-ai";
+
+  const score=document.createElement("strong");
+  score.textContent="AI Similarity Score: ";
+
+  const scoreText=document.createTextNode(
+   place.ai_score.toFixed(2)+"%"
+  );
+
+  const reason=document.createElement("p");
+  reason.textContent="Why recommended: "+place.recommendation_reason;
+
+  aiDetails.append(score,scoreText,reason);
+
+  box.append(heading,morning,afternoon,evening,aiDetails);
+
+  output.appendChild(box);
+
+ }
+
+ const panel=document.getElementById("itineraryPanel");
+
+ panel.classList.remove("hidden");
+
+ panel.scrollIntoView({behavior:"smooth"});
+
+ showMessage("Your personalised itinerary has been created!");
+
+}
+
+
+/* WISHLIST */
+
+function saveWishlist(){
+
+ if(!selectedPlaces.length){
+  showMessage("Add destinations before saving your wishlist.");
+  return;
+ }
+
+ try{
+
+  const old=JSON.parse(
+   localStorage.getItem("voyageiq-wishlist")||"[]"
+  );
+
+  selectedPlaces.forEach(place=>{
+
+   if(!old.some(item=>item.name===place.name)){
+    old.push(place);
+   }
+
+  });
+
+  localStorage.setItem(
+   "voyageiq-wishlist",
+   JSON.stringify(old)
+  );
+
+  showMessage("Destinations saved in this browser's Wishlist.");
+
+ }catch(e){
+
+  showMessage("Could not save your Wishlist in this browser.");
+
+ }
+
+}
+
+
+/* SEARCH */
+
+function filterCards(){
+
+ const q=document.getElementById("placeSearch").value.toLowerCase();
+
+ let shown=0;
+
+ document.querySelectorAll(".destination-card").forEach(card=>{
+
+  const match=(
+   card.dataset.name+" "+card.dataset.state
+  ).includes(q);
+
+  card.classList.toggle("hidden",!match);
+
+  if(match)shown++;
+
+ });
+
+ document.getElementById("noCards").classList.toggle(
+  "hidden",
+  shown!==0
+ );
+
+}
+
+
+/* SORT */
+
+function sortCards(){
+
+ const grid=document.getElementById("destinationGrid");
+
+ const cards=Array.from(
+  grid.querySelectorAll(".destination-card")
+ );
+
+ const mode=document.getElementById("sortPlaces").value;
+
+ cards.sort((a,b)=>{
+
+  if(mode==="cost-low"){
+   return Number(a.dataset.cost)-Number(b.dataset.cost);
+  }
+
+  if(mode==="name"){
+   return a.dataset.name.localeCompare(b.dataset.name);
+  }
+
+  return Number(b.dataset.score)-Number(a.dataset.score);
+
+ });
+
+ cards.forEach(card=>grid.appendChild(card));
+
+}
+
+
+/* TRIP DURATION */
+
+document.getElementById("days")?.addEventListener("change",function(){
+
+ document.getElementById("tripDays").textContent=
+  this.value+" days";
+
+ renderSelectedPlaces();
+
+});
+
+
+/* GPS */
+
+async function getMyLocation(){
+
+ const status=document.getElementById("locationStatus");
+
+ if(!navigator.geolocation){
+
+  status.textContent=
+   "Geolocation is not supported by this browser.";
+
+  return;
+
+ }
+
+ status.textContent="Requesting location permission...";
+
+ navigator.geolocation.getCurrentPosition(
+
+  async position=>{
+
+   const lat=position.coords.latitude;
+   const lon=position.coords.longitude;
+
+   status.textContent=
+    "Location detected: "+
+    lat.toFixed(4)+", "+lon.toFixed(4);
+
+   await loadWeather(lat,lon);
+
+  },
+
+  error=>{
+
+   status.textContent=
+    error.code===1
+    ?"Location permission was denied. Allow it in your browser settings."
+    :"Unable to detect location. Please try again.";
+
+  },
+
+  {
+   enableHighAccuracy:true,
+   timeout:12000
+  }
+
+ );
+
+}
+
+
+/* WEATHER */
+
+async function loadWeather(lat,lon){
+
+ const panel=document.getElementById("weatherPanel");
+
+ panel.classList.remove("hidden");
+
+ document.getElementById("weatherCondition").textContent=
+  "Loading current weather...";
+
+ try{
+
+  const url=
+   `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code&timezone=auto`;
+
+  const response=await fetch(url);
+
+  if(!response.ok){
+   throw new Error("Weather service unavailable");
+  }
+
+  const data=await response.json();
+
+  const w=data.current;
+
+  const code=Number(w.weather_code);
+
+  let condition="Clear";
+
+  if([1,2,3].includes(code)) condition="Partly cloudy";
+  if([45,48].includes(code)) condition="Foggy";
+
+  if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)){
+   condition="Rainy";
+  }
+
+  if([71,73,75,77,85,86].includes(code)){
+   condition="Snowy";
+  }
+
+  if([95,96,99].includes(code)){
+   condition="Thunderstorm";
+  }
+
+  document.getElementById("weatherTemp").textContent=
+   w.temperature_2m+"°C";
+
+  document.getElementById("weatherWind").textContent=
+   w.wind_speed_10m+" km/h";
+
+  document.getElementById("weatherRain").textContent=
+   w.precipitation+" mm";
+
+  document.getElementById("weatherCondition").textContent=
+   condition+" · Humidity "+w.relative_humidity_2m+"%";
+
+  let analysis="Comfortable";
+  let advice="Check conditions before travelling.";
+
+  if(w.precipitation>0){
+
+   analysis="Rainy";
+   advice="Carry an umbrella and check local forecasts.";
+
+  }else if(w.temperature_2m>=32){
+
+   analysis="Hot";
+   advice="Plan outdoor activities for cooler hours.";
+
+  }else if(w.wind_speed_10m>=30){
+
+   analysis="Windy";
+   advice="Be careful with exposed outdoor activities.";
+
+  }else if(w.temperature_2m>=25){
+
+   analysis="Warm";
+   advice="Stay hydrated while exploring.";
+
+  }
+
+  document.getElementById("weatherAnalysis").textContent=
+   analysis;
+
+  document.getElementById("weatherAdvice").textContent=
+   advice;
+
+ }catch(error){
+
+  document.getElementById("weatherCondition").textContent=
+   "Could not load weather. Check your internet connection.";
+
+  document.getElementById("weatherAnalysis").textContent=
+   "Unavailable";
+
+ }
+
+}
+
+</script>
+
+</body>
+</html>

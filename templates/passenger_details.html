@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Passenger Details | VoyageIQ</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --bg: #07172B;
+    --sidebar: rgba(5,22,42,.96);
+    --card: rgba(12,39,65,.90);
+    --card2: rgba(5,25,45,.94);
+    --text: #F1FAFF;
+    --muted: #B8D5E5;
+    --accent: #42D9F5;
+    --border: rgba(105,211,255,.45);
+    --button: linear-gradient(110deg,#168FC4,#685BD8);
+    --input: #102E49;
+    --shadow: rgba(0,0,0,.22);
+}
+
+body.light {
+    --bg: #EAF5FC;
+    --sidebar: rgba(247,252,255,.97);
+    --card: rgba(255,255,255,.95);
+    --card2: #E7F3FA;
+    --text: #15334A;
+    --muted: #526F83;
+    --accent: #087EAD;
+    --border: rgba(8,126,173,.28);
+    --button: linear-gradient(110deg,#39B8D9,#8175E8);
+    --input: #F0F7FB;
+    --shadow: rgba(31,86,117,.10);
+}
+
+body {
+    min-height: 100vh;
+    color: var(--text);
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    transition: .3s;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    padding: 25px 16px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.logo {
+    color: var(--accent);
+    font-size: 25px;
+    font-weight: bold;
+    margin: 5px 10px 35px;
+}
+
+.menu-heading {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    margin: 18px 10px 10px;
+}
+
+.nav-link {
+    display: block;
+    padding: 12px 13px;
+    margin: 3px 0;
+    border-radius: 9px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 14px;
+    transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: rgba(30,145,190,.20);
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.theme-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* MAIN CONTENT */
+
+.main {
+    margin-left: 240px;
+    padding: 35px 5%;
+    min-height: 100vh;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.page-title {
+    color: var(--text);
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.back-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--text);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 11px 17px;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+.back-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* MAIN CONTAINER */
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 12px 38px var(--shadow);
+}
+
+.container h2 {
+    color: var(--accent);
+    font-size: 19px;
+    margin-bottom: 17px;
+}
+
+/* JOURNEY INFORMATION */
+
+.journey {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 20px;
+    margin-bottom: 28px;
+}
+
+.journey h3 {
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-size: 17px;
+}
+
+.journey p {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.journey p:last-child {
+    border-bottom: none;
+}
+
+.journey strong {
+    color: var(--text);
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+/* PASSENGER FORM */
+
+.section-heading {
+    color: var(--accent);
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+label {
+    color: var(--text);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+input,
+select {
+    width: 100%;
+    height: 46px;
+    padding: 12px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--input);
+    color: var(--text);
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(66,217,245,.13);
+}
+
+input::placeholder {
+    color: var(--muted);
+    opacity: .8;
+}
+
+body:not(.light) input,
+body:not(.light) select {
+    color-scheme: dark;
+}
+
+body.light input,
+body.light select {
+    color-scheme: light;
+}
+
+select option {
+    background: var(--card);
+    color: var(--text);
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+/* FLASH MESSAGE */
+
+.flash {
+    color: #D95B5B;
+    background: rgba(220,80,80,.10);
+    border: 1px solid rgba(220,80,80,.35);
+    border-radius: 9px;
+    text-align: center;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+/* BUTTONS */
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 28px;
+}
+
+button,
+.back {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.back {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+button {
+    background: var(--button);
+    color: white;
+    border: none;
+}
+
+button:hover,
+.back:hover {
+    transform: translateY(-2px);
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+.back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* FOOTER */
+
+.footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 35px;
+    padding: 15px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px) {
+
+    .sidebar {
+        width: 75px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 12px;
+        margin: 8px 0 25px;
+        text-align: center;
+    }
+
+    .menu-heading {
+        display: none;
+    }
+
+    .nav-link {
+        font-size: 0;
+        text-align: center;
+        padding: 14px 5px;
+    }
+
+    .nav-link::first-letter {
+        font-size: 17px;
+    }
+
+    .theme-btn {
+        font-size: 0;
+        padding: 12px 3px;
+    }
+
+    .theme-btn::first-letter {
+        font-size: 17px;
+    }
+
+    .main {
+        margin-left: 75px;
+        padding: 25px 4%;
+    }
+}
+
+@media(max-width:600px) {
+
+    .main {
+        padding: 22px 13px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+
+    .journey p {
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">✈ VoyageIQ</div>
+
+    <p class="menu-heading">MAIN MENU</p>
+
+    <a href="{{ url_for('home') }}" class="nav-link">🏠 Dashboard</a>
+    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
+    <a href="{{ url_for('hotels') }}" class="nav-link">🏨 Hotels</a>
+    <a href="{{ url_for('planner') }}" class="nav-link">🗺 Packages</a>
+    <a href="{{ url_for('my_bookings') }}" class="nav-link">🎫 My Bookings</a>
+    <a href="{{ url_for('home') }}#wishlist" class="nav-link">♡ Wishlist</a>
+    <a href="{{ url_for('home') }}#offers" class="nav-link">🎁 Offers</a>
+
+    <p class="menu-heading">ACCOUNT</p>
+
+    {% if session.get('user_id') %}
+        <a href="{{ url_for('logout') }}" class="nav-link">🚪 Logout</a>
+    {% else %}
+        <a href="{{ url_for('login') }}" class="nav-link">🔑 Login</a>
+        <a href="{{ url_for('signup') }}" class="nav-link">📝 Sign Up</a>
+    {% endif %}
+
+    <div class="sidebar-bottom">
+        <button type="button" class="theme-btn" onclick="toggleTheme()">
+            🌙 / ☀️ Change Theme
+        </button>
+    </div>
+
+</aside>
+
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <div>
+            <h1 class="page-title">Passenger Details</h1>
+            <p class="subtitle">
+                Enter your details to continue your journey.
+            </p>
+        </div>
+
+        <a href="{{ url_for('seat_selection') }}" class="back-btn">
+            ← Back to Seats
+        </a>
+
+    </div>
+
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <p class="flash">{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+
+
+        <!-- JOURNEY INFORMATION -->
+
+        <div class="journey">
+
+            <h3>✈ Journey Information</h3>
+
+            <p>
+                <span>Transport</span>
+                <strong>{{ booking.transport_type }}</strong>
+            </p>
+
+            <p>
+                <span>From</span>
+                <strong>{{ booking.origin }}</strong>
+            </p>
+
+            <p>
+                <span>To</span>
+                <strong>{{ booking.destination }}</strong>
+            </p>
+
+            <p>
+                <span>Travel Date</span>
+                <strong>{{ booking.travel_date }}</strong>
+            </p>
+
+            <p>
+                <span>Passengers</span>
+                <strong>{{ passenger_count }}</strong>
+            </p>
+
+            <p>
+                <span>Selected Seats</span>
+                <strong>{{ seats | join(', ') }}</strong>
+            </p>
+
+            <p>
+                <span>Total Price</span>
+                <strong>₹{{ "{:,}".format(booking.total_price) }}</strong>
+            </p>
+
+        </div>
+
+
+        <!-- PASSENGER FORM -->
+
+        <h2 class="section-heading">Passenger Information</h2>
+
+        <form method="POST" action="{{ url_for('passenger_details') }}">
+
+            <div class="form-grid">
+
+                <div class="field full">
+                    <label for="name">Full Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        maxlength="100"
+                        autocomplete="name"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="phone">Phone Number</label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="10-digit mobile number"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        inputmode="numeric"
+                        autocomplete="tel"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="age">Age</label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        min="1"
+                        max="120"
+                        placeholder="Enter age"
+                        required>
+                </div>
+
+                <div class="field">
+                    <label for="gender">Gender</label>
+
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Other">Other</option>
+                        <option value="Prefer not to say">
+                            Prefer not to say
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <a href="{{ url_for('seat_selection') }}" class="back">
+                    ← Back to Seats
+                </a>
+
+                <button type="submit">
+                    Continue to Summary →
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <div class="footer">
+        © 2026 VoyageIQ · Your Journey, Our Intelligence
+    </div>
+
+</main>
+
+
+<script>
+
+/* THEME MANAGEMENT */
+
+function applyTheme() {
+
+    const savedTheme =
+        localStorage.getItem("voyageiq-theme") || "dark";
+
+    document.body.classList.toggle(
+        "light",
+        savedTheme === "light"
+    );
+
+}
+
+function toggleTheme() {
+
+    const isLight =
+        document.body.classList.contains("light");
+
+    const newTheme = isLight ? "dark" : "light";
+
+    localStorage.setItem("voyageiq-theme", newTheme);
+
+    applyTheme();
+
+}
+
+applyTheme();
+
+</script>
+
+</body>
+</html>

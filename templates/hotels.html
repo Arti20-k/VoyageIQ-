@@ -1,0 +1,981 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotels & Stays | VoyageIQ</title>
+
+<style>
+:root {
+    --bg:#07172B;
+    --sidebar:rgba(5,22,42,.96);
+    --card:rgba(12,39,65,.90);
+    --card2:rgba(5,25,45,.94);
+    --text:#F1FAFF;
+    --muted:#B8D5E5;
+    --accent:#42D9F5;
+    --border:rgba(105,211,255,.45);
+    --button:linear-gradient(110deg,#168FC4,#685BD8);
+    --shadow:rgba(0,0,0,.22);
+    --input:rgba(5,22,43,.85);
+}
+
+body.light {
+    --bg:#EAF5FC;
+    --sidebar:rgba(247,252,255,.97);
+    --card:rgba(255,255,255,.95);
+    --card2:#E7F3FA;
+    --text:#15334A;
+    --muted:#526F83;
+    --accent:#087EAD;
+    --border:rgba(8,126,173,.28);
+    --button:linear-gradient(110deg,#39B8D9,#8175E8);
+    --shadow:rgba(31,86,117,.10);
+    --input:#F3F8FC;
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body {
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    color:var(--text);
+    background:
+        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    transition:.3s;
+}
+
+body.light {
+    background:
+        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+a {
+    color:inherit;
+    text-decoration:none;
+}
+
+button,input {
+    font-family:inherit;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    position:fixed;
+    top:0;
+    left:0;
+    width:240px;
+    height:100vh;
+    padding:25px 16px;
+    background:var(--sidebar);
+    border-right:1px solid var(--border);
+    backdrop-filter:blur(15px);
+    display:flex;
+    flex-direction:column;
+    z-index:100;
+    overflow-y:auto;
+}
+
+.logo {
+    font-size:25px;
+    font-weight:800;
+    margin:0 0 35px 8px;
+    color:var(--text);
+}
+
+.logo span {
+    color:var(--accent);
+}
+
+.menu-title {
+    color:var(--muted);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    margin:15px 10px 12px;
+}
+
+.nav-link {
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:12px 13px;
+    margin:4px 0;
+    color:var(--muted);
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.nav-icon {
+    width:22px;
+    text-align:center;
+    font-size:17px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color:var(--text);
+    background:rgba(30,145,190,.20);
+    border-left:3px solid var(--accent);
+}
+
+.sidebar-bottom {
+    margin-top:auto;
+    padding-top:20px;
+}
+
+.theme-button {
+    width:100%;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+    font-size:13px;
+}
+
+/* MAIN */
+
+.main {
+    margin-left:240px;
+    width:calc(100% - 240px);
+    padding:26px;
+    min-height:100vh;
+}
+
+.topbar {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.page-heading h1 {
+    font-size:25px;
+    font-weight:800;
+}
+
+.page-heading p {
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+.profile-area {
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile-greeting {
+    text-align:right;
+}
+
+.profile-greeting strong {
+    display:block;
+    font-size:14px;
+}
+
+.profile-greeting small {
+    color:var(--muted);
+    font-size:11px;
+}
+
+.avatar {
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    color:white;
+    font-weight:800;
+    background:linear-gradient(135deg,#32b9f3,#805eea);
+}
+
+/* HERO */
+
+.hero {
+    min-height:230px;
+    padding:38px;
+    margin-bottom:25px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:
+        linear-gradient(90deg,rgba(4,22,42,.85),rgba(4,22,42,.48)),
+        url("https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1500&q=85");
+    background-size:cover;
+    background-position:center;
+    box-shadow:0 12px 35px var(--shadow);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.hero-tag {
+    color:#8FEAFF;
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    margin-bottom:13px;
+}
+
+.hero h2 {
+    color:white;
+    font-size:clamp(29px,4vw,43px);
+    margin-bottom:12px;
+}
+
+.hero h2 span {
+    color:#57D9F5;
+}
+
+.hero p {
+    color:#E2F5FF;
+    font-size:14px;
+    line-height:1.7;
+    max-width:600px;
+}
+
+/* SEARCH PANEL */
+
+.panel {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 12px 35px var(--shadow);
+    backdrop-filter:blur(14px);
+    margin-bottom:28px;
+}
+
+.panel h2 {
+    font-size:21px;
+    margin-bottom:20px;
+}
+
+.search-grid {
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr .7fr auto;
+    gap:15px;
+    align-items:end;
+}
+
+.form-group {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.form-group label {
+    font-size:13px;
+    font-weight:700;
+    color:var(--text);
+}
+
+.form-group input {
+    width:100%;
+    height:46px;
+    padding:10px 12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--input);
+    color:var(--text);
+    font-size:13px;
+    outline:none;
+}
+
+.form-group input::placeholder {
+    color:var(--muted);
+}
+
+.form-group input:focus {
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(66,217,245,.14);
+}
+
+body:not(.light) input {
+    color-scheme:dark;
+}
+
+body.light input {
+    color-scheme:light;
+}
+
+.search-button,
+.book-button {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    padding:13px 18px;
+    border:none;
+    border-radius:10px;
+    color:white;
+    background:var(--button);
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.search-button {
+    height:46px;
+    white-space:nowrap;
+}
+
+.search-button:hover,
+.book-button:hover {
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px var(--shadow);
+}
+
+/* SECTION HEADING */
+
+.section-heading {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin:30px 0 20px;
+}
+
+.section-heading h2 {
+    font-size:24px;
+    font-weight:800;
+}
+
+.section-heading p {
+    color:var(--muted);
+    font-size:13px;
+    margin-top:6px;
+}
+
+/* HOTEL CARDS */
+
+.hotel-grid {
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:20px;
+}
+
+.hotel-card {
+    overflow:hidden;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    box-shadow:0 10px 25px var(--shadow);
+    backdrop-filter:blur(12px);
+    transition:.3s;
+}
+
+.hotel-card:hover {
+    transform:translateY(-5px);
+    border-color:var(--accent);
+    box-shadow:0 12px 30px var(--shadow);
+}
+
+.hotel-card img {
+    width:100%;
+    height:200px;
+    display:block;
+    object-fit:cover;
+    background:var(--card2);
+}
+
+.hotel-info {
+    padding:19px;
+}
+
+.hotel-info h3 {
+    font-size:17px;
+    line-height:1.4;
+    margin-bottom:12px;
+}
+
+.hotel-location {
+    color:var(--accent) !important;
+    font-weight:700;
+}
+
+.hotel-info p {
+    color:var(--muted);
+    margin:10px 0;
+    font-size:13px;
+}
+
+.rating {
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:7px;
+    color:#E9B949;
+    background:rgba(233,185,73,.13);
+    font-weight:800;
+}
+
+.price {
+    color:var(--accent) !important;
+    font-size:23px !important;
+    font-weight:800;
+    margin-top:17px !important;
+}
+
+.price small {
+    font-size:12px;
+    font-weight:500;
+    color:var(--muted);
+}
+
+.book-button {
+    width:100%;
+    margin-top:16px;
+    padding:13px;
+}
+
+/* EMPTY STATE */
+
+.empty {
+    grid-column:1/-1;
+    text-align:center;
+    padding:45px 20px;
+    color:var(--muted);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+}
+
+.empty-icon {
+    font-size:42px;
+    margin-bottom:14px;
+}
+
+.empty h2 {
+    color:var(--text);
+    font-size:21px;
+    margin-bottom:10px;
+}
+
+.empty p {
+    font-size:13px;
+    line-height:1.7;
+}
+
+/* FOOTER */
+
+.footer {
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:30px 10px;
+    line-height:1.8;
+    margin-top:25px;
+    border-top:1px solid var(--border);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1150px) {
+    .hotel-grid {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .search-grid {
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .main {
+        padding:22px;
+    }
+}
+
+@media(max-width:900px) {
+    .sidebar {
+        width:75px;
+        padding:20px 8px;
+    }
+
+    .logo {
+        font-size:17px;
+        text-align:center;
+        margin:5px 0 30px;
+    }
+
+    .logo span,
+    .menu-title,
+    .nav-text,
+    .theme-text {
+        display:none;
+    }
+
+    .nav-link {
+        justify-content:center;
+        font-size:18px;
+        padding:13px 5px;
+    }
+
+    .theme-button {
+        font-size:18px;
+        padding:12px 5px;
+    }
+
+    .main {
+        margin-left:75px;
+        width:calc(100% - 75px);
+        padding:20px 16px;
+    }
+}
+
+@media(max-width:560px) {
+    .search-grid,
+    .hotel-grid {
+        grid-template-columns:1fr;
+    }
+
+    .main {
+        padding:15px;
+    }
+
+    .topbar {
+        align-items:flex-start;
+    }
+
+    .profile-greeting {
+        display:none;
+    }
+
+    .page-heading h1 {
+        font-size:21px;
+    }
+
+    .hero {
+        padding:25px;
+    }
+
+    .panel {
+        padding:17px;
+    }
+
+    .search-button {
+        width:100%;
+    }
+
+    .hotel-card img {
+        height:190px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Voyage<span>IQ</span>
+    </div>
+
+    <div class="menu-title">MAIN MENU</div>
+
+    <a href="/" class="nav-link">
+        <span class="nav-icon">⌂</span>
+        <span class="nav-text">Dashboard</span>
+    </a>
+
+    <a href="/planner" class="nav-link">
+        <span class="nav-icon">✈</span>
+        <span class="nav-text">Trip Planner</span>
+    </a>
+
+    <a href="/transport" class="nav-link">
+        <span class="nav-icon">🚆</span>
+        <span class="nav-text">Flights & Transport</span>
+    </a>
+
+    <a href="/hotels" class="nav-link active">
+        <span class="nav-icon">▣</span>
+        <span class="nav-text">Hotels</span>
+    </a>
+
+    <a href="/my-bookings" class="nav-link">
+        <span class="nav-icon">▤</span>
+        <span class="nav-text">My Bookings</span>
+    </a>
+
+    <a href="/#wishlist" class="nav-link">
+        <span class="nav-icon">♡</span>
+        <span class="nav-text">Wishlist</span>
+    </a>
+
+    <a href="/#offers" class="nav-link">
+        <span class="nav-icon">◇</span>
+        <span class="nav-text">Offers</span>
+    </a>
+
+    <div class="menu-title">ACCOUNT</div>
+
+    {% if session.get('user_id') %}
+
+        <a href="/logout" class="nav-link">
+            <span class="nav-icon">⇥</span>
+            <span class="nav-text">Logout</span>
+        </a>
+
+    {% else %}
+
+        <a href="/login" class="nav-link">
+            <span class="nav-icon">↪</span>
+            <span class="nav-text">Login</span>
+        </a>
+
+        <a href="/signup" class="nav-link">
+            <span class="nav-icon">＋</span>
+            <span class="nav-text">Sign Up</span>
+        </a>
+
+    {% endif %}
+
+    <div class="sidebar-bottom">
+        <button class="theme-button" onclick="toggleTheme()">
+            <span id="themeIcon">☀</span>
+            <span class="theme-text" id="themeLabel">Light Mode</span>
+        </button>
+    </div>
+
+</aside>
+
+<!-- MAIN CONTENT -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <div class="page-heading">
+            <h1>Hotels & Stays</h1>
+            <p>Find a comfortable place for your journey.</p>
+        </div>
+
+        <div class="profile-area">
+            <div class="profile-greeting">
+                <strong>Welcome to VoyageIQ 👋</strong>
+                <small>Find your perfect stay</small>
+            </div>
+
+            <div class="avatar">V</div>
+        </div>
+
+    </header>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <span class="hero-tag">✦ VOYAGEIQ STAYS</span>
+
+        <h2>Find Your <span>Perfect Stay</span></h2>
+
+        <p>
+            Explore comfortable accommodation, compare hotel options
+            and organise your stay in your favourite destination.
+        </p>
+
+    </section>
+
+    <!-- HOTEL SEARCH -->
+
+    <section class="panel">
+
+        <h2>Find Your Hotel</h2>
+
+        <form
+            class="search-grid"
+            method="GET"
+            action="{{ url_for('hotels') }}">
+
+            <div class="form-group">
+                <label for="destination">📍 Destination</label>
+
+                <input
+                    type="text"
+                    id="destination"
+                    name="destination"
+                    value="{{ destination }}"
+                    placeholder="Enter city"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="checkin">Check-in Date</label>
+
+                <input
+                    type="date"
+                    id="checkin"
+                    name="checkin"
+                    value="{{ request.args.get('checkin', '') }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="checkout">Check-out Date</label>
+
+                <input
+                    type="date"
+                    id="checkout"
+                    name="checkout"
+                    value="{{ request.args.get('checkout', '') }}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="guests">Guests</label>
+
+                <input
+                    type="number"
+                    id="guests"
+                    name="guests"
+                    min="1"
+                    max="4"
+                    value="{{ request.args.get('guests', '2') }}"
+                    required>
+            </div>
+
+            <button type="submit" class="search-button">
+                Search Hotels →
+            </button>
+
+        </form>
+
+    </section>
+
+    <!-- HOTEL RESULTS -->
+
+    <section>
+
+        <div class="section-heading">
+            <div>
+                <h2>Available Hotels</h2>
+                <p>Choose a comfortable stay for your destination.</p>
+            </div>
+        </div>
+
+        <div class="hotel-grid">
+
+            {% set found = namespace(value=false) %}
+
+            {% for hotel in hotels %}
+
+                {% if destination|lower in hotel.city|lower %}
+
+                    {% set found.value = true %}
+
+                    <article class="hotel-card">
+
+                        <img
+                            src="{{ hotel.image }}"
+                            alt="{{ hotel.name }}"
+                            loading="lazy">
+
+                        <div class="hotel-info">
+
+                            <h3>{{ hotel.name }}</h3>
+
+                            <p class="hotel-location">
+                                📍 {{ hotel.city }}
+                            </p>
+
+                            <p>
+                                <span class="rating">
+                                    ★ {{ hotel.rating }}
+                                </span>
+                                Guest Rating
+                            </p>
+
+                            <p>
+                                🛏️ {{ hotel.type }}
+                            </p>
+
+                            <p class="price">
+                                ₹{{ "{:,}".format(hotel.price) }}
+                                <small>/ night</small>
+                            </p>
+
+                            <a
+                                class="book-button"
+                                href="{{ url_for(
+                                    'book_hotel',
+                                    hotel_id=hotel.id,
+                                    checkin=request.args.get('checkin', ''),
+                                    checkout=request.args.get('checkout', ''),
+                                    guests=request.args.get('guests', '2')
+                                ) }}">
+
+                                Book This Hotel →
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% endif %}
+
+            {% endfor %}
+
+            {% if not found.value %}
+
+                <div class="empty">
+
+                    <div class="empty-icon">🏨</div>
+
+                    <h2>No Hotels Found</h2>
+
+                    <p>
+                        We couldn't find a matching hotel for this
+                        destination. Try Bengaluru, Goa, Mysuru,
+                        Ooty or Mumbai.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+        <strong>VoyageIQ</strong> · Plan smarter, travel better.
+        <br>
+        Your journey, thoughtfully planned.
+    </footer>
+
+</main>
+
+<script>
+
+/* LIGHT AND DARK THEME */
+
+function applyTheme(theme) {
+
+    document.body.classList.toggle(
+        "light",
+        theme === "light"
+    );
+
+    const icon = document.getElementById("themeIcon");
+    const label = document.getElementById("themeLabel");
+
+    if (theme === "light") {
+        icon.textContent = "☾";
+        label.textContent = "Dark Mode";
+    } else {
+        icon.textContent = "☀";
+        label.textContent = "Light Mode";
+    }
+
+    try {
+        localStorage.setItem("voyageiq-theme", theme);
+    } catch (error) {
+        console.log("Theme preference could not be saved.");
+    }
+}
+
+function toggleTheme() {
+
+    const isLight =
+        document.body.classList.contains("light");
+
+    applyTheme(isLight ? "dark" : "light");
+}
+
+/* LOAD SAVED THEME */
+
+try {
+
+    const savedTheme =
+        localStorage.getItem("voyageiq-theme");
+
+    applyTheme(
+        savedTheme === "light" ? "light" : "dark"
+    );
+
+} catch (error) {
+
+    applyTheme("dark");
+
+}
+
+/* HOTEL DATE VALIDATION */
+
+const checkin = document.getElementById("checkin");
+const checkout = document.getElementById("checkout");
+
+const today = new Date();
+
+const localToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+checkin.min = localToday;
+
+checkout.min = checkin.value
+    ? checkin.value
+    : localToday;
+
+checkin.addEventListener("change", function() {
+
+    checkout.min = this.value || localToday;
+
+    if (checkout.value && checkout.value <= this.value) {
+        checkout.value = "";
+    }
+
+});
+
+document.querySelector(".search-grid").addEventListener(
+    "submit",
+    function(event) {
+
+        if (
+            !checkin.value ||
+            !checkout.value ||
+            checkin.value < localToday ||
+            checkout.value <= checkin.value
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Please select a valid check-in and check-out date."
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
