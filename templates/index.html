@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,969 +7,1489 @@
 <title>VoyageIQ | Smart Trip Planner</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+--bg:#07172B;
+--sidebar:#081C32;
+--card:rgba(12,39,65,.94);
+--card2:#102D48;
+--text:#F1FAFF;
+--muted:#B8D5E5;
+--accent:#42D9F5;
+--border:rgba(105,211,255,.35);
+--button:linear-gradient(110deg,#168FC4,#685BD8);
+--shadow:rgba(0,0,0,.22)
 }
 
-:root {
-    --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
-    --card: rgba(12,39,65,.88);
-    --card2: rgba(5,25,45,.94);
-    --text: #F1FAFF;
-    --muted: #B8D5E5;
-    --accent: #42D9F5;
-    --border: rgba(105,211,255,.45);
-    --button: linear-gradient(110deg,#168FC4,#685BD8);
-    --shadow: rgba(0,0,0,.22);
+body.light{
+--bg:#EAF5FC;
+--sidebar:#F7FCFF;
+--card:#fff;
+--card2:#E7F3FA;
+--text:#15334A;
+--muted:#526F83;
+--accent:#087EAD;
+--border:rgba(8,126,173,.25);
+--button:linear-gradient(110deg,#39B8D9,#8175E8);
+--shadow:rgba(31,86,117,.10)
 }
 
-body.light {
-    --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
-    --card: rgba(255,255,255,.94);
-    --card2: #E7F3FA;
-    --text: #15334A;
-    --muted: #526F83;
-    --accent: #087EAD;
-    --border: rgba(8,126,173,.28);
-    --button: linear-gradient(110deg,#39B8D9,#8175E8);
-    --shadow: rgba(31,86,117,.10);
+html{
+scroll-behavior:smooth;
+scroll-padding-top:25px
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background:
-        linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
-        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90")
-        center/cover fixed;
-    color: var(--text);
-    min-height: 100vh;
-    transition: background .3s, color .3s;
+body{
+font-family:Arial,sans-serif;
+background:
+linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
+url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90") center/cover fixed;
+color:var(--text);
+min-height:100vh;
+overflow-x:hidden;
+transition:background .3s,color .3s
 }
 
-body.light {
-    background:
-        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
-        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90")
-        center/cover fixed;
+body.light{
+background:
+linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90") center/cover fixed
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+
+.app{min-height:100vh}
+
+/* LAPTOP SIDEBAR */
+
+.sidebar{
+position:fixed;
+top:0;
+left:0;
+bottom:0;
+width:245px;
+z-index:1500;
+background:var(--sidebar);
+border-right:1px solid var(--border);
+padding:25px 17px;
+display:flex;
+flex-direction:column;
+overflow-y:auto;
+box-shadow:5px 0 25px rgba(0,0,0,.12)
 }
 
-.app {
-    display: flex;
-    min-height: 100vh;
+.sidebar-brand{
+display:flex;
+align-items:center;
+gap:11px;
+padding:5px 9px 28px;
+font-size:23px;
+font-weight:800;
+color:var(--accent);
+letter-spacing:.4px
 }
 
-/* SIDEBAR */
-
-.sidebar {
-    width: 240px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    padding: 25px 16px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    overflow-y: auto;
-    backdrop-filter: blur(18px);
-    z-index: 100;
+.brand-icon{
+width:42px;
+height:42px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:13px;
+background:var(--button);
+color:white;
+font-size:22px
 }
 
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-    color: var(--accent);
-    margin: 8px 5px;
+.sidebar-heading{
+font-size:10px;
+font-weight:800;
+letter-spacing:1.5px;
+color:var(--muted);
+padding:13px 12px 9px
 }
 
-.logo-sub {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    margin: 5px 5px 35px;
+.sidebar-link{
+display:flex;
+align-items:center;
+gap:13px;
+padding:12px 13px;
+margin:3px 0;
+border-radius:10px;
+color:var(--muted);
+font-size:13px;
+font-weight:600;
+transition:.2s
 }
 
-.menu-title {
-    color: var(--muted);
-    font-size: 11px;
-    margin: 22px 10px 12px;
-    letter-spacing: 2px;
+.sidebar-link:hover,
+.sidebar-link.active{
+color:var(--accent);
+background:rgba(30,145,190,.17)
 }
 
-.sidebar a {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 13px;
-    margin: 5px 0;
-    border-radius: 10px;
-    color: var(--text);
-    font-size: 14px;
-    transition: .25s;
-    border: 1px solid transparent;
+.sidebar-icon{
+width:22px;
+text-align:center;
+font-size:18px;
+flex-shrink:0
 }
 
-.sidebar a:hover,
-.sidebar a.active {
-    background: rgba(30,145,190,.20);
-    border-color: var(--accent);
-    color: var(--accent);
+.sidebar-bottom{
+margin-top:auto;
+padding-top:20px
 }
 
-.sidebar .bottom-menu {
-    margin-top: 45px;
+.sidebar-theme{
+width:100%;
+padding:12px;
+border:1px solid var(--border);
+border-radius:10px;
+background:var(--card2);
+color:var(--text);
+cursor:pointer;
+font-size:13px;
+font-weight:600;
+text-align:left
 }
 
-.side-icon {
-    width: 22px;
-    text-align: center;
-    font-size: 18px;
+.sidebar-theme:hover{
+border-color:var(--accent);
+color:var(--accent)
 }
 
-/* MAIN */
+/* MAIN CONTENT */
 
-.main {
-    margin-left: 240px;
-    width: calc(100% - 240px);
-    padding: 26px;
+.main{
+width:calc(100% - 245px);
+padding:26px 30px 45px;
+min-width:0;
+max-width:1600px;
+margin-left:245px
 }
 
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 26px;
-    flex-wrap: wrap;
+.mobile-brand{
+display:none;
+align-items:center;
+gap:10px;
+font-size:23px;
+font-weight:800;
+letter-spacing:.4px;
+color:var(--accent)
 }
 
-.search {
-    width: min(450px,100%);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 30px;
-    padding: 13px 18px;
-    color: var(--text);
-    outline: none;
+.mobile-brand-icon{
+width:39px;
+height:39px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:12px;
+background:var(--button);
+color:white;
+font-size:21px;
+box-shadow:0 5px 15px rgba(66,217,245,.2)
 }
 
-.search::placeholder {
-    color: var(--muted);
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:26px;
+flex-wrap:wrap
 }
 
-.search:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 10px rgba(66,217,245,.2);
+.search{
+width:min(450px,100%);
+background:var(--card);
+border:1px solid var(--border);
+border-radius:30px;
+padding:13px 18px;
+color:var(--text);
+outline:none;
+min-width:0
 }
 
-.top-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    color: var(--muted);
-    flex-wrap: wrap;
-}
+.search::placeholder{color:var(--muted)}
+.search:focus{border-color:var(--accent)}
 
-.theme-btn {
-    background: var(--card);
-    border: 1px solid var(--accent);
-    color: var(--text);
-    border-radius: 22px;
-    padding: 10px 16px;
-    cursor: pointer;
-    font-weight: 600;
+.top-actions{
+display:flex;
+align-items:center;
+gap:15px;
+color:var(--muted);
+flex-wrap:wrap
 }
 
 /* BUTTONS */
 
-.btn {
-    display: inline-block;
-    padding: 12px 20px;
-    border: 1px solid var(--accent);
-    border-radius: 9px;
-    background: var(--button);
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: .25s;
+.btn{
+display:inline-block;
+padding:12px 20px;
+border:1px solid var(--accent);
+border-radius:9px;
+background:var(--button);
+color:white;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+transition:.25s;
+text-align:center
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 16px rgba(66,217,245,.25);
-    filter: brightness(1.08);
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 5px 16px rgba(66,217,245,.25);
+filter:brightness(1.08)
 }
 
 /* HERO */
 
-.hero {
-    min-height: 320px;
-    padding: 45px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    background:
-        linear-gradient(
-            90deg,
-            rgba(4,22,42,.94) 0%,
-            rgba(4,22,42,.78) 48%,
-            rgba(4,22,42,.18) 100%
-        ),
-        url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1500&q=85")
-        center/cover;
-    border: 1px solid var(--border);
-    margin-bottom: 30px;
-    box-shadow: 0 10px 30px var(--shadow);
+.hero{
+min-height:340px;
+padding:45px;
+border-radius:20px;
+display:flex;
+align-items:center;
+background:
+linear-gradient(90deg,rgba(4,22,42,.94),rgba(4,22,42,.75),rgba(4,22,42,.18)),
+url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1500&q=85") center/cover;
+border:1px solid var(--border);
+margin-bottom:30px;
+box-shadow:0 10px 30px var(--shadow)
 }
 
-.hero-content {
-    max-width: 490px;
+.hero-content{max-width:550px}
+
+.hero h1{
+color:#F1FAFF;
+font-size:clamp(30px,4vw,48px);
+margin-bottom:16px;
+line-height:1.15
 }
 
-.hero h1 {
-    color: #F1FAFF;
-    font-size: clamp(30px,4vw,45px);
-    margin-bottom: 16px;
-    line-height: 1.15;
+.hero p{
+color:#D1EAF7;
+line-height:1.7;
+margin-bottom:23px;
+font-size:16px
 }
 
-.hero p {
-    color: #D1EAF7;
-    line-height: 1.7;
-    margin-bottom: 23px;
-    font-size: 15px;
-}
-
-.hero .btn {
-    margin: 5px 5px 5px 0;
-}
+.hero .btn{margin:5px 5px 5px 0}
 
 /* DASHBOARD */
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 20px;
+.dashboard-grid{
+display:grid;
+grid-template-columns:1.4fr 1fr;
+gap:22px
 }
 
-.panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 21px;
-    box-shadow: 0 8px 25px var(--shadow);
-    backdrop-filter: blur(14px);
+.panel{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:16px;
+padding:23px;
+box-shadow:0 8px 25px var(--shadow);
+backdrop-filter:blur(14px);
+min-width:0
 }
 
-.panel h3 {
-    margin-bottom: 15px;
-    color: var(--accent);
+.panel h3{
+margin-bottom:15px;
+color:var(--accent)
 }
 
-.trip-image {
-    width: 100%;
-    height: 155px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 14px;
+.trip-image{
+width:100%;
+height:230px;
+object-fit:cover;
+border-radius:12px;
+margin-bottom:17px
 }
 
-.muted {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.7;
+.muted{
+color:var(--muted);
+font-size:14px;
+line-height:1.7
 }
 
 /* SECTIONS */
 
-.section {
-    margin: 35px 0;
-    scroll-margin-top: 25px;
+.section{
+margin:40px 0;
+scroll-margin-top:25px
 }
 
-.section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 19px;
-    gap: 10px;
+.section-heading{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+gap:12px;
+flex-wrap:wrap
 }
 
-.section-heading h2 {
-    font-size: 23px;
-    color: var(--accent);
+.section-heading h2{
+font-size:24px;
+color:var(--accent)
 }
 
 /* DESTINATIONS */
 
-.destinations {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(175px,1fr));
-    gap: 18px;
+.destinations{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:20px
 }
 
-.destination {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    overflow: hidden;
-    transition: .3s;
-    backdrop-filter: blur(10px);
+.destination{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:14px;
+overflow:hidden;
+transition:.3s;
+backdrop-filter:blur(10px);
+min-width:0
 }
 
-.destination:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent);
-    box-shadow: 0 8px 25px rgba(66,217,245,.16);
+.destination:hover{
+transform:translateY(-5px);
+border-color:var(--accent)
 }
 
-.destination img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+.destination img{
+width:100%;
+height:180px;
+object-fit:cover;
+display:block
 }
 
-.destination-info {
-    padding: 15px;
+.destination-info{padding:17px}
+
+.destination-info h3{
+margin-bottom:8px;
+color:var(--accent)
 }
 
-.destination-info h3 {
-    margin-bottom: 8px;
-    color: var(--accent);
+.destination-info p{
+color:var(--muted);
+font-size:13px;
+line-height:1.6;
+min-height:42px;
+margin-bottom:14px
 }
 
-.destination-info p {
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.6;
-    min-height: 38px;
-    margin-bottom: 13px;
+.destination-actions{
+display:flex;
+gap:9px;
+flex-wrap:wrap
+}
+
+.destination-actions .btn{
+flex:1;
+min-width:100px
+}
+
+.save-btn{
+padding:12px 13px;
+border:1px solid var(--accent);
+border-radius:9px;
+background:var(--card2);
+color:var(--accent);
+font-size:13px;
+font-weight:700;
+cursor:pointer;
+transition:.2s
+}
+
+.save-btn:hover{
+background:rgba(66,217,245,.13)
+}
+
+.save-btn.saved{
+background:rgba(30,180,130,.15);
+border-color:#35c99a;
+color:#35c99a
 }
 
 /* PLANNER */
 
-.planner {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    padding: 25px;
-    max-width: 650px;
-    box-shadow: 0 8px 25px var(--shadow);
-    backdrop-filter: blur(12px);
+.planner{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:16px;
+padding:25px;
+max-width:650px;
+box-shadow:0 8px 25px var(--shadow);
+backdrop-filter:blur(12px)
 }
 
-.planner label {
-    display: block;
-    margin-top: 15px;
-    font-size: 14px;
-    font-weight: 600;
+.planner label{
+display:block;
+margin-top:17px;
+font-size:14px;
+font-weight:600
 }
 
-.planner input,
-.planner select {
-    width: 100%;
-    padding: 13px;
-    margin-top: 8px;
-    border: 1px solid var(--border);
-    background: var(--card2);
-    color: var(--text);
-    border-radius: 8px;
-    outline: none;
+.planner input,.planner select{
+width:100%;
+padding:13px;
+margin-top:8px;
+border:1px solid var(--border);
+background:var(--card2);
+color:var(--text);
+border-radius:8px;
+outline:none
 }
 
-.planner input:focus,
-.planner select:focus {
-    border-color: var(--accent);
+.planner select option{
+background:#102D48;
+color:white
 }
 
-.planner select option {
-    background: #102D48;
-    color: white;
-}
-
-#result {
-    margin-top: 18px;
-    line-height: 1.7;
-    color: var(--accent);
+#result{
+margin-top:18px;
+line-height:1.7;
+color:var(--accent)
 }
 
 /* QUICK LINKS */
 
-.quick-links {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
-    gap: 16px;
+.quick-links{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:18px
 }
 
-.quick-card {
-    padding: 22px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    box-shadow: 0 8px 25px var(--shadow);
-    backdrop-filter: blur(12px);
-    scroll-margin-top: 25px;
+.quick-card{
+padding:23px;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:14px;
+box-shadow:0 8px 25px var(--shadow);
+backdrop-filter:blur(12px)
 }
 
-.quick-card h3 {
-    margin-bottom: 11px;
-    color: var(--accent);
+.quick-card h3{
+margin-bottom:11px;
+color:var(--accent)
 }
 
-.quick-card p {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 18px;
-    line-height: 1.6;
+.quick-card p{
+color:var(--muted);
+font-size:14px;
+margin-bottom:18px;
+line-height:1.6
 }
 
-footer {
-    text-align: center;
-    padding: 30px;
-    color: var(--muted);
-    font-size: 13px;
+/* SETTINGS */
+
+.settings-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:18px;
+margin-top:20px
 }
 
-/* RESPONSIVE */
-
-@media(max-width:900px) {
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
-    }
-
-    .logo {
-        font-size: 18px;
-        text-align: center;
-    }
-
-    .logo-sub,
-    .menu-title,
-    .sidebar .link-text {
-        display: none;
-    }
-
-    .sidebar a {
-        justify-content: center;
-        font-size: 19px;
-    }
-
-    .side-icon {
-        width: auto;
-    }
-
-    .main {
-        margin-left: 75px;
-        width: calc(100% - 75px);
-        padding: 17px;
-    }
-
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
+.setting-card{
+background:var(--card2);
+border:1px solid var(--border);
+border-radius:13px;
+padding:22px;
+min-width:0
 }
 
-@media(max-width:520px) {
-    .hero {
-        padding: 25px;
-    }
+.setting-card h3{
+color:var(--accent);
+margin-bottom:10px
+}
 
-    .hero h1 {
-        font-size: 29px;
-    }
+.setting-card p{
+color:var(--muted);
+font-size:14px;
+line-height:1.7;
+margin-bottom:17px
+}
 
-    .topbar {
-        align-items: stretch;
-    }
+.theme-status{
+color:var(--accent);
+font-size:13px;
+margin-top:12px
+}
 
-    .top-actions {
-        justify-content: space-between;
-    }
+footer{
+text-align:center;
+padding:30px 10px;
+color:var(--muted);
+font-size:13px
+}
 
-    .main {
-        padding: 12px;
-    }
+/* BOTTOM NAVIGATION */
+
+.bottom-nav{display:none}
+
+/* TABLET */
+
+@media(max-width:1000px) and (min-width:651px){
+
+.sidebar{
+width:215px;
+padding:22px 12px
+}
+
+.main{
+width:calc(100% - 215px);
+margin-left:215px;
+padding:22px 20px 40px
+}
+
+.sidebar-link{
+gap:10px;
+padding:11px 9px;
+font-size:12px
+}
+
+.dashboard-grid{
+grid-template-columns:1fr 1fr
+}
+
+.destinations{
+grid-template-columns:repeat(2,minmax(0,1fr))
+}
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+body,body.light{background-attachment:scroll}
+
+.sidebar{display:none !important}
+
+.main{
+width:100%;
+margin-left:0;
+padding:14px 14px 105px
+}
+
+.mobile-brand{
+display:flex;
+margin-bottom:3px
+}
+
+.topbar{
+display:flex;
+flex-direction:column;
+align-items:stretch;
+gap:12px;
+margin-bottom:20px
+}
+
+.search{
+width:100%;
+padding:13px 15px
+}
+
+.top-actions{
+justify-content:space-between;
+gap:9px;
+font-size:12px
+}
+
+/* HERO */
+
+.hero{
+min-height:360px;
+padding:25px 20px;
+border-radius:17px;
+background-position:center;
+margin-bottom:20px
+}
+
+.hero h1{
+font-size:clamp(29px,8vw,37px)
+}
+
+.hero p{font-size:15px}
+
+.hero .btn{
+display:block;
+width:100%;
+margin:10px 0;
+padding:14px
+}
+
+/* DASHBOARD */
+
+.dashboard-grid{
+grid-template-columns:1fr;
+gap:16px
+}
+
+.panel{padding:18px}
+
+.trip-image{height:190px}
+
+/* SECTIONS */
+
+.section{margin:30px 0}
+
+.section-heading h2{font-size:21px}
+
+/* HORIZONTAL DESTINATION CARDS */
+
+.destinations{
+display:flex;
+flex-wrap:nowrap;
+gap:14px;
+overflow-x:auto;
+overflow-y:hidden;
+padding:3px 2px 15px;
+scroll-snap-type:x mandatory;
+-webkit-overflow-scrolling:touch;
+scrollbar-width:thin;
+scrollbar-color:var(--accent) transparent
+}
+
+.destination{
+flex:0 0 265px;
+width:265px;
+scroll-snap-align:start;
+transform:none
+}
+
+.destination:hover{transform:none}
+
+.destination img{height:175px}
+
+.destination-info p{min-height:0}
+
+.destination-actions{
+flex-direction:column
+}
+
+.destination-actions .btn,
+.destination-actions .save-btn{
+width:100%
+}
+
+/* PLANNER */
+
+.planner{
+padding:19px;
+width:100%
+}
+
+/* QUICK LINKS AND SETTINGS */
+
+.quick-links,
+.settings-grid{
+grid-template-columns:1fr
+}
+
+.quick-card,
+.setting-card{padding:19px}
+
+.btn{max-width:100%}
+
+#wishlist,
+#settings{
+display:none !important
+}
+
+/* MOBILE BOTTOM NAVIGATION */
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+z-index:2000;
+display:flex;
+justify-content:space-around;
+align-items:center;
+gap:0;
+padding:8px 3px;
+padding-bottom:calc(8px + env(safe-area-inset-bottom));
+background:var(--sidebar);
+border-top:1px solid var(--border);
+backdrop-filter:blur(20px);
+box-shadow:0 -5px 22px rgba(0,0,0,.18)
+}
+
+.bottom-nav a{
+display:flex;
+flex:1;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:5px;
+padding:7px 2px;
+border-radius:9px;
+color:var(--muted);
+font-size:10px;
+font-weight:600;
+transition:.2s;
+white-space:normal;
+text-align:center;
+min-width:0
+}
+
+.bottom-nav a:hover,
+.bottom-nav a.active{
+color:var(--accent);
+background:rgba(30,145,190,.20)
+}
+
+.nav-icon{font-size:20px;line-height:1}
+
+.nav-label{
+display:block;
+line-height:1.2
+}
+
+footer{padding:20px 5px 15px}
+}
+
+/* SMALL PHONES */
+
+@media(max-width:360px){
+
+.main{padding:10px 10px 100px}
+
+.mobile-brand{font-size:21px}
+
+.hero{padding:20px 16px}
+
+.hero h1{font-size:28px}
+
+.destination{
+flex-basis:245px;
+width:245px
+}
+
+.bottom-nav a{font-size:9px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="app">
+
+<!-- LAPTOP SIDEBAR -->
 
 <aside class="sidebar">
 
-    <div class="logo">✈ VoyageIQ</div>
-    <div class="logo-sub">SMART TRIP PLANNER</div>
+<div class="sidebar-brand">
+<span class="brand-icon">✈</span>
+<span>VoyageIQ</span>
+</div>
 
-    <div class="menu-title">MAIN MENU</div>
+<div class="sidebar-heading">MAIN MENU</div>
 
-    <a href="/" class="active">
-        <span class="side-icon">⌂</span>
-        <span class="link-text">Dashboard</span>
-    </a>
+<a href="#dashboard" class="sidebar-link active">
+<span class="sidebar-icon">⌂</span>
+<span>Dashboard</span>
+</a>
 
-    <a href="/transport">
-        <span class="side-icon">✈</span>
-        <span class="link-text">Flights & Transport</span>
-    </a>
+<a href="/planner" class="sidebar-link">
+<span class="sidebar-icon">🧭</span>
+<span>Trip Planner</span>
+</a>
 
-    <a href="/hotels">
-        <span class="side-icon">⌂</span>
-        <span class="link-text">Hotels</span>
-    </a>
+<a href="/transport" class="sidebar-link">
+<span class="sidebar-icon">✈</span>
+<span>Flights & Transport</span>
+</a>
 
-    <a href="#packages">
-        <span class="side-icon">▣</span>
-        <span class="link-text">Packages</span>
-    </a>
+<a href="/hotels" class="sidebar-link">
+<span class="sidebar-icon">🏨</span>
+<span>Hotels</span>
+</a>
 
-    <a href="/my-bookings">
-        <span class="side-icon">▤</span>
-        <span class="link-text">My Bookings</span>
-    </a>
+<a href="#packages" class="sidebar-link">
+<span class="sidebar-icon">🧳</span>
+<span>Packages</span>
+</a>
 
-    <a href="#wishlist">
-        <span class="side-icon">♡</span>
-        <span class="link-text">Wishlist</span>
-    </a>
+<a href="/my-bookings" class="sidebar-link">
+<span class="sidebar-icon">▤</span>
+<span>My Bookings</span>
+</a>
 
-    <a href="#offers">
-        <span class="side-icon">◇</span>
-        <span class="link-text">Offers</span>
-    </a>
+<a href="/wishlist" class="sidebar-link">
+<span class="sidebar-icon">♡</span>
+<span>Wishlist</span>
+</a>
 
-    <div class="menu-title">ACCOUNT</div>
+<a href="#packages" class="sidebar-link">
+<span class="sidebar-icon">🎁</span>
+<span>Offers</span>
+</a>
 
-    <a href="/login">
-        <span class="side-icon">♙</span>
-        <span class="link-text">Login</span>
-    </a>
+<div class="sidebar-heading">ACCOUNT</div>
 
-    <a href="/signup">
-        <span class="side-icon">✚</span>
-        <span class="link-text">Sign Up</span>
-    </a>
+{% if session.get('user_id') %}
+<a href="/logout" class="sidebar-link">
+<span class="sidebar-icon">↪</span>
+<span>Logout</span>
+</a>
+{% else %}
+<a href="/login" class="sidebar-link">
+<span class="sidebar-icon">⇥</span>
+<span>Login</span>
+</a>
 
-    <a href="/logout">
-        <span class="side-icon">⇥</span>
-        <span class="link-text">Logout</span>
-    </a>
+<a href="/signup" class="sidebar-link">
+<span class="sidebar-icon">＋</span>
+<span>Sign Up</span>
+</a>
+{% endif %}
 
-    <div class="bottom-menu">
-        <a href="#settings">
-            <span class="side-icon">⚙</span>
-            <span class="link-text">Settings</span>
-        </a>
-    </div>
+<div class="sidebar-bottom">
+
+<a href="/settings" class="sidebar-link">
+<span class="sidebar-icon">⚙</span>
+<span>Settings</span>
+</a>
+
+<button class="sidebar-theme" type="button" onclick="toggleTheme()">
+🎨 Switch Theme
+</button>
+
+</div>
 
 </aside>
 
-<main class="main">
+<!-- MAIN CONTENT -->
 
-    <div class="topbar">
+<main class="main" id="dashboard">
 
-        <input
-            class="search"
-            type="search"
-            id="searchBox"
-            placeholder="⌕ Search destinations, hotels, flights..."
-        >
+<div class="topbar">
 
-        <div class="top-actions">
-            <span>🔔</span>
-            <span>Welcome to VoyageIQ</span>
+<div class="mobile-brand">
+<span class="mobile-brand-icon">✈</span>
+<span>VoyageIQ</span>
+</div>
 
-            <button
-                class="theme-btn"
-                id="themeButton"
-                type="button"
-                onclick="toggleTheme()"
-            >
-                ☀ / ☾ Theme
-            </button>
-        </div>
+<input
+class="search"
+type="search"
+id="searchBox"
+placeholder="⌕ Search destinations, hotels, flights..."
+>
 
-    </div>
+<div class="top-actions">
+<span>🔔</span>
+<span>Welcome to VoyageIQ</span>
+</div>
 
-    <!-- HERO -->
+</div>
 
-    <header class="hero">
+<!-- HERO -->
 
-        <div class="hero-content">
+<header class="hero">
 
-            <h1>Explore The World With VoyageIQ</h1>
+<div class="hero-content">
 
-            <p>
-                Discover amazing destinations, plan unforgettable trips
-                and explore exciting travel experiences.
-            </p>
+<h1>Explore The World With VoyageIQ</h1>
 
-            <a href="#destinations" class="btn">
-                Explore Destinations →
-            </a>
+<p>
+Discover amazing destinations, plan unforgettable trips
+and explore exciting travel experiences.
+</p>
 
-            <a href="/planner" class="btn">
-                Plan My Trip
-            </a>
+<a href="#destinations" class="btn">
+Explore Destinations →
+</a>
 
-        </div>
+<a href="/planner" class="btn">
+Plan My Trip
+</a>
 
-    </header>
+</div>
 
-    <!-- DASHBOARD -->
+</header>
 
-    <div class="dashboard-grid">
+<!-- DASHBOARD PANELS -->
 
-        <section class="panel">
+<div class="dashboard-grid">
 
-            <h3>🌍 Your Travel Journey</h3>
+<section class="panel">
 
-            <img
-                class="trip-image"
-                src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=85"
-                alt="Dubai skyline"
-            >
+<h3>🌍 Your Travel Journey</h3>
 
-            <h3>Discover Your Next Adventure</h3>
+<img
+class="trip-image"
+src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=900&q=85"
+alt="Dubai skyline"
+>
 
-            <p class="muted">
-                Discover new places, explore destinations and create
-                your perfect travel experience with VoyageIQ.
-            </p>
+<h3>Discover Your Next Adventure</h3>
 
-            <br>
+<p class="muted">
+Discover new places, explore destinations and create
+your perfect travel experience with VoyageIQ.
+</p>
 
-            <a href="/planner" class="btn">Start Planning →</a>
+<br>
 
-        </section>
+<a href="/planner" class="btn">
+Start Planning →
+</a>
 
-        <section class="panel">
+</section>
 
-            <h3>✦ Quick Travel Options</h3>
+<section class="panel">
 
-            <p class="muted">
-                Find everything you need for your next journey.
-            </p>
+<h3>✦ Quick Travel Options</h3>
 
-            <br>
+<p class="muted">
+Find everything you need for your next journey.
+</p>
 
-            <p>✈ Flights, Trains and Buses</p>
-            <br>
+<br>
 
-            <a href="/transport" class="btn">Explore Transport</a>
+<p>✈ Flights, Trains and Buses</p>
 
-            <br><br>
+<br>
 
-            <p>🏨 Hotels and Stays</p>
-            <br>
+<a href="/transport" class="btn">
+Explore Transport
+</a>
 
-            <a href="/hotels" class="btn">Explore Hotels</a>
+<br><br>
 
-            <br><br>
-
-            <p>🧭 Personal Trip Planner</p>
-            <br>
-
-            <a href="/planner" class="btn">Plan Your Trip</a>
-
-        </section>
-
-    </div>
-
-    <!-- DESTINATIONS -->
-
-    <section class="section" id="destinations">
-
-        <div class="section-heading">
-            <h2>Popular Destinations</h2>
-            <span class="muted">Explore beautiful places</span>
-        </div>
-
-        <div class="destinations">
-
-            <article class="destination">
-                <img
-                    src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80"
-                    alt="Goa"
-                >
-                <div class="destination-info">
-                    <h3>Goa</h3>
-                    <p>Beautiful beaches and coastal adventures.</p>
-                    <a href="/hotels" class="btn">Explore</a>
-                </div>
-            </article>
-
-            <article class="destination">
-                <img
-                    src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80"
-                    alt="Kerala"
-                >
-                <div class="destination-info">
-                    <h3>Kerala</h3>
-                    <p>Green landscapes and peaceful backwaters.</p>
-                    <a href="/hotels" class="btn">Explore</a>
-                </div>
-            </article>
-
-            <article class="destination">
-                <img
-                    src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80"
-                    alt="Manali"
-                >
-                <div class="destination-info">
-                    <h3>Manali</h3>
-                    <p>Mountains, nature and cool escapes.</p>
-                    <a href="/hotels" class="btn">Explore</a>
-                </div>
-            </article>
-
-            <article class="destination">
-                <img
-                    src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=800&q=80"
-                    alt="Jaipur"
-                >
-                <div class="destination-info">
-                    <h3>Jaipur</h3>
-                    <p>Historic forts and colourful streets.</p>
-                    <a href="/hotels" class="btn">Explore</a>
-                </div>
-            </article>
-
-            <article class="destination">
-                <img
-                    src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80"
-                    alt="Mysuru"
-                >
-                <div class="destination-info">
-                    <h3>Mysuru</h3>
-                    <p>Palaces, culture and heritage.</p>
-                    <a href="/hotels" class="btn">Explore</a>
-                </div>
-            </article>
-
-        </div>
-
-    </section>
-
-    <!-- TRIP PLANNER -->
-
-    <section class="section" id="planner">
-
-        <div class="section-heading">
-            <h2>🧭 Smart Trip Planner</h2>
-        </div>
-
-        <div class="planner">
-
-            <p class="muted">
-                Enter your travel preferences to get a demo recommendation.
-            </p>
-
-            <label for="budget">Your Budget (₹)</label>
-
-            <input
-                type="number"
-                id="budget"
-                min="1"
-                placeholder="Example: 10000"
-            >
-
-            <label for="days">Trip Duration</label>
-
-            <select id="days">
-                <option value="2">2–3 Days</option>
-                <option value="5">4–6 Days</option>
-                <option value="7">7+ Days</option>
-            </select>
-
-            <label for="interest">Your Interest</label>
-
-            <select id="interest">
-                <option value="beach">Beaches</option>
-                <option value="nature">Nature and Mountains</option>
-                <option value="culture">Culture and History</option>
-                <option value="temples">Temples</option>
-            </select>
-
-            <br><br>
-
-            <button class="btn" type="button" onclick="recommend()">
-                Find My Destination →
-            </button>
-
-            <p id="result" aria-live="polite"></p>
-
-        </div>
-
-    </section>
-
-    <!-- MORE OPTIONS -->
-
-    <section class="section" id="packages">
-
-        <div class="section-heading">
-            <h2>Explore More</h2>
-        </div>
-
-        <div class="quick-links">
-
-            <div class="quick-card">
-                <h3>✈ Transport</h3>
-                <p>Explore flights, trains and buses.</p>
-                <a href="/transport" class="btn">View Transport</a>
-            </div>
-
-            <div class="quick-card">
-                <h3>🏨 Hotels</h3>
-                <p>Find a comfortable place to stay.</p>
-                <a href="/hotels" class="btn">View Hotels</a>
-            </div>
-
-            <div class="quick-card" id="bookings">
-                <h3>🎒 My Bookings</h3>
-                <p>View your hotel reservations and transport tickets.</p>
-                <a href="/my-bookings" class="btn">View My Bookings</a>
-            </div>
-
-            <div class="quick-card" id="offers">
-                <h3>🎁 Travel Offers</h3>
-                <p>Explore exciting travel opportunities.</p>
-                <a href="#destinations" class="btn">Explore Offers</a>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- WISHLIST PLACEHOLDER -->
-
-    <section class="section" id="wishlist">
-        <div class="panel">
-            <h3>♡ My Wishlist</h3>
-            <p class="muted">
-                Your favourite destinations will appear here when the
-                Wishlist feature is connected to your account.
-            </p>
-        </div>
-    </section>
-
-    <!-- SETTINGS -->
-
-    <section class="section" id="settings">
-        <div class="panel">
-            <h3>⚙ Settings</h3>
-            <p class="muted">
-                Change the appearance of VoyageIQ using the theme button
-                at the top of this page.
-            </p>
-            <br>
-            <button class="btn" type="button" onclick="toggleTheme()">
-                Change Theme
-            </button>
-        </div>
-    </section>
-
-    <footer>
-        © 2026 VoyageIQ | Discover More. Travel Smarter.
-    </footer>
+<p>🏨 Hotels and Stays</p>
+
+<br>
+
+<a href="/hotels" class="btn">
+Explore Hotels
+</a>
+
+<br><br>
+
+<p>🧭 Personal Trip Planner</p>
+
+<br>
+
+<a href="/planner" class="btn">
+Plan Your Trip
+</a>
+
+</section>
+
+</div>
+
+<!-- DESTINATIONS -->
+
+<section class="section" id="destinations">
+
+<div class="section-heading">
+<h2>Popular Destinations</h2>
+<span class="muted">Swipe to explore →</span>
+</div>
+
+<div class="destinations">
+
+<article class="destination"
+data-name="Goa"
+data-description="Beautiful beaches and coastal adventures."
+data-image="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80">
+
+<img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80" alt="Goa">
+
+<div class="destination-info">
+<h3>Goa</h3>
+<p>Beautiful beaches and coastal adventures.</p>
+<div class="destination-actions">
+<a href="/hotels?destination=Goa" class="btn">Explore</a>
+<button class="save-btn" type="button" onclick="toggleWishlist(this)">♡ Save to Wishlist</button>
+</div>
+</div>
+</article>
+
+<article class="destination"
+data-name="Kerala"
+data-description="Green landscapes and peaceful backwaters."
+data-image="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80">
+
+<img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80" alt="Kerala">
+
+<div class="destination-info">
+<h3>Kerala</h3>
+<p>Green landscapes and peaceful backwaters.</p>
+<div class="destination-actions">
+<a href="/hotels?destination=Kerala" class="btn">Explore</a>
+<button class="save-btn" type="button" onclick="toggleWishlist(this)">♡ Save to Wishlist</button>
+</div>
+</div>
+</article>
+
+<article class="destination"
+data-name="Manali"
+data-description="Mountains, nature and cool escapes."
+data-image="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80">
+
+<img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80" alt="Manali">
+
+<div class="destination-info">
+<h3>Manali</h3>
+<p>Mountains, nature and cool escapes.</p>
+<div class="destination-actions">
+<a href="/hotels?destination=Manali" class="btn">Explore</a>
+<button class="save-btn" type="button" onclick="toggleWishlist(this)">♡ Save to Wishlist</button>
+</div>
+</div>
+</article>
+
+<article class="destination"
+data-name="Jaipur"
+data-description="Historic forts and colourful streets."
+data-image="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=800&q=80">
+
+<img src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=800&q=80" alt="Jaipur">
+
+<div class="destination-info">
+<h3>Jaipur</h3>
+<p>Historic forts and colourful streets.</p>
+<div class="destination-actions">
+<a href="/hotels?destination=Jaipur" class="btn">Explore</a>
+<button class="save-btn" type="button" onclick="toggleWishlist(this)">♡ Save to Wishlist</button>
+</div>
+</div>
+</article>
+
+<article class="destination"
+data-name="Mysuru"
+data-description="Palaces, culture and heritage."
+data-image="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80">
+
+<img src="https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80" alt="Mysuru">
+
+<div class="destination-info">
+<h3>Mysuru</h3>
+<p>Palaces, culture and heritage.</p>
+<div class="destination-actions">
+<a href="/hotels?destination=Mysuru" class="btn">Explore</a>
+<button class="save-btn" type="button" onclick="toggleWishlist(this)">♡ Save to Wishlist</button>
+</div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- SMART TRIP PLANNER -->
+
+<section class="section" id="planner">
+
+<div class="section-heading">
+<h2>🧭 Smart Trip Planner</h2>
+</div>
+
+<div class="planner">
+
+<p class="muted">
+Enter your travel preferences to get a demo recommendation.
+</p>
+
+<label for="budget">Your Budget (₹)</label>
+
+<input type="number" id="budget" min="1" placeholder="Example: 10000">
+
+<label for="days">Trip Duration</label>
+
+<select id="days">
+<option value="2">2–3 Days</option>
+<option value="5">4–6 Days</option>
+<option value="7">7+ Days</option>
+</select>
+
+<label for="interest">Your Interest</label>
+
+<select id="interest">
+<option value="beach">Beaches</option>
+<option value="nature">Nature and Mountains</option>
+<option value="culture">Culture and History</option>
+<option value="temples">Temples</option>
+</select>
+
+<br><br>
+
+<button class="btn" type="button" onclick="recommend()">
+Find My Destination →
+</button>
+
+<p id="result" aria-live="polite"></p>
+
+</div>
+</section>
+
+<!-- EXPLORE MORE -->
+
+<section class="section" id="packages">
+
+<div class="section-heading">
+<h2>Explore More</h2>
+</div>
+
+<div class="quick-links">
+
+<div class="quick-card">
+<h3>✈ Transport</h3>
+<p>Explore flights, trains and buses.</p>
+<a href="/transport" class="btn">View Transport</a>
+</div>
+
+<div class="quick-card">
+<h3>🏨 Hotels</h3>
+<p>Find a comfortable place to stay.</p>
+<a href="/hotels" class="btn">View Hotels</a>
+</div>
+
+<div class="quick-card">
+<h3>🧭 Trip Planner</h3>
+<p>Discover destinations based on your travel preferences.</p>
+<a href="/planner" class="btn">Plan My Trip</a>
+</div>
+
+<div class="quick-card">
+<h3>🎁 Travel Offers</h3>
+<p>Explore exciting travel opportunities.</p>
+<a href="#destinations" class="btn">Explore Offers</a>
+</div>
+
+</div>
+</section>
+
+<!-- DESKTOP WISHLIST SHORTCUT -->
+
+<section class="section" id="wishlist">
+
+<div class="panel">
+<h3>♡ My Wishlist</h3>
+<p class="muted">
+View and manage all your saved travel destinations.
+</p>
+<br>
+<a href="/wishlist" class="btn">Open My Wishlist →</a>
+</div>
+
+</section>
+
+<!-- SETTINGS - DESKTOP ONLY -->
+
+<section class="section" id="settings">
+
+<div class="section-heading">
+<h2>⚙ Settings</h2>
+</div>
+
+<div class="panel">
+
+<h3>Manage Your VoyageIQ Settings</h3>
+
+<p class="muted">
+Manage your bookings and customize the appearance
+of your VoyageIQ experience.
+</p>
+
+<div class="settings-grid">
+
+<div class="setting-card">
+<h3>▤ My Bookings</h3>
+<p>
+View your hotel reservations and transport booking details
+in one place.
+</p>
+<a href="/my-bookings" class="btn">View My Bookings →</a>
+</div>
+
+<div class="setting-card">
+<h3>🎨 Theme Settings</h3>
+<p>
+Choose between Dark Mode and Light Mode
+for your VoyageIQ dashboard.
+</p>
+<button class="btn" type="button" id="settingsThemeButton" onclick="toggleTheme()">
+Switch Theme
+</button>
+<p class="theme-status" id="themeStatus">Current theme: Dark Mode</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<footer>
+© 2026 VoyageIQ | Discover More. Travel Smarter.
+</footer>
 
 </main>
 </div>
 
+<!-- MOBILE BOTTOM NAVIGATION ONLY -->
+
+<nav class="bottom-nav" aria-label="Main navigation">
+
+<a href="#dashboard" class="active">
+<span class="nav-icon">⌂</span>
+<span class="nav-label">Dashboard</span>
+</a>
+
+<a href="/planner">
+<span class="nav-icon">🧭</span>
+<span class="nav-label">Planner</span>
+</a>
+
+<a href="/transport">
+<span class="nav-icon">✈</span>
+<span class="nav-label">Flights & Trains</span>
+</a>
+
+<a href="/hotels">
+<span class="nav-icon">🏨</span>
+<span class="nav-label">Hotels</span>
+</a>
+
+<a href="/settings">
+<span class="nav-icon">⚙</span>
+<span class="nav-label">Settings</span>
+</a>
+
+</nav>
+
 <script>
 
-/* THEME SWITCH */
+/* THEME MANAGEMENT */
 
-function applyTheme(theme) {
-    document.body.classList.toggle("light", theme === "light");
+function applyTheme(theme){
 
-    const button = document.getElementById("themeButton");
+document.body.classList.toggle("light",theme==="light");
 
-    if (button) {
-        button.textContent =
-            theme === "light" ? "☾ Dark Theme" : "☀ Light Theme";
-    }
+const status=document.getElementById("themeStatus");
+
+if(status){
+status.textContent="Current theme: "+(theme==="light"?"Light Mode":"Dark Mode");
 }
 
-function toggleTheme() {
-    const isLight = document.body.classList.contains("light");
-    const newTheme = isLight ? "dark" : "light";
+const button=document.getElementById("settingsThemeButton");
 
-    applyTheme(newTheme);
-
-    try {
-        localStorage.setItem("voyageiq-theme", newTheme);
-    } catch (error) {
-        console.log("Theme preference could not be saved.");
-    }
+if(button){
+button.textContent=theme==="light"?"Switch to Dark Mode":"Switch to Light Mode";
 }
 
-try {
-    const savedTheme = localStorage.getItem("voyageiq-theme");
-    applyTheme(savedTheme === "light" ? "light" : "dark");
-} catch (error) {
-    applyTheme("dark");
+const sidebarButton=document.querySelector(".sidebar-theme");
+
+if(sidebarButton){
+sidebarButton.textContent=theme==="light"?"🎨 Switch to Dark Mode":"🎨 Switch to Light Mode";
 }
 
-/* TRIP RECOMMENDATION - DEMO RULES */
+}
 
-function recommend() {
+function toggleTheme(){
 
-    const budget = Number(document.getElementById("budget").value);
-    const days = Number(document.getElementById("days").value);
-    const interest = document.getElementById("interest").value;
-    const result = document.getElementById("result");
+const isLight=document.body.classList.contains("light");
+const newTheme=isLight?"dark":"light";
 
-    if (!budget || budget <= 0) {
-        result.textContent = "Please enter a valid budget.";
-        return;
-    }
+applyTheme(newTheme);
 
-    let place = "";
+try{
+localStorage.setItem("voyageiq-theme",newTheme);
+}catch(error){
+console.log("Theme preference could not be saved.");
+}
 
-    if (interest === "beach") {
-        place = budget >= 10000 ? "Goa" : "Gokarna";
-    }
-    else if (interest === "nature") {
-        place = budget >= 15000 ? "Manali" : "Coorg";
-    }
-    else if (interest === "culture") {
-        place = budget >= 10000 ? "Jaipur" : "Mysuru";
-    }
-    else if (interest === "temples") {
-        place = budget >= 10000 ? "Tirupati" : "Madurai";
-    }
+}
 
-    result.textContent =
-        "✨ Your recommended destination is " + place +
-        ". Budget: ₹" + budget +
-        ". Trip duration: " + days +
-        " days. Explore hotels and transport to plan your journey.";
+try{
+const savedTheme=localStorage.getItem("voyageiq-theme");
+applyTheme(savedTheme==="light"?"light":"dark");
+}catch(error){
+applyTheme("dark");
+}
+
+/* WISHLIST MANAGEMENT */
+
+function getWishlist(){
+
+try{
+const saved=JSON.parse(localStorage.getItem("voyageiq-wishlist")||"[]");
+return Array.isArray(saved)?saved:[];
+}catch(error){
+return [];
+}
+
+}
+
+function saveWishlist(wishlist){
+
+try{
+localStorage.setItem("voyageiq-wishlist",JSON.stringify(wishlist));
+return true;
+}catch(error){
+alert("Your browser could not save the Wishlist. Please check browser storage settings.");
+return false;
+}
+
+}
+
+function toggleWishlist(button){
+
+const card=button.closest(".destination");
+
+if(!card)return;
+
+const name=card.dataset.name;
+const description=card.dataset.description;
+const image=card.dataset.image;
+
+let wishlist=getWishlist();
+
+const existingIndex=wishlist.findIndex(function(place){
+
+return typeof place==="string"
+? place.toLowerCase()===name.toLowerCase()
+: (place.name||place.destination||"").toLowerCase()===name.toLowerCase();
+
+});
+
+if(existingIndex!==-1){
+
+wishlist.splice(existingIndex,1);
+
+if(saveWishlist(wishlist)){
+button.classList.remove("saved");
+button.textContent="♡ Save to Wishlist";
+}
+
+}else{
+
+wishlist.push({
+name:name,
+description:description,
+image:image
+});
+
+if(saveWishlist(wishlist)){
+button.classList.add("saved");
+button.textContent="♥ Saved";
+}
+
+}
+
+}
+
+function updateWishlistButtons(){
+
+const wishlist=getWishlist();
+
+document.querySelectorAll(".destination").forEach(function(card){
+
+const name=card.dataset.name;
+
+const saved=wishlist.some(function(place){
+
+return typeof place==="string"
+? place.toLowerCase()===name.toLowerCase()
+: (place.name||place.destination||"").toLowerCase()===name.toLowerCase();
+
+});
+
+const button=card.querySelector(".save-btn");
+
+if(button){
+button.classList.toggle("saved",saved);
+button.textContent=saved?"♥ Saved":"♡ Save to Wishlist";
+}
+
+});
+
+}
+
+updateWishlistButtons();
+
+window.addEventListener("storage",function(event){
+
+if(event.key==="voyageiq-wishlist"){
+updateWishlistButtons();
+}
+
+if(event.key==="voyageiq-theme"){
+applyTheme(event.newValue==="light"?"light":"dark");
+}
+
+});
+
+/* TRIP RECOMMENDATION */
+
+function recommend(){
+
+const budget=Number(document.getElementById("budget").value);
+const days=Number(document.getElementById("days").value);
+const interest=document.getElementById("interest").value;
+const result=document.getElementById("result");
+
+if(!budget||budget<=0){
+result.textContent="Please enter a valid budget.";
+return;
+}
+
+let place="";
+
+if(interest==="beach"){
+place=budget>=10000?"Goa":"Gokarna";
+}else if(interest==="nature"){
+place=budget>=15000?"Manali":"Coorg";
+}else if(interest==="culture"){
+place=budget>=10000?"Jaipur":"Mysuru";
+}else if(interest==="temples"){
+place=budget>=10000?"Tirupati":"Madurai";
+}
+
+result.textContent=
+"✨ Your recommended destination is "+place+
+". Budget: ₹"+budget+
+". Trip duration: "+days+
+" days. Explore hotels and transport to plan your journey.";
+
 }
 
 /* DESTINATION SEARCH */
 
-document.getElementById("searchBox").addEventListener("input", function() {
+document.getElementById("searchBox").addEventListener("input",function(){
 
-    const search = this.value.toLowerCase();
+const search=this.value.toLowerCase();
 
-    document.querySelectorAll(".destination").forEach(function(card) {
+document.querySelectorAll(".destination").forEach(function(card){
 
-        const name = card.querySelector("h3").textContent.toLowerCase();
+const name=card.querySelector("h3").textContent.toLowerCase();
 
-        card.style.display = name.includes(search) ? "block" : "none";
+card.style.display=name.includes(search)?"":"none";
 
-    });
+});
+
+});
+
+/* BOTTOM NAV ACTIVE STATE */
+
+document.querySelectorAll(".bottom-nav a").forEach(function(link){
+
+link.addEventListener("click",function(){
+
+document.querySelectorAll(".bottom-nav a").forEach(function(item){
+item.classList.remove("active");
+});
+
+this.classList.add("active");
+
+});
 
 });
 
@@ -976,4 +1497,3 @@ document.getElementById("searchBox").addEventListener("input", function() {
 
 </body>
 </html>
-i want all in this handwriting only just make changes same like this to other pages ill poy paste u

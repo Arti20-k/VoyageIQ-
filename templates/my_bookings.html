@@ -50,6 +50,7 @@ body {
     background-position: center;
     background-attachment: fixed;
     transition: .3s;
+    overflow-x: hidden;
 }
 
 body.light {
@@ -234,6 +235,7 @@ body.light {
     color: var(--text);
     font-size: 14px;
     overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .price {
@@ -282,7 +284,13 @@ body.light {
     padding: 20px;
 }
 
-/* RESPONSIVE */
+/* MOBILE BOTTOM NAVIGATION */
+
+.mobile-nav {
+    display: none;
+}
+
+/* TABLET - ORIGINAL LAPTOP/TABLET DESIGN */
 
 @media(max-width:900px) {
     .sidebar {
@@ -329,25 +337,195 @@ body.light {
     }
 }
 
-@media(max-width:550px) {
+/* MOBILE ONLY */
+
+@media(max-width:600px) {
+
+    body,
+    body.light {
+        background-attachment: scroll;
+    }
+
+    /* Hide desktop sidebar on mobile */
+
+    .sidebar {
+        display: none;
+    }
+
+    /* Full-width mobile content */
+
     .main {
-        padding: 22px 15px;
+        width: 100%;
+        margin-left: 0;
+        padding: 22px 13px 100px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+        gap: 13px;
+        margin-bottom: 22px;
     }
 
     .page-title {
-        font-size: 24px;
+        font-size: 23px;
+        line-height: 1.3;
     }
 
-    .booking-card {
-        padding: 16px;
-    }
-
-    .details {
-        grid-template-columns: 1fr 1fr;
+    .subtitle {
+        font-size: 12px;
+        line-height: 1.5;
     }
 
     .top-actions {
         width: 100%;
+    }
+
+    .home-btn {
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        margin: 25px 0 13px;
+    }
+
+    /* Booking cards */
+
+    .booking-card {
+        padding: 14px;
+        border-radius: 13px;
+        margin-bottom: 14px;
+    }
+
+    .booking-card h3 {
+        font-size: 16px;
+        line-height: 1.4;
+        margin-bottom: 14px;
+    }
+
+    /* Two-column booking details */
+
+    .details {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .detail {
+        padding: 10px 9px;
+        border-radius: 9px;
+    }
+
+    .detail span {
+        font-size: 10px;
+        margin-bottom: 6px;
+    }
+
+    .detail strong {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    .price {
+        font-size: 18px;
+        margin-top: 15px;
+        padding-top: 12px;
+    }
+
+    /* Empty booking section */
+
+    .empty {
+        padding: 27px 14px;
+    }
+
+    .empty-icon {
+        font-size: 32px;
+    }
+
+    .empty h3 {
+        font-size: 16px;
+    }
+
+    .empty p {
+        font-size: 12px;
+    }
+
+    .footer {
+        font-size: 10px;
+        margin-top: 25px;
+        padding: 15px 5px;
+    }
+
+    /* Original mobile navigation */
+
+    .mobile-nav {
+        position: fixed;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        min-height: 66px;
+        padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+        background: var(--sidebar);
+        border-top: 1px solid var(--border);
+        backdrop-filter: blur(16px);
+        z-index: 100;
+    }
+
+    .mobile-nav a,
+    .mobile-nav button {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        text-decoration: none;
+        color: var(--muted);
+        background: transparent;
+        border: none;
+        font-size: 10px;
+        cursor: pointer;
+        padding: 5px 2px;
+    }
+
+    .mobile-nav .nav-icon {
+        font-size: 19px;
+        line-height: 1;
+    }
+
+    .mobile-nav a.active {
+        color: var(--accent);
+    }
+}
+
+/* EXTRA SMALL PHONES */
+
+@media(max-width:360px) {
+    .main {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .details {
+        gap: 6px;
+    }
+
+    .detail {
+        padding: 8px 7px;
+    }
+
+    .detail strong {
+        font-size: 11px;
+    }
+
+    .mobile-nav a,
+    .mobile-nav button {
+        font-size: 9px;
     }
 }
 </style>
@@ -355,7 +533,7 @@ body.light {
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- DESKTOP SIDEBAR -->
 
 <aside class="sidebar">
 
@@ -589,6 +767,38 @@ body.light {
     </div>
 
 </main>
+
+
+<!-- MOBILE BOTTOM NAVIGATION -->
+
+<nav class="mobile-nav">
+
+    <a href="/">
+        <span class="nav-icon">🏠</span>
+        <span>Home</span>
+    </a>
+
+    <a href="/planner">
+        <span class="nav-icon">🗺️</span>
+        <span>Planner</span>
+    </a>
+
+    <a href="/hotels">
+        <span class="nav-icon">🏨</span>
+        <span>Hotels</span>
+    </a>
+
+    <a href="/my-bookings" class="active">
+        <span class="nav-icon">🎫</span>
+        <span>Bookings</span>
+    </a>
+
+    <button onclick="toggleTheme()">
+        <span class="nav-icon">🌙</span>
+        <span>Theme</span>
+    </button>
+
+</nav>
 
 
 <script>

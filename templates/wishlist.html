@@ -1,0 +1,420 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Wishlist | VoyageIQ</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+:root {
+    --bg: #07172b;
+    --card: #102943;
+    --card2: #153651;
+    --text: #ffffff;
+    --muted: #a9bdd0;
+    --border: rgba(255,255,255,.1);
+    --accent: #45a9ff;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 35px;
+    transition: .25s;
+}
+
+body.light {
+    --bg: #f3f7fc;
+    --card: #ffffff;
+    --card2: #edf4fb;
+    --text: #172b42;
+    --muted: #63758a;
+    --border: #dce6f0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 45px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: .5px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: var(--text);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.back-btn:hover {
+    background: var(--card2);
+}
+
+.heading {
+    margin-bottom: 30px;
+}
+
+.heading h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.heading p {
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.place-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    overflow: hidden;
+    transition: .25s;
+}
+
+.place-card:hover {
+    transform: translateY(-4px);
+}
+
+.place-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+}
+
+.place-info {
+    padding: 19px;
+}
+
+.place-info h3 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.place-info p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.card-actions a,
+.remove-btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 9px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.plan-btn {
+    color: white;
+    background: linear-gradient(110deg, #1688ee, #7355e8);
+    border: none;
+}
+
+.remove-btn {
+    color: #ff7777;
+    background: rgba(255, 75, 75, .1);
+    border: 1px solid rgba(255, 75, 75, .25);
+}
+
+.empty-state {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 65px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 55px;
+    margin-bottom: 18px;
+}
+
+.empty-state h2 {
+    font-size: 23px;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.explore-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    background: linear-gradient(110deg, #1688ee, #7355e8);
+    padding: 12px 23px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 55px;
+}
+
+@media (max-width: 850px) {
+    body {
+        padding: 25px;
+    }
+
+    .wishlist-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 18px 14px 30px;
+    }
+
+    header {
+        margin-bottom: 32px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .back-btn {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .heading h1 {
+        font-size: 27px;
+    }
+
+    .heading p {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .wishlist-grid {
+        grid-template-columns: 1fr;
+        gap: 17px;
+    }
+
+    .place-card img {
+        height: 205px;
+    }
+
+    .empty-state {
+        padding: 50px 16px;
+    }
+
+    .empty-state h2 {
+        font-size: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logo">✈ VoyageIQ</div>
+        <a href="{{ url_for('settings') }}" class="back-btn">
+            ← Back to Settings
+        </a>
+    </header>
+
+    <section class="heading">
+        <h1>♡ My Wishlist</h1>
+        <p>Your favourite destinations, all in one place.</p>
+    </section>
+
+    <div id="wishlistGrid" class="wishlist-grid"></div>
+
+    <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-icon">♡</div>
+        <h2>Your Wishlist is Empty</h2>
+        <p>You haven't saved any destinations yet. Start exploring and save the places you love!</p>
+        <a href="{{ url_for('planner') }}" class="explore-btn">
+            Explore Destinations
+        </a>
+    </div>
+
+    <footer>
+        © 2026 VoyageIQ · Explore more, travel better.
+    </footer>
+
+</div>
+
+<script>
+const grid = document.getElementById("wishlistGrid");
+const emptyState = document.getElementById("emptyState");
+
+function getWishlist() {
+    try {
+        const saved = JSON.parse(
+            localStorage.getItem("voyageiq-wishlist") || "[]"
+        );
+
+        return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function renderWishlist() {
+    const wishlist = getWishlist();
+
+    grid.innerHTML = "";
+
+    if (wishlist.length === 0) {
+        emptyState.style.display = "block";
+        return;
+    }
+
+    emptyState.style.display = "none";
+
+    wishlist.forEach((place, index) => {
+        const name = typeof place === "string"
+            ? place
+            : place.name || place.destination || "Destination";
+
+        const description = typeof place === "object"
+            ? place.description || "Discover this destination with VoyageIQ."
+            : "Discover this destination with VoyageIQ.";
+
+        const image = typeof place === "object"
+            ? place.image || ""
+            : "";
+
+        const card = document.createElement("article");
+        card.className = "place-card";
+
+        const img = document.createElement("img");
+        img.alt = name;
+        img.loading = "lazy";
+        img.src = image || "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800";
+        img.onerror = function() {
+            this.style.display = "none";
+        };
+
+        const info = document.createElement("div");
+        info.className = "place-info";
+
+        const title = document.createElement("h3");
+        title.textContent = name;
+
+        const desc = document.createElement("p");
+        desc.textContent = description;
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const plan = document.createElement("a");
+        plan.className = "plan-btn";
+        plan.href = "{{ url_for('planner') }}";
+        plan.textContent = "Plan Trip";
+
+        const remove = document.createElement("button");
+        remove.className = "remove-btn";
+        remove.type = "button";
+        remove.textContent = "Remove";
+        remove.addEventListener("click", function() {
+            removeDestination(index);
+        });
+
+        actions.appendChild(plan);
+        actions.appendChild(remove);
+
+        info.appendChild(title);
+        info.appendChild(desc);
+        info.appendChild(actions);
+
+        card.appendChild(img);
+        card.appendChild(info);
+
+        grid.appendChild(card);
+    });
+}
+
+function removeDestination(index) {
+    const wishlist = getWishlist();
+    wishlist.splice(index, 1);
+
+    localStorage.setItem(
+        "voyageiq-wishlist",
+        JSON.stringify(wishlist)
+    );
+
+    renderWishlist();
+}
+
+function applyTheme() {
+    const theme = localStorage.getItem("voyageiq-theme");
+
+    document.body.classList.toggle(
+        "light",
+        theme === "light"
+    );
+}
+
+applyTheme();
+renderWishlist();
+
+window.addEventListener("storage", function(event) {
+    if (
+        event.key === "voyageiq-wishlist" ||
+        event.key === "voyageiq-theme"
+    ) {
+        applyTheme();
+        renderWishlist();
+    }
+});
+</script>
+
+</body>
+</html>

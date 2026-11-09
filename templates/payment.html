@@ -16,7 +16,6 @@
 
 :root {
     --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
     --card: rgba(12,39,65,.94);
     --card2: rgba(5,25,45,.94);
     --text: #F1FAFF;
@@ -29,7 +28,6 @@
 
 body.light {
     --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
     --card: rgba(255,255,255,.96);
     --card2: #E7F3FA;
     --text: #15334A;
@@ -60,72 +58,12 @@ body.light {
     background-attachment: fixed;
 }
 
-/* SIDEBAR */
-
-.sidebar {
-    width: 240px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 25px 17px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-}
-
-.logo {
-    font-size: 25px;
-    font-weight: bold;
-    color: var(--accent);
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.menu-title {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    margin: 18px 10px 10px;
-}
-
-.nav-link {
-    display: block;
-    text-decoration: none;
-    color: var(--muted);
-    padding: 12px 14px;
-    margin: 4px 0;
-    border-radius: 9px;
-    font-size: 14px;
-    transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--accent);
-    background: rgba(30,145,190,.20);
-    border-left: 3px solid var(--accent);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-}
-
-/* MAIN */
-
-.main {
-    margin-left: 240px;
-    min-height: 100vh;
-    padding: 85px 30px 35px;
-}
+/* THEME BUTTON */
 
 .topbar {
-    position: fixed;
-    top: 15px;
-    right: 22px;
+    position: absolute;
+    top: 18px;
+    right: 25px;
     z-index: 5;
 }
 
@@ -137,6 +75,18 @@ body.light {
     color: var(--text);
     cursor: pointer;
     font-weight: bold;
+    font-size: 13px;
+}
+
+/* MAIN */
+
+.main {
+    width: 100%;
+    min-height: 100vh;
+    padding: 85px 25px 35px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 /* PAYMENT CARD */
@@ -162,6 +112,7 @@ h1 {
 .subtitle {
     color: var(--muted);
     line-height: 1.6;
+    font-size: 14px;
     margin-bottom: 25px;
 }
 
@@ -185,7 +136,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     gap: 15px;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid var(--border);
     font-size: 14px;
 }
@@ -266,80 +217,83 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media(max-width:900px) {
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
-    }
-
-    .logo {
-        font-size: 13px;
-    }
-
-    .menu-title {
-        display: none;
-    }
-
-    .nav-link {
-        text-align: center;
-        font-size: 11px;
-        padding: 12px 3px;
-    }
-
+@media(max-width:750px) {
     .main {
-        margin-left: 75px;
-    }
-}
-
-@media(max-width:550px) {
-    .main {
-        padding: 75px 12px 20px;
+        padding: 80px 18px 25px;
     }
 
     .container {
-        padding: 20px;
+        padding: 25px;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:550px) {
+    .topbar {
+        top: 13px;
+        right: 13px;
+    }
+
+    .theme-btn {
+        padding: 9px 13px;
+        font-size: 12px;
+    }
+
+    .main {
+        padding: 75px 12px 22px;
+    }
+
+    .container {
+        padding: 20px 15px;
+        border-radius: 15px;
     }
 
     h1 {
         font-size: 23px;
     }
 
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .details {
+        padding: 15px;
+    }
+
+    .details h2 {
+        font-size: 16px;
+    }
+
     .detail-row {
         font-size: 12px;
+        gap: 10px;
+    }
+
+    .detail-row strong {
+        max-width: 60%;
     }
 
     .amount {
         font-size: 28px;
+    }
+
+    .notice {
+        padding: 13px;
+        font-size: 12px;
+    }
+
+    button[type="submit"] {
+        padding: 14px;
+        font-size: 14px;
     }
 }
 </style>
 </head>
 
 <body>
-
-<!-- SIDEBAR -->
-
-<aside class="sidebar">
-
-    <div class="logo">✈ VoyageIQ</div>
-
-    <p class="menu-title">MAIN MENU</p>
-
-    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
-    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
-    <a href="{{ url_for('hotels') }}" class="nav-link">⌂ Hotels</a>
-    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
-    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
-
-    <div class="sidebar-bottom">
-        <p class="menu-title">ACCOUNT</p>
-        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
-        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
-    </div>
-
-</aside>
 
 <!-- THEME BUTTON -->
 

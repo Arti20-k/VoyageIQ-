@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme | VoyageIQ</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+:root {
+    --bg: #07172b;
+    --card: #102b47;
+    --text: #ffffff;
+    --muted: #a9bfd3;
+    --accent: #39bdf8;
+    --border: rgba(255,255,255,.12);
+}
+
+body.light {
+    --bg: #f2f7fc;
+    --card: #ffffff;
+    --text: #142c43;
+    --muted: #60758a;
+    --accent: #078bd0;
+    --border: rgba(20,44,67,.12);
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    transition: .25s;
+}
+
+header {
+    min-height: 75px;
+    padding: 16px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    color: var(--text);
+    font-size: 25px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.back {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container {
+    width: min(700px, 90%);
+    margin: 55px auto;
+}
+
+h1 {
+    font-size: 31px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.theme-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+}
+
+.theme-card h2 {
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.theme-card p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.theme-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.theme-option {
+    padding: 20px 12px;
+    border: 2px solid var(--border);
+    border-radius: 15px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+    transition: .2s;
+}
+
+.theme-option:hover,
+.theme-option.active {
+    border-color: var(--accent);
+    background: rgba(57,189,248,.10);
+}
+
+.theme-icon {
+    font-size: 35px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.theme-option strong {
+    font-size: 16px;
+}
+
+.status {
+    margin-top: 18px;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+@media(max-width:600px) {
+    header {
+        min-height: 65px;
+        padding: 13px 5%;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .container {
+        margin: 32px auto;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    .theme-card {
+        padding: 19px 15px;
+    }
+
+    .theme-option {
+        padding: 18px 8px;
+    }
+
+    .theme-icon {
+        font-size: 30px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <a href="{{ url_for('home') }}" class="logo">Voyage<span>IQ</span></a>
+    <a href="{{ url_for('settings') }}" class="back">← Settings</a>
+</header>
+
+<main class="container">
+
+    <h1>Appearance 🎨</h1>
+    <p class="subtitle">
+        Personalise your VoyageIQ experience by choosing your preferred theme.
+    </p>
+
+    <section class="theme-card">
+        <h2>Choose your theme</h2>
+        <p>Your selection will be saved in this browser.</p>
+
+        <div class="theme-options">
+
+            <button class="theme-option" id="darkButton" onclick="setTheme('dark')">
+                <span class="theme-icon">🌙</span>
+                <strong>Dark Mode</strong>
+            </button>
+
+            <button class="theme-option" id="lightButton" onclick="setTheme('light')">
+                <span class="theme-icon">☀️</span>
+                <strong>Light Mode</strong>
+            </button>
+
+        </div>
+
+        <div class="status" id="themeStatus">
+            Current theme: Dark Mode
+        </div>
+    </section>
+
+</main>
+
+<script>
+function setTheme(theme) {
+    if (theme === "light") {
+        document.body.classList.add("light");
+    } else {
+        document.body.classList.remove("light");
+    }
+
+    localStorage.setItem("voyageiq-theme", theme);
+    updateThemeButtons();
+}
+
+function updateThemeButtons() {
+    const theme = localStorage.getItem("voyageiq-theme") || "dark";
+
+    document.getElementById("darkButton").classList.toggle(
+        "active", theme === "dark"
+    );
+
+    document.getElementById("lightButton").classList.toggle(
+        "active", theme === "light"
+    );
+
+    document.getElementById("themeStatus").textContent =
+        "Current theme: " +
+        (theme === "light" ? "Light Mode" : "Dark Mode");
+}
+
+const savedTheme = localStorage.getItem("voyageiq-theme") || "dark";
+setTheme(savedTheme);
+</script>
+
+</body>
+</html>

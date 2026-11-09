@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings | VoyageIQ</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+:root{
+    --bg:#07172b;
+    --card:#102b47;
+    --card-hover:#173957;
+    --text:#ffffff;
+    --muted:#a9bfd3;
+    --accent:#39bdf8;
+    --border:rgba(255,255,255,0.10);
+}
+
+body.light{
+    --bg:#f2f7fc;
+    --card:#ffffff;
+    --card-hover:#eaf4fc;
+    --text:#142c43;
+    --muted:#60758a;
+    --accent:#078bd0;
+    --border:rgba(20,44,67,0.12);
+}
+
+body{
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    transition:background 0.25s,color 0.25s;
+}
+
+a{
+    text-decoration:none;
+}
+
+.topbar{
+    min-height:76px;
+    padding:16px 7%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+    background:var(--card);
+}
+
+.logo{
+    color:var(--text);
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:0.5px;
+}
+
+.logo span{
+    color:var(--accent);
+}
+
+.back-link{
+    color:var(--accent);
+    font-weight:600;
+}
+
+.container{
+    width:min(850px,90%);
+    margin:55px auto;
+}
+
+.heading{
+    margin-bottom:30px;
+}
+
+.heading h1{
+    font-size:32px;
+    margin-bottom:9px;
+}
+
+.heading p{
+    color:var(--muted);
+    line-height:1.6;
+}
+
+.settings-list{
+    display:grid;
+    gap:16px;
+}
+
+.setting-card{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:22px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    color:var(--text);
+    transition:0.2s ease;
+}
+
+.setting-card:hover{
+    background:var(--card-hover);
+    transform:translateY(-2px);
+    border-color:var(--accent);
+}
+
+.setting-icon{
+    width:53px;
+    height:53px;
+    flex-shrink:0;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    background:rgba(57,189,248,0.13);
+    font-size:25px;
+}
+
+.setting-info{
+    flex:1;
+    min-width:0;
+}
+
+.setting-info h2{
+    font-size:17px;
+    margin-bottom:5px;
+}
+
+.setting-info p{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+.arrow{
+    color:var(--accent);
+    font-size:25px;
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        min-height:65px;
+        padding:13px 5%;
+    }
+
+    .logo{
+        font-size:21px;
+    }
+
+    .container{
+        width:90%;
+        margin:32px auto;
+    }
+
+    .heading h1{
+        font-size:27px;
+    }
+
+    .heading p{
+        font-size:14px;
+    }
+
+    .setting-card{
+        gap:13px;
+        padding:17px 14px;
+        border-radius:14px;
+    }
+
+    .setting-icon{
+        width:45px;
+        height:45px;
+        font-size:22px;
+        border-radius:12px;
+    }
+
+    .setting-info h2{
+        font-size:15px;
+    }
+
+    .setting-info p{
+        font-size:12px;
+    }
+
+    .arrow{
+        font-size:21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="{{ url_for('home') }}" class="logo">
+        Voyage<span>IQ</span>
+    </a>
+
+    <a href="{{ url_for('home') }}" class="back-link">
+        ← Dashboard
+    </a>
+</header>
+
+<main class="container">
+
+    <div class="heading">
+        <h1>Settings ⚙️</h1>
+        <p>
+            Manage your VoyageIQ preferences, saved places and account details.
+        </p>
+    </div>
+
+    <div class="settings-list">
+
+        <!-- THEME -->
+
+        <a href="{{ url_for('theme') }}" class="setting-card">
+            <div class="setting-icon">🎨</div>
+
+            <div class="setting-info">
+                <h2>Theme</h2>
+                <p>Choose between dark mode and light mode.</p>
+            </div>
+
+            <span class="arrow">›</span>
+        </a>
+
+        <!-- PERSONAL INFORMATION -->
+
+        <a href="{{ url_for('personal_details') }}" class="setting-card">
+            <div class="setting-icon">👤</div>
+
+            <div class="setting-info">
+                <h2>Personal Information</h2>
+                <p>View your name, email and account information.</p>
+            </div>
+
+            <span class="arrow">›</span>
+        </a>
+
+        <!-- WISHLIST -->
+
+        <a href="/wishlist" class="setting-card">
+            <div class="setting-icon">❤️</div>
+
+            <div class="setting-info">
+                <h2>Wishlist</h2>
+                <p>View and manage your saved destinations.</p>
+            </div>
+
+            <span class="arrow">›</span>
+        </a>
+
+        <!-- BOOKINGS -->
+
+        <a href="{{ url_for('my_bookings') }}" class="setting-card">
+            <div class="setting-icon">🎫</div>
+
+            <div class="setting-info">
+                <h2>My Bookings</h2>
+                <p>View your hotel and transport bookings.</p>
+            </div>
+
+            <span class="arrow">›</span>
+        </a>
+
+    </div>
+
+</main>
+
+<script>
+try{
+    const savedTheme = localStorage.getItem("voyageiq-theme");
+
+    if(savedTheme === "light"){
+        document.body.classList.add("light");
+    }
+}catch(error){
+    console.log("Theme preference unavailable.");
+}
+</script>
+
+</body>
+</html>

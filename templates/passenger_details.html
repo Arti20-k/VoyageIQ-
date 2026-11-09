@@ -16,8 +16,7 @@
 
 :root {
     --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
-    --card: rgba(12,39,65,.90);
+    --card: rgba(12,39,65,.94);
     --card2: rgba(5,25,45,.94);
     --text: #F1FAFF;
     --muted: #B8D5E5;
@@ -30,8 +29,7 @@
 
 body.light {
     --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
-    --card: rgba(255,255,255,.95);
+    --card: rgba(255,255,255,.96);
     --card2: #E7F3FA;
     --text: #15334A;
     --muted: #526F83;
@@ -63,87 +61,48 @@ body.light {
     background-attachment: fixed;
 }
 
-/* SIDEBAR */
+/* THEME BUTTON */
 
-.sidebar {
-    width: 240px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    padding: 25px 16px;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    z-index: 10;
-}
-
-.logo {
-    color: var(--accent);
-    font-size: 25px;
-    font-weight: bold;
-    margin: 5px 10px 35px;
-}
-
-.menu-heading {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    margin: 18px 10px 10px;
-}
-
-.nav-link {
-    display: block;
-    padding: 12px 13px;
-    margin: 3px 0;
-    border-radius: 9px;
-    text-decoration: none;
-    color: var(--muted);
-    font-size: 14px;
-    transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    background: rgba(30,145,190,.20);
-    color: var(--accent);
-    border-left: 3px solid var(--accent);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-    padding-top: 20px;
+.theme-area {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    z-index: 5;
 }
 
 .theme-btn {
-    width: 100%;
-    padding: 12px;
+    padding: 11px 16px;
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 25px;
     background: var(--card);
     color: var(--text);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.theme-btn:hover {
+    border-color: var(--accent);
 }
 
 /* MAIN CONTENT */
 
 .main {
-    margin-left: 240px;
-    padding: 35px 5%;
+    width: 100%;
     min-height: 100vh;
+    padding: 90px 25px 35px;
 }
 
 .topbar {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    margin-bottom: 25px;
 }
 
 .page-title {
@@ -167,6 +126,7 @@ body.light {
     padding: 11px 17px;
     border-radius: 9px;
     font-size: 13px;
+    white-space: nowrap;
 }
 
 .back-btn:hover {
@@ -217,7 +177,7 @@ body.light {
     gap: 15px;
     color: var(--muted);
     font-size: 14px;
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px solid var(--border);
 }
 
@@ -340,7 +300,7 @@ button,
     color: var(--text);
 }
 
-button {
+.submit-btn {
     background: var(--button);
     color: white;
     border: none;
@@ -351,7 +311,7 @@ button:hover,
     transform: translateY(-2px);
 }
 
-button:hover {
+.submit-btn:hover {
     filter: brightness(1.1);
 }
 
@@ -366,82 +326,98 @@ button:hover {
     text-align: center;
     color: var(--muted);
     font-size: 12px;
-    margin-top: 35px;
+    margin-top: 30px;
     padding: 15px;
 }
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media(max-width:900px) {
-
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
-    }
-
-    .logo {
-        font-size: 12px;
-        margin: 8px 0 25px;
-        text-align: center;
-    }
-
-    .menu-heading {
-        display: none;
-    }
-
-    .nav-link {
-        font-size: 0;
-        text-align: center;
-        padding: 14px 5px;
-    }
-
-    .nav-link::first-letter {
-        font-size: 17px;
-    }
-
-    .theme-btn {
-        font-size: 0;
-        padding: 12px 3px;
-    }
-
-    .theme-btn::first-letter {
-        font-size: 17px;
-    }
-
+@media(max-width:750px) {
     .main {
-        margin-left: 75px;
-        padding: 25px 4%;
-    }
-}
-
-@media(max-width:600px) {
-
-    .main {
-        padding: 22px 13px;
+        padding: 85px 18px 30px;
     }
 
     .container {
-        padding: 20px;
+        padding: 24px;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+    .theme-area {
+        top: 13px;
+        right: 13px;
     }
 
-    .form-grid {
-        grid-template-columns: 1fr;
+    .theme-btn {
+        padding: 9px 13px;
+        font-size: 12px;
     }
 
-    .full {
-        grid-column: auto;
+    .main {
+        padding: 75px 12px 22px;
     }
 
-    .buttons {
+    .topbar {
+        align-items: flex-start;
         flex-direction: column;
+        margin-bottom: 18px;
     }
 
     .page-title {
         font-size: 23px;
     }
 
+    .subtitle {
+        font-size: 13px;
+    }
+
+    .container {
+        padding: 19px 15px;
+        border-radius: 14px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .journey {
+        padding: 15px;
+    }
+
     .journey p {
         font-size: 12px;
+        gap: 10px;
+    }
+
+    .journey strong {
+        max-width: 60%;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 11px;
+    }
+
+    .buttons button,
+    .buttons .back {
+        width: 100%;
+    }
+
+    .back-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer {
+        font-size: 11px;
+        margin-top: 20px;
     }
 }
 </style>
@@ -449,39 +425,13 @@ button:hover {
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- THEME BUTTON -->
 
-<aside class="sidebar">
-
-    <div class="logo">✈ VoyageIQ</div>
-
-    <p class="menu-heading">MAIN MENU</p>
-
-    <a href="{{ url_for('home') }}" class="nav-link">🏠 Dashboard</a>
-    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
-    <a href="{{ url_for('hotels') }}" class="nav-link">🏨 Hotels</a>
-    <a href="{{ url_for('planner') }}" class="nav-link">🗺 Packages</a>
-    <a href="{{ url_for('my_bookings') }}" class="nav-link">🎫 My Bookings</a>
-    <a href="{{ url_for('home') }}#wishlist" class="nav-link">♡ Wishlist</a>
-    <a href="{{ url_for('home') }}#offers" class="nav-link">🎁 Offers</a>
-
-    <p class="menu-heading">ACCOUNT</p>
-
-    {% if session.get('user_id') %}
-        <a href="{{ url_for('logout') }}" class="nav-link">🚪 Logout</a>
-    {% else %}
-        <a href="{{ url_for('login') }}" class="nav-link">🔑 Login</a>
-        <a href="{{ url_for('signup') }}" class="nav-link">📝 Sign Up</a>
-    {% endif %}
-
-    <div class="sidebar-bottom">
-        <button type="button" class="theme-btn" onclick="toggleTheme()">
-            🌙 / ☀️ Change Theme
-        </button>
-    </div>
-
-</aside>
-
+<div class="theme-area">
+    <button type="button" class="theme-btn" onclick="toggleTheme()" id="themeButton">
+        ☀ Light Mode
+    </button>
+</div>
 
 <!-- MAIN CONTENT -->
 
@@ -502,7 +452,6 @@ button:hover {
 
     </div>
 
-
     <div class="container">
 
         {% with messages = get_flashed_messages() %}
@@ -510,7 +459,6 @@ button:hover {
                 <p class="flash">{{ message }}</p>
             {% endfor %}
         {% endwith %}
-
 
         <!-- JOURNEY INFORMATION -->
 
@@ -554,7 +502,6 @@ button:hover {
             </p>
 
         </div>
-
 
         <!-- PASSENGER FORM -->
 
@@ -633,14 +580,13 @@ button:hover {
 
             </div>
 
-
             <div class="buttons">
 
                 <a href="{{ url_for('seat_selection') }}" class="back">
                     ← Back to Seats
                 </a>
 
-                <button type="submit">
+                <button type="submit" class="submit-btn">
                     Continue to Summary →
                 </button>
 
@@ -650,13 +596,11 @@ button:hover {
 
     </div>
 
-
     <div class="footer">
         © 2026 VoyageIQ · Your Journey, Our Intelligence
     </div>
 
 </main>
-
 
 <script>
 
@@ -672,6 +616,8 @@ function applyTheme() {
         savedTheme === "light"
     );
 
+    document.getElementById("themeButton").textContent =
+        savedTheme === "light" ? "🌙 Dark Mode" : "☀ Light Mode";
 }
 
 function toggleTheme() {
@@ -684,7 +630,6 @@ function toggleTheme() {
     localStorage.setItem("voyageiq-theme", newTheme);
 
     applyTheme();
-
 }
 
 applyTheme();

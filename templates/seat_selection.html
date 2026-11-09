@@ -15,7 +15,6 @@
 
 :root {
     --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
     --card: rgba(12,39,65,.94);
     --card2: rgba(5,25,45,.94);
     --text: #F1FAFF;
@@ -28,7 +27,6 @@
 
 body.light {
     --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
     --card: rgba(255,255,255,.95);
     --card2: #E7F3FA;
     --text: #15334A;
@@ -60,72 +58,12 @@ body.light {
     background-attachment: fixed;
 }
 
-/* SIDEBAR */
-
-.sidebar {
-    width: 240px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 25px 17px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-}
-
-.logo {
-    color: var(--accent);
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.menu-title {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    margin: 18px 10px 10px;
-}
-
-.nav-link {
-    display: block;
-    color: var(--muted);
-    text-decoration: none;
-    padding: 12px 14px;
-    margin: 4px 0;
-    border-radius: 9px;
-    font-size: 14px;
-    transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--accent);
-    background: rgba(30,145,190,.20);
-    border-left: 3px solid var(--accent);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-}
-
-/* MAIN */
-
-.main {
-    margin-left: 240px;
-    min-height: 100vh;
-    padding: 85px 30px 35px;
-}
+/* THEME BUTTON */
 
 .topbar {
-    position: fixed;
-    top: 15px;
-    right: 22px;
+    position: absolute;
+    top: 20px;
+    right: 25px;
     z-index: 5;
 }
 
@@ -139,12 +77,20 @@ body.light {
     font-weight: bold;
 }
 
-/* CARD */
+/* MAIN CONTENT */
+
+.main {
+    min-height: 100vh;
+    width: 100%;
+    padding: 85px 25px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
 
 .card {
     width: 100%;
     max-width: 950px;
-    margin: 0 auto;
     padding: 30px;
     background: var(--card);
     backdrop-filter: blur(16px);
@@ -179,6 +125,7 @@ h1 {
     border: 1px solid var(--border);
     padding: 16px;
     border-radius: 12px;
+    min-width: 0;
 }
 
 .journey-box small {
@@ -236,6 +183,7 @@ h1 {
 
 .layout {
     max-width: 470px;
+    width: 100%;
     margin: 25px auto;
     padding: 22px;
     border: 1px solid var(--border);
@@ -261,6 +209,7 @@ h1 {
 }
 
 .seat {
+    min-width: 0;
     height: 45px;
     border: 1px solid #B9D8E8;
     border-radius: 9px;
@@ -306,6 +255,7 @@ h1 {
     color: var(--muted);
     line-height: 1.8;
     font-size: 14px;
+    overflow-wrap: anywhere;
 }
 
 #selectedSeats,
@@ -378,48 +328,75 @@ h1 {
     cursor: not-allowed;
 }
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media(max-width:900px) {
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
-    }
-
-    .logo {
-        font-size: 13px;
-    }
-
-    .menu-title {
-        display: none;
-    }
-
-    .nav-link {
-        text-align: center;
-        font-size: 11px;
-        padding: 12px 3px;
-    }
-
+@media(max-width:750px) {
     .main {
-        margin-left: 75px;
-    }
-}
-
-@media(max-width:600px) {
-    .main {
-        padding: 75px 12px 20px;
+        padding: 85px 18px 30px;
     }
 
     .card {
-        padding: 19px;
+        padding: 23px;
+    }
+
+    .journey {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+    .topbar {
+        top: 13px;
+        right: 13px;
+    }
+
+    .theme-btn {
+        padding: 9px 13px;
+        font-size: 12px;
+    }
+
+    .main {
+        padding: 70px 12px 22px;
+    }
+
+    .card {
+        padding: 19px 15px;
+        border-radius: 15px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .muted {
+        font-size: 13px;
+        line-height: 1.7;
     }
 
     .journey {
         grid-template-columns: 1fr;
+        gap: 9px;
+        margin-top: 17px;
+    }
+
+    .journey-box {
+        padding: 13px;
+    }
+
+    .legend {
+        gap: 12px;
+        margin: 20px 0;
+    }
+
+    .legend span {
+        font-size: 12px;
     }
 
     .layout {
-        padding: 12px;
+        padding: 13px 10px;
+        margin: 20px auto;
     }
 
     .seats {
@@ -431,50 +408,45 @@ h1 {
         font-size: 12px;
     }
 
-    .bottom {
-        align-items: stretch;
+    .selection-info {
+        padding: 13px;
+        font-size: 13px;
     }
 
-    .actions {
-        width: 100%;
+    .bottom {
+        align-items: stretch;
         flex-direction: column;
     }
 
     .back,
     .continue {
         width: 100%;
+        padding: 13px;
+    }
+}
+
+@media(max-width:350px) {
+    .card {
+        padding: 16px 11px;
     }
 
-    h1 {
-        font-size: 23px;
+    .layout {
+        padding: 10px 7px;
+    }
+
+    .seats {
+        gap: 5px;
+    }
+
+    .seat {
+        height: 36px;
+        font-size: 11px;
     }
 }
 </style>
 </head>
 
 <body>
-
-<!-- SIDEBAR -->
-
-<aside class="sidebar">
-
-    <div class="logo">✈ VoyageIQ</div>
-
-    <p class="menu-title">MAIN MENU</p>
-
-    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
-    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
-    <a href="{{ url_for('hotels') }}" class="nav-link">⌂ Hotels</a>
-    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
-    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
-
-    <div class="sidebar-bottom">
-        <p class="menu-title">ACCOUNT</p>
-        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
-        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
-    </div>
-
-</aside>
 
 <!-- THEME BUTTON -->
 

@@ -3,45 +3,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Booking Summary | VoyageIQ</title>
 
 <style>
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
 
 :root {
     --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
-    --card: rgba(12,39,65,.94);
-    --card2: rgba(5,25,45,.94);
+    --card: rgba(12,39,65,.96);
+    --card2: rgba(5,25,45,.96);
     --text: #F1FAFF;
     --muted: #B8D5E5;
     --accent: #42D9F5;
-    --border: rgba(105,211,255,.45);
+    --border: rgba(105,211,255,.35);
     --button: linear-gradient(110deg,#168FC4,#685BD8);
-    --shadow: rgba(0,0,0,.22);
+    --shadow: rgba(0,0,0,.25);
 }
 
 body.light {
     --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
-    --card: rgba(255,255,255,.96);
+    --card: rgba(255,255,255,.97);
     --card2: #E7F3FA;
     --text: #15334A;
     --muted: #526F83;
     --accent: #087EAD;
-    --border: rgba(8,126,173,.28);
+    --border: rgba(8,126,173,.25);
     --button: linear-gradient(110deg,#39B8D9,#8175E8);
     --shadow: rgba(31,86,117,.10);
 }
 
 body {
     min-height: 100vh;
+    padding: 85px 18px 40px;
     color: var(--text);
     background:
         linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
@@ -49,100 +48,54 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    overflow-x: hidden;
+    transition: background .3s, color .3s;
 }
 
 body.light {
     background:
-        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        linear-gradient(rgba(226,243,251,.90),rgba(226,243,251,.95)),
         url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-/* SIDEBAR */
+/* TOP BAR */
 
-.sidebar {
-    width: 240px;
-    height: 100vh;
+.topbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    padding: 25px 17px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
+    top: 16px;
+    left: 20px;
+    right: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     z-index: 10;
 }
 
 .logo {
-    font-size: 25px;
+    font-size: 23px;
     font-weight: bold;
     color: var(--accent);
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-.menu-title {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    margin: 18px 10px 10px;
-}
-
-.nav-link {
-    display: block;
-    text-decoration: none;
-    color: var(--muted);
-    padding: 12px 14px;
-    margin: 4px 0;
-    border-radius: 9px;
-    font-size: 14px;
-    transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--accent);
-    background: rgba(30,145,190,.20);
-    border-left: 3px solid var(--accent);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-}
-
-/* MAIN */
-
-.main {
-    margin-left: 240px;
-    min-height: 100vh;
-    padding: 85px 30px 35px;
-}
-
-.topbar {
-    position: fixed;
-    top: 15px;
-    right: 22px;
-    z-index: 5;
+    letter-spacing: .5px;
 }
 
 .theme-btn {
-    padding: 10px 16px;
-    border-radius: 20px;
+    padding: 10px 17px;
+    border-radius: 25px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text);
     cursor: pointer;
+    font-size: 13px;
     font-weight: bold;
 }
 
-/* CONTAINER */
+/* MAIN CONTAINER */
 
 .container {
-    max-width: 800px;
+    max-width: 790px;
     width: 100%;
     margin: auto;
     padding: 32px;
@@ -153,33 +106,44 @@ body.light {
     box-shadow: 0 12px 38px var(--shadow);
 }
 
-h1 {
-    color: var(--accent);
-    font-size: 28px;
+.heading {
     margin-bottom: 25px;
 }
 
-h2 {
+.heading h1 {
     color: var(--accent);
-    font-size: 18px;
-    margin-bottom: 15px;
+    font-size: 29px;
+    margin-bottom: 8px;
+}
+
+.heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 /* DETAILS */
 
 .details {
-    padding: 20px;
+    padding: 21px;
     margin: 20px 0;
-    border-radius: 13px;
+    border-radius: 14px;
     background: var(--card2);
     border: 1px solid var(--border);
+}
+
+.details h2 {
+    color: var(--accent);
+    font-size: 18px;
+    margin-bottom: 14px;
 }
 
 .detail-row {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 15px;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid var(--border);
     font-size: 14px;
 }
@@ -190,19 +154,22 @@ h2 {
 
 .detail-row span {
     color: var(--muted);
+    flex: 0 0 40%;
 }
 
 .detail-row strong {
     color: var(--text);
     text-align: right;
+    flex: 1;
     overflow-wrap: anywhere;
+    line-height: 1.5;
 }
 
 /* TOTAL */
 
 .total {
-    padding: 20px;
-    border-radius: 13px;
+    padding: 21px;
+    border-radius: 14px;
     background: var(--card2);
     border: 1px solid var(--accent);
     display: flex;
@@ -218,14 +185,20 @@ h2 {
 }
 
 .total strong {
-    font-size: 25px;
+    font-size: 26px;
     color: var(--accent);
 }
 
-/* PAYMENT METHODS */
+/* PAYMENT */
 
 .payment-section {
     margin-top: 28px;
+}
+
+.payment-section h2 {
+    color: var(--accent);
+    font-size: 19px;
+    margin-bottom: 15px;
 }
 
 .method {
@@ -244,7 +217,12 @@ h2 {
 
 .method:hover {
     border-color: var(--accent);
-    background: rgba(66,217,245,.08);
+    transform: translateY(-2px);
+}
+
+.method:has(input:checked) {
+    border-color: var(--accent);
+    background: rgba(66,217,245,.10);
 }
 
 input[type="radio"] {
@@ -255,18 +233,13 @@ input[type="radio"] {
     flex-shrink: 0;
 }
 
-.method:has(input:checked) {
-    border-color: var(--accent);
-    background: rgba(66,217,245,.12);
-}
-
 /* NOTICE */
 
 .notice {
     font-size: 13px;
     color: var(--muted);
-    line-height: 1.6;
-    padding: 14px;
+    line-height: 1.7;
+    padding: 15px;
     margin: 20px 0;
     background: var(--card2);
     border-left: 3px solid var(--accent);
@@ -275,75 +248,144 @@ input[type="radio"] {
 
 /* BUTTON */
 
-button[type="submit"] {
+.submit-btn {
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     background: var(--button);
     color: white;
     border: none;
-    border-radius: 9px;
+    border-radius: 10px;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     transition: .2s;
 }
 
-button[type="submit"]:hover {
+.submit-btn:hover {
     transform: translateY(-2px);
     filter: brightness(1.1);
 }
 
-/* RESPONSIVE */
+/* MOBILE */
 
-@media(max-width:900px) {
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
+@media(max-width:600px) {
+    body,
+    body.light {
+        background-attachment: scroll;
+    }
+
+    body {
+        padding: 85px 12px 25px;
+    }
+
+    .topbar {
+        top: 13px;
+        left: 13px;
+        right: 13px;
     }
 
     .logo {
-        font-size: 13px;
+        font-size: 19px;
     }
 
-    .menu-title {
-        display: none;
-    }
-
-    .nav-link {
-        text-align: center;
+    .theme-btn {
+        padding: 9px 12px;
         font-size: 11px;
-        padding: 12px 3px;
-    }
-
-    .main {
-        margin-left: 75px;
-    }
-}
-
-@media(max-width:550px) {
-    .main {
-        padding: 75px 12px 20px;
     }
 
     .container {
-        padding: 20px;
+        padding: 19px 14px;
+        border-radius: 16px;
     }
 
-    h1 {
-        font-size: 23px;
+    .heading h1 {
+        font-size: 24px;
+    }
+
+    .heading p {
+        font-size: 12px;
+    }
+
+    .details {
+        padding: 14px;
+        margin: 14px 0;
+    }
+
+    .details h2 {
+        font-size: 16px;
     }
 
     .detail-row {
+        gap: 9px;
+        padding: 11px 0;
+        font-size: 12px;
+    }
+
+    .detail-row span {
+        flex: 0 0 38%;
+    }
+
+    .detail-row strong {
         font-size: 12px;
     }
 
     .total {
-        align-items: flex-start;
-        flex-direction: column;
+        padding: 16px;
+        margin: 18px 0;
+    }
+
+    .total span {
+        font-size: 13px;
     }
 
     .total strong {
-        font-size: 22px;
+        font-size: 21px;
+    }
+
+    .payment-section {
+        margin-top: 22px;
+    }
+
+    .payment-section h2 {
+        font-size: 17px;
+    }
+
+    .method {
+        padding: 14px 12px;
+        font-size: 13px;
+    }
+
+    .notice {
+        font-size: 11px;
+        padding: 12px;
+    }
+
+    .submit-btn {
+        padding: 14px;
+        font-size: 14px;
+    }
+}
+
+@media(max-width:360px) {
+    body {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .container {
+        padding: 15px 10px;
+    }
+
+    .detail-row {
+        font-size: 11px;
+    }
+
+    .detail-row strong {
+        font-size: 11px;
+    }
+
+    .total strong {
+        font-size: 19px;
     }
 }
 </style>
@@ -351,50 +393,27 @@ button[type="submit"]:hover {
 
 <body>
 
-<!-- SIDEBAR -->
-
-<aside class="sidebar">
-
+<header class="topbar">
     <div class="logo">✈ VoyageIQ</div>
 
-    <p class="menu-title">MAIN MENU</p>
-
-    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
-    <a href="{{ url_for('transport') }}" class="nav-link active">✈ Flights & Transport</a>
-    <a href="{{ url_for('hotels') }}" class="nav-link">⌂ Hotels</a>
-    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
-    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
-
-    <div class="sidebar-bottom">
-        <p class="menu-title">ACCOUNT</p>
-        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
-        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
-    </div>
-
-</aside>
-
-<!-- THEME BUTTON -->
-
-<div class="topbar">
     <button type="button"
             class="theme-btn"
             onclick="toggleTheme()"
             id="themeButton">
         ☀ Light Mode
     </button>
-</div>
+</header>
 
-<!-- MAIN CONTENT -->
+<main class="container">
 
-<main class="main">
-
-<div class="container">
-
-    <h1>Booking Summary</h1>
+    <div class="heading">
+        <h1>Booking Summary</h1>
+        <p>Review your journey and passenger information before proceeding to payment.</p>
+    </div>
 
     <!-- JOURNEY DETAILS -->
 
-    <div class="details">
+    <section class="details">
 
         <h2>✈ Journey Details</h2>
 
@@ -438,13 +457,13 @@ button[type="submit"]:hover {
             <strong>{{ booking.seat_numbers | join(', ') }}</strong>
         </div>
 
-    </div>
+    </section>
 
     <!-- PASSENGER DETAILS -->
 
-    <div class="details">
+    <section class="details">
 
-        <h2>Passenger Details</h2>
+        <h2>👤 Passenger Details</h2>
 
         <div class="detail-row">
             <span>Name</span>
@@ -471,9 +490,9 @@ button[type="submit"]:hover {
             <strong>{{ passenger.gender }}</strong>
         </div>
 
-    </div>
+    </section>
 
-    <!-- TOTAL AMOUNT -->
+    <!-- TOTAL -->
 
     <div class="total">
         <span>Total Amount</span>
@@ -482,7 +501,7 @@ button[type="submit"]:hover {
 
     <!-- PAYMENT METHOD -->
 
-    <div class="payment-section">
+    <section class="payment-section">
 
         <h2>Choose Payment Method</h2>
 
@@ -511,24 +530,18 @@ button[type="submit"]:hover {
                 banking or card details.
             </p>
 
-            <button type="submit">
+            <button type="submit" class="submit-btn">
                 Continue to Payment →
             </button>
 
         </form>
 
-    </div>
-
-</div>
+    </section>
 
 </main>
 
 <script>
-
-/* THEME MANAGEMENT */
-
 function applyTheme() {
-
     const savedTheme =
         localStorage.getItem("voyageiq-theme") || "dark";
 
@@ -542,7 +555,6 @@ function applyTheme() {
 }
 
 function toggleTheme() {
-
     const isLight =
         document.body.classList.contains("light");
 
@@ -554,7 +566,6 @@ function toggleTheme() {
 }
 
 applyTheme();
-
 </script>
 
 </body>

@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Personal Details | VoyageIQ</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+:root {
+    --bg: #07172b;
+    --card: #102943;
+    --text: #ffffff;
+    --muted: #a9bfd3;
+    --border: rgba(255,255,255,.12);
+    --accent: #38bdf8;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    padding: 25px;
+    transition: .3s;
+}
+
+body.light {
+    --bg: #f2f6fc;
+    --card: #ffffff;
+    --text: #172b45;
+    --muted: #64748b;
+    --border: #dce5ef;
+}
+
+header {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.back {
+    text-decoration: none;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 650px;
+    margin: 65px auto;
+}
+
+.heading {
+    margin-bottom: 25px;
+}
+
+.heading h1 {
+    font-size: 30px;
+    margin-bottom: 9px;
+}
+
+.heading p {
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+.profile-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.12);
+}
+
+.avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#2563eb,#38bdf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 22px;
+}
+
+.detail {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail:last-child {
+    border-bottom: none;
+}
+
+.detail label {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.detail p {
+    font-size: 17px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.note {
+    margin-top: 20px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+@media(max-width:600px) {
+    body {
+        padding: 18px;
+    }
+
+    .logo {
+        font-size: 21px;
+    }
+
+    .back {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .container {
+        margin: 45px auto;
+    }
+
+    .heading h1 {
+        font-size: 25px;
+    }
+
+    .profile-card {
+        padding: 22px;
+    }
+
+    .detail p {
+        font-size: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✈ VoyageIQ</div>
+    <a href="{{ url_for('settings') }}" class="back">← Settings</a>
+</header>
+
+<main class="container">
+    <div class="heading">
+        <h1>My Personal Details</h1>
+        <p>View your account information associated with VoyageIQ.</p>
+    </div>
+
+    <section class="profile-card">
+        <div class="avatar">
+            {{ user.name[:1]|upper if user.name else 'U' }}
+        </div>
+
+        <div class="detail">
+            <label>Full Name</label>
+            <p>{{ user.name }}</p>
+        </div>
+
+        <div class="detail">
+            <label>Email Address</label>
+            <p>{{ user.email }}</p>
+        </div>
+
+        <p class="note">
+            These are the account details currently saved in your VoyageIQ profile.
+        </p>
+    </section>
+</main>
+
+<script>
+const savedTheme = localStorage.getItem("voyageiq-theme");
+
+if (savedTheme === "light") {
+    document.body.classList.add("light");
+}
+</script>
+
+</body>
+</html>
+

@@ -16,27 +16,25 @@
 
 :root {
     --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
-    --card: rgba(12,39,65,.90);
-    --card2: rgba(5,25,45,.94);
+    --card: rgba(12,39,65,.96);
+    --card2: rgba(5,25,45,.96);
     --text: #F1FAFF;
     --muted: #B8D5E5;
     --accent: #42D9F5;
-    --border: rgba(105,211,255,.45);
+    --border: rgba(105,211,255,.35);
     --button: linear-gradient(110deg,#168FC4,#685BD8);
     --input: #102E49;
-    --shadow: rgba(0,0,0,.22);
+    --shadow: rgba(0,0,0,.25);
 }
 
 body.light {
     --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
-    --card: rgba(255,255,255,.95);
+    --card: rgba(255,255,255,.97);
     --card2: #E7F3FA;
     --text: #15334A;
     --muted: #526F83;
     --accent: #087EAD;
-    --border: rgba(8,126,173,.28);
+    --border: rgba(8,126,173,.25);
     --button: linear-gradient(110deg,#39B8D9,#8175E8);
     --input: #F0F7FB;
     --shadow: rgba(31,86,117,.10);
@@ -44,6 +42,7 @@ body.light {
 
 body {
     min-height: 100vh;
+    padding: 85px 20px 40px;
     color: var(--text);
     background:
         linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
@@ -52,92 +51,58 @@ body {
     background-position: center;
     background-attachment: fixed;
     transition: .3s;
+    overflow-x: hidden;
 }
 
 body.light {
     background:
-        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        linear-gradient(rgba(226,243,251,.90),rgba(226,243,251,.95)),
         url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-/* SIDEBAR */
+/* TOP BAR */
 
-.sidebar {
-    width: 240px;
-    height: 100vh;
+.topbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    padding: 25px 16px;
+    top: 16px;
+    left: 22px;
+    right: 22px;
     display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+    justify-content: space-between;
+    align-items: center;
     z-index: 10;
 }
 
 .logo {
     color: var(--accent);
-    font-size: 25px;
+    font-size: 23px;
     font-weight: bold;
-    margin: 5px 10px 35px;
-}
-
-.menu-heading {
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1.5px;
-    margin: 18px 10px 10px;
-}
-
-.nav-link {
-    display: block;
-    padding: 12px 13px;
-    margin: 3px 0;
-    border-radius: 9px;
-    text-decoration: none;
-    color: var(--muted);
-    font-size: 14px;
-    transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    background: rgba(30,145,190,.20);
-    color: var(--accent);
-    border-left: 3px solid var(--accent);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-    padding-top: 20px;
+    letter-spacing: .5px;
 }
 
 .theme-btn {
-    width: 100%;
-    padding: 12px;
+    padding: 10px 16px;
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 22px;
     background: var(--card);
     color: var(--text);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
-/* MAIN CONTENT */
+/* MAIN */
 
 .main {
-    margin-left: 240px;
-    padding: 35px 5%;
-    min-height: 100vh;
+    max-width: 1150px;
+    width: 100%;
+    margin: auto;
 }
 
-.topbar {
+.page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -148,7 +113,7 @@ body.light {
 
 .page-title {
     color: var(--text);
-    font-size: 28px;
+    font-size: 29px;
     margin-bottom: 8px;
 }
 
@@ -162,9 +127,15 @@ body.light {
     text-decoration: none;
     color: white;
     background: var(--button);
-    padding: 11px 17px;
+    padding: 12px 17px;
     border-radius: 9px;
     font-size: 13px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
 }
 
 /* BOOKING CARD */
@@ -174,43 +145,54 @@ body.light {
     grid-template-columns: 1fr 1fr;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 8px 25px var(--shadow);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 12px 35px var(--shadow);
+    backdrop-filter: blur(12px);
 }
 
 .hotel-image {
     width: 100%;
     height: 100%;
-    min-height: 550px;
+    min-height: 650px;
     object-fit: cover;
     display: block;
 }
 
 .booking-details {
-    padding: 30px;
+    padding: 32px;
     min-width: 0;
 }
 
 .booking-details h2 {
     color: var(--accent);
-    font-size: 23px;
+    font-size: 25px;
     margin-bottom: 15px;
     overflow-wrap: anywhere;
 }
 
+/* HOTEL INFORMATION */
+
 .hotel-info {
     color: var(--muted);
     line-height: 1.9;
-    margin-bottom: 23px;
+    margin-bottom: 24px;
     font-size: 14px;
+    padding: 15px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.hotel-info p {
+    margin: 3px 0;
 }
 
 /* FORM */
 
 .field {
     margin-bottom: 17px;
+    min-width: 0;
 }
 
 label {
@@ -223,8 +205,8 @@ label {
 
 input, select {
     width: 100%;
-    height: 45px;
-    padding: 10px;
+    height: 46px;
+    padding: 10px 12px;
     border-radius: 8px;
     border: 1px solid var(--border);
     background: var(--input);
@@ -258,30 +240,44 @@ select option {
 .price-box {
     background: var(--card2);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-    margin: 22px 0;
+    border-radius: 13px;
+    padding: 19px;
+    margin: 23px 0;
 }
 
 .price-box p {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
     color: var(--muted);
-    margin: 10px 0;
+    margin: 12px 0;
     font-size: 14px;
 }
 
-.total {
-    color: var(--accent) !important;
-    font-size: 23px !important;
+.price-box p span {
+    color: var(--text);
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.price-box .total {
+    color: var(--accent);
+    font-size: 23px;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: 14px;
+    margin-top: 14px;
     border-top: 1px solid var(--border);
 }
 
-/* BUTTON */
+.price-box .total span {
+    color: var(--accent);
+}
+
+/* BOOK BUTTON */
 
 .book-btn {
     width: 100%;
-    padding: 14px;
+    padding: 15px;
     border: none;
     border-radius: 9px;
     background: var(--button);
@@ -295,6 +291,7 @@ select option {
 .book-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 20px var(--shadow);
+    filter: brightness(1.1);
 }
 
 .note {
@@ -304,75 +301,171 @@ select option {
     line-height: 1.6;
 }
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media(max-width:1000px) {
+@media(max-width: 1000px) {
+
     .booking-card {
         grid-template-columns: 1fr;
     }
 
     .hotel-image {
-        height: 300px;
-        min-height: 300px;
-    }
-}
-
-@media(max-width:900px) {
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
-    }
-
-    .logo {
-        font-size: 12px;
-        margin: 8px 0 25px;
-        text-align: center;
-    }
-
-    .menu-heading {
-        display: none;
-    }
-
-    .nav-link {
-        font-size: 0;
-        text-align: center;
-        padding: 14px 5px;
-    }
-
-    .nav-link::first-letter {
-        font-size: 17px;
-    }
-
-    .sidebar-bottom {
-        padding: 10px 0;
-    }
-
-    .theme-btn {
-        font-size: 0;
-        padding: 12px 3px;
-    }
-
-    .theme-btn::first-letter {
-        font-size: 17px;
-    }
-
-    .main {
-        margin-left: 75px;
-        padding: 25px 4%;
-    }
-}
-
-@media(max-width:550px) {
-    .main {
-        padding: 20px 13px;
+        height: 320px;
+        min-height: 320px;
     }
 
     .booking-details {
-        padding: 20px;
+        padding: 28px;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width: 600px) {
+
+    body,
+    body.light {
+        background-attachment: scroll;
+    }
+
+    body {
+        padding: 80px 12px 25px;
+    }
+
+    .topbar {
+        top: 13px;
+        left: 13px;
+        right: 13px;
+    }
+
+    .logo {
+        font-size: 19px;
+    }
+
+    .theme-btn {
+        padding: 9px 12px;
+        font-size: 11px;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        gap: 13px;
+        margin-bottom: 18px;
     }
 
     .page-title {
-        font-size: 23px;
+        font-size: 22px;
+        line-height: 1.35;
+    }
+
+    .subtitle {
+        font-size: 12px;
+    }
+
+    .back-btn {
+        padding: 10px 12px;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    .booking-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 16px;
+    }
+
+    .hotel-image {
+        width: 100%;
+        height: 215px;
+        min-height: 215px;
+        object-fit: cover;
+    }
+
+    .booking-details {
+        padding: 19px 15px 22px;
+    }
+
+    .booking-details h2 {
+        font-size: 21px;
+        margin-bottom: 12px;
+    }
+
+    .hotel-info {
+        font-size: 12px;
+        line-height: 1.8;
+        margin-bottom: 19px;
+        padding: 12px;
+    }
+
+    .field {
+        margin-bottom: 14px;
+    }
+
+    label {
+        font-size: 12px;
+        margin-bottom: 7px;
+    }
+
+    input, select {
+        height: 44px;
+        font-size: 13px;
+        padding: 9px;
+    }
+
+    .price-box {
+        padding: 15px;
+        margin: 18px 0;
+    }
+
+    .price-box p {
+        font-size: 12px;
+        margin: 10px 0;
+    }
+
+    .price-box .total {
+        font-size: 21px;
+    }
+
+    .book-btn {
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .note {
+        font-size: 11px;
+        margin-top: 12px;
+    }
+}
+
+/* SMALL MOBILE */
+
+@media(max-width: 360px) {
+
+    body {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .booking-details {
+        padding: 15px 12px;
+    }
+
+    .hotel-image {
+        height: 185px;
+        min-height: 185px;
+    }
+
+    .page-title {
+        font-size: 20px;
+    }
+
+    .back-btn {
+        font-size: 10px;
+        padding: 9px;
+    }
+
+    .price-box .total {
+        font-size: 19px;
     }
 }
 </style>
@@ -380,48 +473,31 @@ select option {
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- TOP BAR -->
 
-<aside class="sidebar">
+<header class="topbar">
 
     <div class="logo">✈ VoyageIQ</div>
 
-    <p class="menu-heading">MAIN MENU</p>
+    <button
+        type="button"
+        class="theme-btn"
+        onclick="toggleTheme()"
+        id="themeButton">
+        ☀ Light Mode
+    </button>
 
-    <a href="/" class="nav-link">🏠 Dashboard</a>
-    <a href="/transport" class="nav-link">✈ Flights & Transport</a>
-    <a href="/hotels" class="nav-link active">🏨 Hotels</a>
-    <a href="/planner" class="nav-link">🗺 Packages</a>
-    <a href="/my-bookings" class="nav-link">🎫 My Bookings</a>
-    <a href="/#wishlist" class="nav-link">♡ Wishlist</a>
-    <a href="/#offers" class="nav-link">🎁 Offers</a>
-
-    <p class="menu-heading">ACCOUNT</p>
-
-    {% if session.get('user_id') %}
-        <a href="/logout" class="nav-link">🚪 Logout</a>
-    {% else %}
-        <a href="/login" class="nav-link">🔑 Login</a>
-        <a href="/signup" class="nav-link">📝 Sign Up</a>
-    {% endif %}
-
-    <div class="sidebar-bottom">
-        <button class="theme-btn" onclick="toggleTheme()">
-            🌙 / ☀️ Change Theme
-        </button>
-    </div>
-
-</aside>
-
+</header>
 
 <!-- MAIN CONTENT -->
 
 <main class="main">
 
-    <div class="topbar">
+    <div class="page-header">
 
         <div>
             <h1 class="page-title">Complete Your Hotel Booking</h1>
+
             <p class="subtitle">
                 Choose your dates, guests and preferred room.
             </p>
@@ -434,6 +510,7 @@ select option {
 
     </div>
 
+    <!-- HOTEL BOOKING CARD -->
 
     <div class="booking-card">
 
@@ -454,32 +531,43 @@ select option {
                 <p>₹{{ "{:,}".format(hotel.price) }} per night</p>
             </div>
 
+            <!-- BOOKING FORM -->
+
             <form method="POST" action="{{ url_for('book_hotel') }}">
 
-                <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                <input
+                    type="hidden"
+                    name="hotel_id"
+                    value="{{ hotel.id }}"
+                >
 
                 <div class="field">
                     <label for="checkin">Check-in Date</label>
+
                     <input
                         type="date"
                         id="checkin"
                         name="checkin"
                         value="{{ checkin }}"
-                        required>
+                        required
+                    >
                 </div>
 
                 <div class="field">
                     <label for="checkout">Check-out Date</label>
+
                     <input
                         type="date"
                         id="checkout"
                         name="checkout"
                         value="{{ checkout }}"
-                        required>
+                        required
+                    >
                 </div>
 
                 <div class="field">
                     <label for="guests">Number of Guests</label>
+
                     <input
                         type="number"
                         id="guests"
@@ -487,7 +575,8 @@ select option {
                         min="1"
                         max="4"
                         value="{{ guests }}"
-                        required>
+                        required
+                    >
                 </div>
 
                 <div class="field">
@@ -500,11 +589,13 @@ select option {
                     </select>
                 </div>
 
+                <!-- PRICE SUMMARY -->
+
                 <div class="price-box">
 
                     <p>
                         Price per night:
-                        ₹<span id="basePrice">{{ hotel.price }}</span>
+                        <span>₹<span id="basePrice">{{ hotel.price }}</span></span>
                     </p>
 
                     <p>
@@ -518,13 +609,14 @@ select option {
                     </p>
 
                     <p class="total">
-                        Total: ₹<span id="totalPrice">0</span>
+                        Total:
+                        <span>₹<span id="totalPrice">0</span></span>
                     </p>
 
                 </div>
 
                 <button type="submit" class="book-btn">
-                    Confirm Hotel Booking
+                    Confirm Hotel Booking →
                 </button>
 
                 <p class="note">
@@ -540,37 +632,42 @@ select option {
 
 </main>
 
-
 <script>
 
-// THEME SWITCHER
+/* THEME MANAGEMENT */
 
 function applyTheme() {
 
-    const savedTheme = localStorage.getItem("voyageiq-theme");
+    const savedTheme =
+        localStorage.getItem("voyageiq-theme") || "dark";
 
     document.body.classList.toggle(
         "light",
         savedTheme === "light"
     );
 
+    document.getElementById("themeButton").textContent =
+        savedTheme === "light"
+        ? "🌙 Dark Mode"
+        : "☀ Light Mode";
 }
 
 function toggleTheme() {
 
-    const isLight = document.body.classList.toggle("light");
+    const isLight =
+        document.body.classList.contains("light");
 
-    localStorage.setItem(
-        "voyageiq-theme",
-        isLight ? "light" : "dark"
-    );
+    const newTheme = isLight ? "dark" : "light";
 
+    localStorage.setItem("voyageiq-theme", newTheme);
+
+    applyTheme();
 }
 
 applyTheme();
 
 
-// HOTEL PRICE CALCULATION
+/* HOTEL PRICE CALCULATION */
 
 const checkin = document.getElementById("checkin");
 const checkout = document.getElementById("checkout");
@@ -601,7 +698,6 @@ function updatePrice() {
             );
 
         }
-
     }
 
     const room = roomType.value;
@@ -618,11 +714,10 @@ function updatePrice() {
 
     document.getElementById("totalPrice").textContent =
         total.toLocaleString("en-IN");
-
 }
 
 
-// DATE VALIDATION
+/* DATE VALIDATION */
 
 const today = new Date();
 
@@ -642,14 +737,13 @@ checkin.addEventListener("change", function() {
     }
 
     updatePrice();
-
 });
 
 checkout.addEventListener("change", updatePrice);
 roomType.addEventListener("change", updatePrice);
 
 
-// FORM VALIDATION
+/* FORM VALIDATION */
 
 document.querySelector("form").addEventListener("submit", function(event) {
 
@@ -665,7 +759,6 @@ document.querySelector("form").addEventListener("submit", function(event) {
         alert("Please select valid check-in and check-out dates.");
 
         return;
-
     }
 
     if (guests.value < 1 || guests.value > 4) {
@@ -673,7 +766,6 @@ document.querySelector("form").addEventListener("submit", function(event) {
         event.preventDefault();
 
         alert("Please select between 1 and 4 guests.");
-
     }
 
 });

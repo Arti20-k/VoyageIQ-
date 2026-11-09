@@ -1,3 +1,4 @@
+
 import os
 import uuid
 from datetime import date
@@ -462,6 +463,57 @@ def home():
 
 
 # ============================================================
+# SETTINGS PAGE
+# ============================================================
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
+
+# ============================================================
+# WISHLIST PAGE
+# ============================================================
+
+@app.route("/wishlist")
+def wishlist():
+    return render_template("wishlist.html")
+
+
+# ============================================================
+# THEME PAGE
+# ============================================================
+
+@app.route("/theme")
+def theme():
+    return render_template("theme.html")
+
+
+# ============================================================
+# PERSONAL DETAILS PAGE
+# ============================================================
+
+@app.route("/personal-details")
+def personal_details():
+
+    if "user_id" not in session:
+        flash("Please log in to view your personal details.")
+        return redirect(url_for("login"))
+
+    user = db.session.get(User, session["user_id"])
+
+    if user is None:
+        session.clear()
+        flash("Please log in again.")
+        return redirect(url_for("login"))
+
+    return render_template(
+        "personal_details.html",
+        user=user
+    )
+
+
+# ============================================================
 # SIGNUP
 # ============================================================
 
@@ -570,13 +622,11 @@ def planner():
             return redirect(url_for("planner"))
 
         if budget < 1 or not 1 <= days <= 14:
-
             flash("Enter a positive budget and choose 1–14 days.")
 
         else:
 
             location = origin.casefold()
-
             filtered_destinations = []
 
             for place in DESTINATIONS:
@@ -687,7 +737,6 @@ def book_hotel():
 
         try:
             hotel_id = int(request.args.get("hotel_id", "1"))
-
         except ValueError:
             hotel_id = 1
 
@@ -787,9 +836,7 @@ def book_hotel():
 @app.route("/booking-confirmation/<int:booking_id>")
 def booking_confirmation(booking_id):
 
-    booking = db.session.get(
-        HotelBooking, booking_id
-    )
+    booking = db.session.get(HotelBooking, booking_id)
 
     if booking is None:
         flash("Booking not found.")
@@ -815,13 +862,8 @@ def booking_confirmation(booking_id):
 @app.route("/transport", methods=["GET", "POST"])
 def transport():
 
-    origin = request.form.get(
-        "origin", "Bengaluru"
-    ).strip()
-
-    destination = request.form.get(
-        "destination", "Goa"
-    ).strip()
+    origin = request.form.get("origin", "Bengaluru").strip()
+    destination = request.form.get("destination", "Goa").strip()
 
     travel_date = request.form.get(
         "travel_date", date.today().isoformat()
@@ -836,9 +878,7 @@ def transport():
 
     try:
 
-        passengers = int(
-            request.form.get("passengers", "1")
-        )
+        passengers = int(request.form.get("passengers", "1"))
 
         if not 1 <= passengers <= 6:
             raise ValueError
@@ -914,13 +954,8 @@ def book_transport():
 
     try:
 
-        option_id = int(
-            request.form.get("option_id", "0")
-        )
-
-        passengers = int(
-            request.form.get("passengers", "1")
-        )
+        option_id = int(request.form.get("option_id", "0"))
+        passengers = int(request.form.get("passengers", "1"))
 
         travel_date = date.fromisoformat(
             request.form.get("travel_date", "")
@@ -946,9 +981,7 @@ def book_transport():
         flash("Check the passenger count and travel date.")
         return redirect(url_for("transport"))
 
-    multiplier = TRANSPORT_CLASS_MULTIPLIERS.get(
-        seat_class, 1.0
-    )
+    multiplier = TRANSPORT_CLASS_MULTIPLIERS.get(seat_class, 1.0)
 
     total_price = int(
         option["price"] * multiplier * passengers
@@ -977,7 +1010,7 @@ def book_transport():
 
 
 # ============================================================
-# SEAT SELECTION - FIXED
+# SEAT SELECTION
 # ============================================================
 
 @app.route("/seat-selection", methods=["GET", "POST"])
@@ -991,27 +1024,20 @@ def seat_selection():
 
     if request.method == "POST":
 
-        # Read the seat numbers sent by the HTML form.
-        raw_seats = request.form.get(
-            "seat_numbers", ""
-        )
+        raw_seats = request.form.get("seat_numbers", "")
 
-        # Also support forms that send multiple 'seats' fields.
         if not raw_seats:
             selected_seats = request.form.getlist("seats")
         else:
             selected_seats = raw_seats.split(",")
 
-        # Clean and standardize seat names.
         seats = [
             seat.strip().upper()
             for seat in selected_seats
             if seat.strip()
         ]
 
-        # Remove duplicate seat selections.
         seats = list(dict.fromkeys(seats))
-
         passengers = int(pending.get("passengers", 1))
 
         valid_seats = {
@@ -1020,44 +1046,27 @@ def seat_selection():
             for number in range(1, 7)
         }
 
-        # Check exact passenger count and valid seat names.
         if len(seats) != passengers or any(
             seat not in valid_seats for seat in seats
         ):
-
-            flash(
-                f"Select exactly {passengers} valid seat(s)."
-            )
-
+            flash(f"Select exactly {passengers} valid seat(s).")
             return redirect(url_for("seat_selection"))
 
-        unavailable = {
-            "A2", "B3", "C1", "D4", "E2", "F3"
-        }
+        unavailable = {"A2", "B3", "C1", "D4", "E2", "F3"}
 
         if any(seat in unavailable for seat in seats):
-
             flash(
                 "One selected seat is unavailable in this demo. "
                 "Choose another."
             )
-
             return redirect(url_for("seat_selection"))
 
-        # IMPORTANT FIX:
-        # Create a new dictionary instead of modifying the
-        # nested session dictionary directly.
         updated_pending = dict(pending)
-
         updated_pending["seat_numbers"] = sorted(seats)
 
-        # Save the complete updated dictionary into the session.
         session["pending_transport"] = updated_pending
-
-        # Explicitly mark the session as modified.
         session.modified = True
 
-        # Continue to passenger details.
         return redirect(url_for("passenger_details"))
 
     return render_template(
@@ -1093,7 +1102,6 @@ def passenger_details():
 
         try:
             age = int(request.form.get("age", "0"))
-
         except ValueError:
             age = 0
 
@@ -1110,7 +1118,6 @@ def passenger_details():
                 "Prefer not to say"
             ]
         ):
-
             flash("Please enter valid passenger details.")
             return redirect(url_for("passenger_details"))
 
@@ -1156,7 +1163,6 @@ def booking_summary():
 
         try:
             age = int(request.form.get("age", "0"))
-
         except ValueError:
             age = 0
 
@@ -1173,7 +1179,6 @@ def booking_summary():
                 "Prefer not to say"
             ]
         ):
-
             flash("Please enter valid passenger details.")
             return redirect(url_for("passenger_details"))
 
@@ -1259,15 +1264,11 @@ def confirm_transport_booking():
         flash("Please select seats before confirming.")
         return redirect(url_for("seat_selection"))
 
-    existing_id = session.get(
-        "confirmed_transport_booking_id"
-    )
+    existing_id = session.get("confirmed_transport_booking_id")
 
     if existing_id:
 
-        existing = db.session.get(
-            TransportBooking, existing_id
-        )
+        existing = db.session.get(TransportBooking, existing_id)
 
         if existing:
             return redirect(
@@ -1337,9 +1338,7 @@ def confirm_transport_booking():
 @app.route("/transport-confirmation/<int:booking_id>")
 def transport_confirmation(booking_id):
 
-    booking = db.session.get(
-        TransportBooking, booking_id
-    )
+    booking = db.session.get(TransportBooking, booking_id)
 
     if booking is None:
         flash("Transport booking not found.")

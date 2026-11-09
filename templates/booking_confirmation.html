@@ -11,37 +11,36 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 :root {
     --bg: #07172B;
-    --sidebar: rgba(5,22,42,.96);
-    --card: rgba(12,39,65,.94);
-    --card2: rgba(5,25,45,.94);
+    --card: rgba(12,39,65,.96);
+    --card2: rgba(5,25,45,.96);
     --text: #F1FAFF;
     --muted: #B8D5E5;
     --accent: #42D9F5;
-    --border: rgba(105,211,255,.45);
+    --border: rgba(105,211,255,.35);
     --button: linear-gradient(110deg,#168FC4,#685BD8);
-    --shadow: rgba(0,0,0,.22);
+    --shadow: rgba(0,0,0,.25);
 }
 
 body.light {
     --bg: #EAF5FC;
-    --sidebar: rgba(247,252,255,.97);
-    --card: rgba(255,255,255,.96);
+    --card: rgba(255,255,255,.97);
     --card2: #E7F3FA;
     --text: #15334A;
     --muted: #526F83;
     --accent: #087EAD;
-    --border: rgba(8,126,173,.28);
+    --border: rgba(8,126,173,.25);
     --button: linear-gradient(110deg,#39B8D9,#8175E8);
     --shadow: rgba(31,86,117,.10);
 }
 
 body {
-    font-family: Arial, sans-serif;
     min-height: 100vh;
+    padding: 85px 18px 35px;
     color: var(--text);
     background:
         linear-gradient(rgba(4,22,42,.88),rgba(4,22,42,.94)),
@@ -49,97 +48,55 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    transition: color .3s;
 }
 
 body.light {
     background:
-        linear-gradient(rgba(226,243,251,.88),rgba(226,243,251,.94)),
+        linear-gradient(rgba(226,243,251,.90),rgba(226,243,251,.95)),
         url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=90");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
 
-/* SIDEBAR */
+/* TOP BAR */
 
-.sidebar {
-    width: 240px;
-    height: 100vh;
+.topbar {
     position: fixed;
-    top: 0;
-    left: 0;
-    padding: 25px 17px;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
+    top: 16px;
+    left: 20px;
+    right: 20px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     z-index: 10;
 }
 
 .logo {
-    font-size: 25px;
-    font-weight: bold;
     color: var(--accent);
-    margin-bottom: 35px;
-    text-align: center;
-}
-
-.menu-title {
-    color: var(--muted);
-    font-size: 11px;
+    font-size: 23px;
     font-weight: bold;
-    letter-spacing: 1.5px;
-    margin: 18px 10px 10px;
-}
-
-.nav-link {
-    display: block;
-    text-decoration: none;
-    color: var(--muted);
-    padding: 12px 14px;
-    margin: 4px 0;
-    border-radius: 9px;
-    font-size: 14px;
-    transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--accent);
-    background: rgba(30,145,190,.20);
-    border-left: 3px solid var(--accent);
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-}
-
-/* MAIN CONTENT */
-
-.main {
-    margin-left: 240px;
-    min-height: 100vh;
-    padding: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.topbar {
-    position: fixed;
-    top: 15px;
-    right: 22px;
-    z-index: 5;
 }
 
 .theme-btn {
     padding: 10px 16px;
-    border-radius: 20px;
+    border-radius: 22px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text);
     cursor: pointer;
     font-weight: bold;
+    font-size: 13px;
+}
+
+/* MAIN */
+
+.main {
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* CONFIRMATION CARD */
@@ -155,6 +112,8 @@ body.light {
     backdrop-filter: blur(14px);
 }
 
+/* SUCCESS ICON */
+
 .success-icon {
     width: 75px;
     height: 75px;
@@ -169,6 +128,8 @@ body.light {
     font-weight: bold;
 }
 
+/* HEADING */
+
 h1 {
     text-align: center;
     color: var(--accent);
@@ -181,12 +142,15 @@ h1 {
     color: var(--muted);
     margin-bottom: 28px;
     line-height: 1.6;
+    font-size: 14px;
 }
+
+/* BOOKING REFERENCE */
 
 .booking-code {
     background: var(--card2);
     border: 1px dashed var(--accent);
-    padding: 18px;
+    padding: 19px;
     text-align: center;
     border-radius: 12px;
     margin-bottom: 25px;
@@ -194,7 +158,7 @@ h1 {
 
 .booking-code p {
     color: var(--muted);
-    margin-bottom: 8px;
+    margin-bottom: 9px;
     font-size: 13px;
 }
 
@@ -202,7 +166,10 @@ h1 {
     color: var(--accent);
     letter-spacing: 2px;
     overflow-wrap: anywhere;
+    font-size: 23px;
 }
+
+/* DETAILS */
 
 .details {
     border-top: 1px solid var(--border);
@@ -213,8 +180,9 @@ h1 {
 .detail-row {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 15px;
-    padding: 11px 0;
+    padding: 12px 0;
     color: var(--muted);
     font-size: 14px;
 }
@@ -223,13 +191,17 @@ h1 {
     color: var(--text);
     text-align: right;
     overflow-wrap: anywhere;
+    line-height: 1.5;
 }
+
+/* TOTAL */
 
 .total {
     margin-top: 20px;
-    padding: 18px;
+    padding: 19px;
     border-radius: 12px;
     background: var(--card2);
+    border: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -238,12 +210,15 @@ h1 {
 
 .total span {
     color: var(--muted);
+    font-weight: bold;
 }
 
 .total strong {
     color: var(--accent);
-    font-size: 24px;
+    font-size: 25px;
 }
+
+/* ACTION BUTTONS */
 
 .actions {
     display: flex;
@@ -254,13 +229,14 @@ h1 {
 .btn {
     flex: 1;
     text-align: center;
-    padding: 14px;
+    padding: 15px 12px;
     text-decoration: none;
     border: 0;
     border-radius: 9px;
     color: white;
     background: var(--button);
     font-weight: bold;
+    font-size: 14px;
     transition: .2s;
 }
 
@@ -269,62 +245,151 @@ h1 {
     filter: brightness(1.1);
 }
 
+/* NOTE */
+
 .note {
     color: var(--muted);
     font-size: 12px;
-    line-height: 1.5;
+    line-height: 1.6;
     text-align: center;
     margin-top: 22px;
 }
 
-@media(max-width: 900px) {
-    .sidebar {
-        width: 75px;
-        padding: 20px 8px;
+/* MOBILE */
+
+@media(max-width: 600px) {
+
+    body,
+    body.light {
+        background-attachment: scroll;
+    }
+
+    body {
+        padding: 85px 12px 25px;
+    }
+
+    .topbar {
+        top: 13px;
+        left: 13px;
+        right: 13px;
     }
 
     .logo {
-        font-size: 13px;
+        font-size: 19px;
     }
 
-    .menu-title {
-        display: none;
-    }
-
-    .nav-link {
-        text-align: center;
+    .theme-btn {
+        padding: 9px 12px;
         font-size: 11px;
-        padding: 12px 3px;
     }
 
     .main {
-        margin-left: 75px;
-    }
-}
-
-@media(max-width: 550px) {
-    .main {
-        padding: 75px 12px 20px;
+        min-height: auto;
+        align-items: flex-start;
     }
 
     .confirmation-card {
-        padding: 23px;
+        width: 100%;
+        padding: 24px 17px;
+        border-radius: 17px;
     }
 
-    .actions {
-        flex-direction: column;
-    }
-
-    .detail-row {
-        font-size: 12px;
+    .success-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 35px;
+        margin-bottom: 16px;
     }
 
     h1 {
         font-size: 23px;
     }
 
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 21px;
+    }
+
+    .booking-code {
+        padding: 16px 10px;
+        margin-bottom: 20px;
+    }
+
+    .booking-code h2 {
+        font-size: 19px;
+        letter-spacing: 1px;
+    }
+
+    .details {
+        padding: 12px 0;
+    }
+
+    .detail-row {
+        font-size: 12px;
+        gap: 10px;
+        padding: 11px 0;
+    }
+
+    .detail-row span,
+    .detail-row strong {
+        flex: 1;
+    }
+
+    .detail-row strong {
+        font-size: 12px;
+    }
+
+    .total {
+        margin-top: 16px;
+        padding: 15px;
+    }
+
+    .total span {
+        font-size: 13px;
+    }
+
     .total strong {
-        font-size: 20px;
+        font-size: 21px;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 22px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 13px;
+    }
+
+    .note {
+        font-size: 11px;
+        margin-top: 18px;
+    }
+}
+
+@media(max-width: 360px) {
+
+    .confirmation-card {
+        padding: 20px 13px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+
+    .detail-row {
+        font-size: 11px;
+    }
+
+    .detail-row strong {
+        font-size: 11px;
+    }
+
+    .total strong {
+        font-size: 19px;
     }
 }
 </style>
@@ -332,35 +397,21 @@ h1 {
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- TOP BAR -->
 
-<aside class="sidebar">
+<header class="topbar">
 
     <div class="logo">✈ VoyageIQ</div>
 
-    <p class="menu-title">MAIN MENU</p>
-
-    <a href="{{ url_for('home') }}" class="nav-link">⌂ Dashboard</a>
-    <a href="{{ url_for('transport') }}" class="nav-link">✈ Flights & Transport</a>
-    <a href="{{ url_for('hotels') }}" class="nav-link active">⌂ Hotels</a>
-    <a href="{{ url_for('planner') }}" class="nav-link">✦ Trip Planner</a>
-    <a href="{{ url_for('my_bookings') }}" class="nav-link">▣ My Bookings</a>
-
-    <div class="sidebar-bottom">
-        <p class="menu-title">ACCOUNT</p>
-        <a href="{{ url_for('login') }}" class="nav-link">⇥ Login</a>
-        <a href="{{ url_for('signup') }}" class="nav-link">＋ Sign Up</a>
-    </div>
-
-</aside>
-
-<!-- THEME BUTTON -->
-
-<div class="topbar">
-    <button class="theme-btn" onclick="toggleTheme()" id="themeButton">
+    <button
+        type="button"
+        class="theme-btn"
+        onclick="toggleTheme()"
+        id="themeButton">
         ☀ Light Mode
     </button>
-</div>
+
+</header>
 
 <!-- MAIN CONTENT -->
 
@@ -377,10 +428,17 @@ h1 {
             Thank you for choosing VoyageIQ!
         </p>
 
+        <!-- BOOKING REFERENCE -->
+
         <div class="booking-code">
+
             <p>Your Booking Reference</p>
+
             <h2>{{ booking.booking_code }}</h2>
+
         </div>
+
+        <!-- HOTEL DETAILS -->
 
         <div class="details">
 
@@ -421,10 +479,19 @@ h1 {
 
         </div>
 
+        <!-- TOTAL AMOUNT -->
+
         <div class="total">
+
             <span>Total Amount</span>
-            <strong>₹{{ "{:,}".format(booking.total_price) }}</strong>
+
+            <strong>
+                ₹{{ "{:,}".format(booking.total_price) }}
+            </strong>
+
         </div>
+
+        <!-- ACTIONS -->
 
         <div class="actions">
 
@@ -448,20 +515,30 @@ h1 {
 
 </main>
 
+<!-- THEME SCRIPT -->
+
 <script>
-/* THEME MANAGEMENT */
 
 function applyTheme() {
-    const savedTheme = localStorage.getItem("voyageiq-theme") || "dark";
 
-    document.body.classList.toggle("light", savedTheme === "light");
+    const savedTheme =
+        localStorage.getItem("voyageiq-theme") || "dark";
+
+    document.body.classList.toggle(
+        "light",
+        savedTheme === "light"
+    );
 
     document.getElementById("themeButton").textContent =
-        savedTheme === "light" ? "🌙 Dark Mode" : "☀ Light Mode";
+        savedTheme === "light"
+        ? "🌙 Dark Mode"
+        : "☀ Light Mode";
 }
 
 function toggleTheme() {
-    const isLight = document.body.classList.contains("light");
+
+    const isLight =
+        document.body.classList.contains("light");
 
     const newTheme = isLight ? "dark" : "light";
 
@@ -471,6 +548,7 @@ function toggleTheme() {
 }
 
 applyTheme();
+
 </script>
 
 </body>
